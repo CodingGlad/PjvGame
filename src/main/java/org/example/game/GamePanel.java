@@ -5,6 +5,7 @@ import org.example.entities.Player;
 import javax.swing.*;
 import java.awt.*;
 
+//TODO handle public constants
 public class GamePanel extends JPanel implements Runnable{
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
