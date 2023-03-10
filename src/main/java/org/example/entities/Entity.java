@@ -8,10 +8,7 @@ import org.example.entities.types.VerticalDirectionType;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Entity {
     private int x;
@@ -54,7 +51,9 @@ public class Entity {
             final String resourceString = getSpriteString(activity, direction);
 
             for (int i = 1; i < entityType.getSpritesNumber() + 1; ++i) {
-                tmpSprites.add(ImageIO.read(getClass().getResourceAsStream(resourceString + "-" + i + ".png")));
+                tmpSprites.add(ImageIO.read(
+                        Objects.requireNonNull(getClass().getResourceAsStream(resourceString + "-" + i + ".png"))
+                ));
             }
 
             sprites.put(getMapKeyString(activity, direction), tmpSprites);
@@ -75,17 +74,8 @@ public class Entity {
         return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
     }
 
-    //TODO handle different total sprites number
     private int getImageIndex() {
-        if (spriteCounter < 10) {
-            return 0;
-        } else if (spriteCounter < 20) {
-            return 1;
-        } else if (spriteCounter < 30) {
-            return 2;
-        } else {
-            return 3;
-        }
+        return spriteCounter / 10;
     }
 
     public int getX() {
