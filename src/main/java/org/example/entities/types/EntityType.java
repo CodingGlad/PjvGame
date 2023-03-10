@@ -14,4 +14,8 @@ public enum EntityType {
     public String getEntityString() {
         return entityString;
     }
+
+    public int getSpritesNumber() {
+        return spritesNumber;
+    }
 }

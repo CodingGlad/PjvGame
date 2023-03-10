@@ -17,14 +17,15 @@ public class Entity {
     private int x;
     private int y;
     private int speed;
-    private EntityType entityType;
+    private final EntityType entityType;
 
-    private Map<String, List<BufferedImage>> sprites;
+    private final Map<String, List<BufferedImage>> sprites;
 
+    private ActivityType activityType;
     private VerticalDirectionType verticalDirection;
     private HorizontalDirectionType horizontalDirection;
 
-    private int spriteCounter = 1;
+    private int spriteCounter;
 
     //TODO separate into methods
     public Entity(int x, int y, int speed, EntityType entityType) {
@@ -32,12 +33,12 @@ public class Entity {
         this.y = y;
         this.speed = speed;
         this.entityType = entityType;
-
-        sprites = new HashMap<>();
+        this.activityType = ActivityType.IDLE;
+        this.sprites = new HashMap<>();
+        this.verticalDirection = null;
+        this.horizontalDirection = HorizontalDirectionType.LEFT;
+        this.spriteCounter = 0;
         getAllImages();
-
-        verticalDirection = null;
-        horizontalDirection = HorizontalDirectionType.LEFT;
     }
 
     public void getAllImages() {
@@ -55,7 +56,7 @@ public class Entity {
             List<BufferedImage> tmpSprites = new ArrayList<>();
             final String resourceString = getSpriteString(activity, direction);
 
-            for (int i = 1; i < 5; ++i) {
+            for (int i = 1; i < entityType.getSpritesNumber() + 1; ++i) {
                 tmpSprites.add(ImageIO.read(getClass().getResourceAsStream(resourceString + "-" + i + ".png")));
             }
 
@@ -74,8 +75,21 @@ public class Entity {
     }
 
     //TODO handle animation in list
-    public BufferedImage getImage(ActivityType activity) {
-        return sprites.get(getMapKeyString(activity, horizontalDirection)).get(0);
+    public BufferedImage getImage() {
+        return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
+    }
+
+    //TODO handle different total sprites number
+    private int getImageIndex() {
+        if (spriteCounter < 10) {
+            return 0;
+        } else if (spriteCounter < 20) {
+            return 1;
+        } else if (spriteCounter < 30) {
+            return 2;
+        } else {
+            return 3;
+        }
     }
 
     public int getX() {
@@ -108,6 +122,7 @@ public class Entity {
 
     public void setVerticalDirection(VerticalDirectionType verticalDirection) {
         this.verticalDirection = verticalDirection;
+        this.activityType = ActivityType.WALK;
     }
 
     public HorizontalDirectionType getHorizontalDirection() {
@@ -116,5 +131,15 @@ public class Entity {
 
     public void setHorizontalDirection(HorizontalDirectionType horizontalDirection) {
         this.horizontalDirection = horizontalDirection;
+    }
+
+    public void incrementCounter() {
+        if (++spriteCounter == entityType.getSpritesNumber() * 10) {
+            spriteCounter = 0;
+        }
+    }
+
+    public void setIdleActivity() {
+        activityType = ActivityType.IDLE;
     }
 }
