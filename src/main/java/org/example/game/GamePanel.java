@@ -1,5 +1,7 @@
 package org.example.game;
 
+import org.example.entities.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,17 +9,18 @@ public class GamePanel extends JPanel implements Runnable{
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
 
-    private static final int ORIGINAL_TILE_SIZE = 16;
-    private static final int SCALE_FACTOR = 3;
-    private static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE_FACTOR;
+    public static final int ORIGINAL_TILE_SIZE = 16;
+    public static final int SCALE_FACTOR = 2;
+    public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE_FACTOR;
 
-    private static final int MAX_SCREEN_COLS = 16;
-    private static final int MAX_SCREEN_ROWS = 12;
-    private static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
-    private static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
+    public static final int MAX_SCREEN_COLS = 16;
+    public static final int MAX_SCREEN_ROWS = 12;
+    public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
+    public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
 
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
+    Player player = new Player(this, keyHandler);
 
     int playerX = 100;
     int playerY = 100;
@@ -60,28 +63,16 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-        if (keyHandler.isUpPressed()) {
-            playerY -= playerSpeed;
-        }
-        if (keyHandler.isDownPressed()) {
-            playerY += playerSpeed;
-        }
-        if (keyHandler.isLeftPressed()) {
-            playerX -= playerSpeed;
-        }
-        if (keyHandler.isRightPressed()) {
-            playerX += playerSpeed;
-        }
+        player.update();
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D)g;
 
-        g2.setColor(Color.WHITE);
-        g2.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
+        player.draw(g2);
+
         g2.dispose();
     }
 }
