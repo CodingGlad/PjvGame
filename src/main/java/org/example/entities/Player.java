@@ -3,7 +3,6 @@ package org.example.entities;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
-import org.example.game.GamePanel;
 import org.example.game.KeyHandler;
 
 import java.awt.*;
@@ -42,7 +41,6 @@ public class Player extends Entity{
         incrementCounter();
     }
 
-    //TODO handle activity
     public void draw(Graphics2D g2) {
         BufferedImage image = getImage();
         g2.drawImage(image, getX(), getY(), TILE_SIZE, TILE_SIZE, null);

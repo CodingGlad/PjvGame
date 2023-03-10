@@ -27,7 +27,6 @@ public class Entity {
 
     private int spriteCounter;
 
-    //TODO separate into methods
     public Entity(int x, int y, int speed, EntityType entityType) {
         this.x = x;
         this.y = y;
@@ -49,8 +48,6 @@ public class Entity {
         }
     }
 
-    //TODO number of sprites refactor needed
-    //TODO map index method
     private void getActivityAndDirectionImages(ActivityType activity, HorizontalDirectionType direction) {
         try {
             List<BufferedImage> tmpSprites = new ArrayList<>();
@@ -74,7 +71,6 @@ public class Entity {
         return activity.getActivityString() + direction.getDirectionString();
     }
 
-    //TODO handle animation in list
     public BufferedImage getImage() {
         return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
     }
