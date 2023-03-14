@@ -63,7 +63,7 @@ public class Entity {
     }
 
     private String getSpriteString(ActivityType activity, HorizontalDirectionType direction) {
-        return "/assets/" + entityType.getEntityString() + "/" + activity.getActivityString() + "-" + direction.getDirectionString();
+        return "/sprites/" + entityType.getEntityString() + "/" + activity.getActivityString() + "-" + direction.getDirectionString();
     }
 
     private String getMapKeyString(ActivityType activity, HorizontalDirectionType direction) {
@@ -74,6 +74,8 @@ public class Entity {
         return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
     }
 
+    //TODO mby change speed of sprites of different activites
+    //TODO probably just add another value to activity or entity enum
     private int getImageIndex() {
         return spriteCounter / 10;
     }

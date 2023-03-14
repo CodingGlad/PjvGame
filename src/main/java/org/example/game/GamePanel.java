@@ -1,6 +1,7 @@
 package org.example.game;
 
 import org.example.entities.Player;
+import org.example.tiles.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     Player player = new Player(keyHandler);
+    TileManager tileManager = new TileManager();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -68,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+        tileManager.draw(g2);
         player.draw(g2);
 
         g2.dispose();
