@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Entity {
-    private int x;
-    private int y;
+    private int worldX;
+    private int worldY;
     private int speed;
     private final EntityType entityType;
 
@@ -24,9 +24,9 @@ public class Entity {
 
     private int spriteCounter;
 
-    public Entity(int x, int y, int speed, EntityType entityType) {
-        this.x = x;
-        this.y = y;
+    public Entity(int worldX, int worldY, int speed, EntityType entityType) {
+        this.worldX = worldX;
+        this.worldY = worldY;
         this.speed = speed;
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
@@ -80,20 +80,20 @@ public class Entity {
         return spriteCounter / 10;
     }
 
-    public int getX() {
-        return x;
+    public int getWorldX() {
+        return worldX;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setWorldX(int worldX) {
+        this.worldX = worldX;
     }
 
-    public int getY() {
-        return y;
+    public int getWorldY() {
+        return worldY;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setWorldY(int worldY) {
+        this.worldY = worldY;
     }
 
     public int getSpeed() {

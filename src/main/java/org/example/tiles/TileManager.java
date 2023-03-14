@@ -1,5 +1,7 @@
 package org.example.tiles;
 
+import org.example.entities.Player;
+import org.example.game.GamePanel;
 import org.example.tiles.types.TileType;
 
 import javax.imageio.ImageIO;
@@ -20,10 +22,12 @@ public class TileManager {
 
     private Map<Integer, Tile> tileSprites;
     private int[][] mapTileNum;
+    private Player player;
 
-    public TileManager() {
+    public TileManager(Player player) {
+        this.player = player;
         tileSprites = new HashMap<>();
-        mapTileNum = new int[MAX_SCREEN_ROWS][MAX_SCREEN_COLS];
+        mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 
         getTileImages();
         loadMap();
@@ -46,8 +50,13 @@ public class TileManager {
     public void draw(Graphics2D g2) {
         for (int i = 0; i < mapTileNum.length; ++i) {
             for (int j = 0; j < mapTileNum[i].length; ++j) {
+                final int worldX = j * TILE_SIZE;
+                final int worldY = i * TILE_SIZE;
+                final int screenX = worldX - player.getWorldX() + player.getScreenX();
+                final int screenY = worldY - player.getWorldY() + player.getScreenY();
+
                 g2.drawImage(
-                        tileSprites.get(mapTileNum[i][j]).getImage(), TILE_SIZE * j, TILE_SIZE * i,
+                        tileSprites.get(mapTileNum[i][j]).getImage(), screenX, screenY,
                         TILE_SIZE, TILE_SIZE, null
                 );
             }
@@ -55,14 +64,14 @@ public class TileManager {
     }
 
     private void loadMap() {
-        InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map01.txt");
+        InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map02.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        for(int i = 0; i < MAX_SCREEN_ROWS; ++i) {
+        for(int i = 0; i < MAX_WORLD_ROW; ++i) {
             try {
                 String[] mapLine = br.readLine().split(" ");
 
-                for(int j = 0; j < MAX_SCREEN_COLS; ++j) {
+                for(int j = 0; j < MAX_WORLD_COL; ++j) {
                     mapTileNum[i][j] = Integer.parseInt(mapLine[j]);
                 }
             } catch (IOException e) {
