@@ -55,10 +55,12 @@ public class TileManager {
                 final int screenX = worldX - player.getWorldX() + player.getScreenX();
                 final int screenY = worldY - player.getWorldY() + player.getScreenY();
 
-                g2.drawImage(
-                        tileSprites.get(mapTileNum[i][j]).getImage(), screenX, screenY,
-                        TILE_SIZE, TILE_SIZE, null
-                );
+                if (shouldTileBeRendered(worldX, worldY)) {
+                    g2.drawImage(
+                            tileSprites.get(mapTileNum[i][j]).getImage(), screenX, screenY,
+                            TILE_SIZE, TILE_SIZE, null
+                    );
+                }
             }
         }
     }
@@ -78,5 +80,20 @@ public class TileManager {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private boolean shouldTileBeRendered(int worldX, int worldY) {
+        return isCoordinateWithinViewX(worldX) && isCoordinateWithinViewY(worldY);
+
+    }
+
+    private boolean isCoordinateWithinViewX(int worldX) {
+        return worldX + TILE_SIZE > (player.getWorldX() - player.getScreenX()) &&
+                worldX - TILE_SIZE < (player.getWorldX() + player.getScreenX());
+    }
+
+    private boolean isCoordinateWithinViewY(int worldY) {
+        return worldY + TILE_SIZE > (player.getWorldY() - player.getScreenY()) &&
+                worldY - TILE_SIZE < (player.getWorldY() + player.getScreenY());
     }
 }
