@@ -14,9 +14,9 @@ import static org.example.game.GamePanel.*;
 
 public class Player extends Entity{
 
-    private static final int SOLID_X = 4;
+    private static final int SOLID_X = 8;
     private static final int SOLID_Y = 25;
-    private static final int SOLID_WIDTH = 13;
+    private static final int SOLID_WIDTH = 12;
     private static final int SOLID_HEIGHT = 4;
 
     private KeyHandler keyHandler;

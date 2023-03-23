@@ -49,7 +49,7 @@ public class CollisionHandler {
             case NONE -> {
                 switch (entity.getHorizontalDirection()) {
                     case LEFT -> {
-                        int directionColumn = (entityLeftWorldX + entity.getSpeed()) / TILE_SIZE;
+                        int directionColumn = (entityLeftWorldX - entity.getSpeed()) / TILE_SIZE;
                         tilenum1 = tileHandler.getTileNumber(entityTopRow, directionColumn);
                         tilenum2 = tileHandler.getTileNumber(entityBottomRow, directionColumn);
                         System.out.println(tilenum1 + " " + tilenum2);
