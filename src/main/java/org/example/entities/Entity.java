@@ -6,9 +6,11 @@ import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class Entity {
     private int worldX;
@@ -23,17 +25,22 @@ public class Entity {
     private HorizontalDirectionType horizontalDirection;
 
     private int spriteCounter;
+    private final Rectangle solidArea;
+    private boolean collisionsOn;
 
-    public Entity(int worldX, int worldY, int speed, EntityType entityType) {
+    public Entity(int worldX, int worldY, int speed, EntityType entityType,
+                  int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
         this.worldX = worldX;
         this.worldY = worldY;
         this.speed = speed;
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
         this.sprites = new HashMap<>();
-        this.verticalDirection = null;
+        this.verticalDirection = VerticalDirectionType.NONE;
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
+        this.collisionsOn = false;
+        this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
         getAllImages();
     }
 
@@ -129,5 +136,21 @@ public class Entity {
 
     public void setIdleActivity() {
         activityType = ActivityType.IDLE;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public boolean isCollisionsOn() {
+        return collisionsOn;
+    }
+
+    public void setCollisionsOn(boolean collisionsOn) {
+        this.collisionsOn = collisionsOn;
+    }
+
+    public Rectangle getSolidArea() {
+        return solidArea;
     }
 }

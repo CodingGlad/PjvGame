@@ -1,8 +1,10 @@
 package org.example.entities;
 
+import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
+import org.example.game.CollisionHandler;
 import org.example.game.KeyHandler;
 
 import java.awt.*;
@@ -12,6 +14,11 @@ import static org.example.game.GamePanel.*;
 
 public class Player extends Entity{
 
+    private static final int SOLID_X = 4;
+    private static final int SOLID_Y = 25;
+    private static final int SOLID_WIDTH = 13;
+    private static final int SOLID_HEIGHT = 4;
+
     private KeyHandler keyHandler;
 
     private final int screenX;
@@ -19,31 +26,36 @@ public class Player extends Entity{
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(TILE_SIZE * 23, TILE_SIZE * 21, 4, EntityType.HERO);
+        super(TILE_SIZE * 23, TILE_SIZE * 21, 4,
+                EntityType.HERO, SOLID_X, SOLID_Y, SOLID_WIDTH, SOLID_HEIGHT);
         this.keyHandler = keyHandler;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
     }
 
-    public void update() {
+    public void update(CollisionHandler collisionHandler) {
         if (keyHandler.isUpPressed()) {
             setVerticalDirection(VerticalDirectionType.TOP);
-            setWorldY(getWorldY() - getSpeed());
         } else if (keyHandler.isDownPressed()) {
             setVerticalDirection(VerticalDirectionType.DOWN);
-            setWorldY(getWorldY() + getSpeed());
         } else if (keyHandler.isLeftPressed()) {
-            setVerticalDirection(null);
+            setVerticalDirection(VerticalDirectionType.NONE);
             setHorizontalDirection(HorizontalDirectionType.LEFT);
-            setWorldX(getWorldX() - getSpeed());
         } else if (keyHandler.isRightPressed()) {
-            setVerticalDirection(null);
+            setVerticalDirection(VerticalDirectionType.NONE);
             setHorizontalDirection(HorizontalDirectionType.RIGHT);
-            setWorldX(getWorldX() + getSpeed());
         } else {
             setIdleActivity();
         }
+
+        setCollisionsOn(false);
+        collisionHandler.checkTile(this);
+
+        if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
+            move();
+        }
+
         incrementCounter();
     }
 
@@ -58,5 +70,18 @@ public class Player extends Entity{
 
     public int getScreenY() {
         return screenY;
+    }
+
+    private void move() {
+        switch (getVerticalDirection()) {
+            case TOP -> setWorldY(getWorldY() - getSpeed());
+            case DOWN -> setWorldY(getWorldY() + getSpeed());
+            case NONE -> {
+                switch (getHorizontalDirection()) {
+                    case LEFT -> setWorldX(getWorldX() - getSpeed());
+                    case RIGHT -> setWorldX(getWorldX() + getSpeed());
+                }
+            }
+        }
     }
 }

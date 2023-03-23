@@ -1,7 +1,6 @@
 package org.example.tiles;
 
 import org.example.entities.Player;
-import org.example.game.GamePanel;
 import org.example.tiles.types.TileType;
 
 import javax.imageio.ImageIO;
@@ -16,7 +15,7 @@ import java.util.Objects;
 
 import static org.example.game.GamePanel.*;
 
-public class TileManager {
+public class TileHandler {
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";
     private static final String MAP_LAYOUT_PATH = "/maps/";
 
@@ -24,7 +23,7 @@ public class TileManager {
     private int[][] mapTileNum;
     private Player player;
 
-    public TileManager(Player player) {
+    public TileHandler(Player player) {
         this.player = player;
         tileSprites = new HashMap<>();
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
@@ -95,5 +94,24 @@ public class TileManager {
     private boolean isCoordinateWithinViewY(int worldY) {
         return worldY + TILE_SIZE > (player.getWorldY() - player.getScreenY()) &&
                 worldY - TILE_SIZE < (player.getWorldY() + player.getScreenY());
+    }
+
+    //TODO mby add void
+    public int getTileNumber(int row, int column) {
+        if (mapTileNum.length > row && mapTileNum[row].length > column) {
+            return mapTileNum[row][column];
+        } else {
+            throw new IllegalStateException("Player out of map bounds.");
+        }
+    }
+
+    public boolean doesTileHaveCollision(int tilenum) {
+        for (TileType type: TileType.values()) {
+            if (type.getIntTileValue() == tilenum) {
+                return type.isCollision();
+            }
+        }
+
+        throw new IllegalStateException("Tile number not found.");
     }
 }

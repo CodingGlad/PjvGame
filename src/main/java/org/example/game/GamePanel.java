@@ -1,7 +1,7 @@
 package org.example.game;
 
 import org.example.entities.Player;
-import org.example.tiles.TileManager;
+import org.example.tiles.TileHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +29,8 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyHandler = new KeyHandler();
     Thread gameThread;
     Player player = new Player(keyHandler);
-    TileManager tileManager = new TileManager(player);
+    TileHandler tileHandler = new TileHandler(player);
+    CollisionHandler collisionHandler = new CollisionHandler(tileHandler);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -68,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update() {
-        player.update();
+        player.update(collisionHandler);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        tileManager.draw(g2);
+        tileHandler.draw(g2);
         player.draw(g2);
 
         g2.dispose();

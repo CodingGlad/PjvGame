@@ -26,4 +26,8 @@ public enum TileType {
     public int getIntTileValue() {
         return intTileValue;
     }
+
+    public boolean isCollision() {
+        return collision;
+    }
 }
