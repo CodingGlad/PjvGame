@@ -50,7 +50,7 @@ public class Player extends Entity{
         }
 
         setCollisionsOn(false);
-        collisionHandler.checkTile(this);
+        collisionHandler.checkCollisions(this);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();

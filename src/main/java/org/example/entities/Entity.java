@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
+import static org.example.game.GamePanel.TILE_SIZE;
+
 public class Entity {
     private int worldX;
     private int worldY;
@@ -28,6 +30,7 @@ public class Entity {
     private final Rectangle solidArea;
     private boolean collisionsOn;
 
+    //TODO less constructor parameters??
     public Entity(int worldX, int worldY, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
         this.worldX = worldX;
@@ -152,5 +155,25 @@ public class Entity {
 
     public Rectangle getSolidArea() {
         return solidArea;
+    }
+
+    public int getLeftWorldX() {
+        return worldX + solidArea.x;
+    }
+
+    public int getRightWorldX() {
+        return getLeftWorldX() + solidArea.width;
+    }
+
+    public int getTopWorldY() {
+        return worldY + solidArea.y;
+    }
+
+    public int getBottomWorldY() {
+        return getTopWorldY() + solidArea.height;
+    }
+
+    public int getTilesRowOrColumn(int worldCoordinate) {
+        return worldCoordinate / TILE_SIZE;
     }
 }
