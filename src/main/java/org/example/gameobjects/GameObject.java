@@ -9,18 +9,18 @@ import java.awt.image.BufferedImage;
 
 import static org.example.game.GamePanel.TILE_SIZE;
 
-public class GameObject {
+public abstract class GameObject {
+    private static final int DEFAULT_SOLID_X = 0;
+    private static final int DEFAULT_SOLID_Y = 0;
+
     private final ObjectType objectType;
     private BufferedImage staticImage;
     private WorldCoordinates worldCoordinates;
+    private Rectangle solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, TILE_SIZE, TILE_SIZE);
 
-    public GameObject(ObjectType objectType, WorldCoordinates worldCoordinates) {
+    protected GameObject(ObjectType objectType, WorldCoordinates worldCoordinates) {
         this.objectType = objectType;
         this.worldCoordinates = worldCoordinates;
-    }
-
-    public BufferedImage getStaticImage() {
-        return staticImage;
     }
 
     public void setStaticImage(BufferedImage staticImage) {
@@ -49,5 +49,48 @@ public class GameObject {
     private boolean isCoordinateWithinViewY(int worldY, Player player) {
         return worldY + TILE_SIZE > (player.getWorldY() - player.getScreenY()) &&
                 worldY - TILE_SIZE < (player.getWorldY() + player.getScreenY());
+    }
+
+    public Rectangle getSolidArea() {
+        return solidArea;
+    }
+
+    public void setSolidAreaX(int solidAreaX) {
+        solidArea.x = solidAreaX;
+    }
+
+    public void setSolidAreaY(int solidAreaY) {
+        solidArea.y = solidAreaY;
+    }
+
+    public int getWorldX() {
+        return worldCoordinates.getWorldX();
+    }
+
+    public void setWorldX(int worldX) {
+        worldCoordinates.setWorldX(worldX);
+    }
+
+    public int getWorldY() {
+        return worldCoordinates.getWorldY();
+    }
+
+    public void setWorldY(int worldY) {
+        worldCoordinates.setWorldY(worldY);
+    }
+
+    public void setDefaultSolidArea() {
+        solidArea.x = DEFAULT_SOLID_X;
+        solidArea.y = DEFAULT_SOLID_Y;
+    }
+
+    public boolean hasCollisions() {
+        for (ObjectType type: ObjectType.values()) {
+            if (type.equals(objectType)) {
+                return type.hasCollisions();
+            }
+        }
+
+        throw new IllegalStateException("Object type not found in enum> " + this.toString());
     }
 }

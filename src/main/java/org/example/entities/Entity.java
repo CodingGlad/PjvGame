@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class Entity {
+public abstract class Entity {
     private WorldCoordinates worldCoordinates;
     private final int speed;
     private final EntityType entityType;
@@ -25,10 +25,12 @@ public class Entity {
     private HorizontalDirectionType horizontalDirection;
 
     private int spriteCounter;
-    private final Rectangle solidArea;
+    protected Rectangle solidArea;
     private boolean collisionsOn;
+    private int defaultSolidX;
+    private int defaultSolidY;
 
-    public Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
+    protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
         this.worldCoordinates = worldCoordinates;
         this.speed = speed;
@@ -159,5 +161,39 @@ public class Entity {
 
     public int getSolidBottomWorldY() {
         return getSolidTopWorldY() + solidArea.height;
+    }
+
+    public Rectangle getSolidArea() {
+        return solidArea;
+    }
+
+    public void setSolidAreaX(int solidAreaX) {
+        solidArea.x = solidAreaX;
+    }
+
+    public void setSolidAreaY(int solidAreaY) {
+        solidArea.y = solidAreaY;
+    }
+
+    public void move() {
+        switch (getVerticalDirection()) {
+            case UP -> setWorldY(getWorldY() - getSpeed());
+            case DOWN -> setWorldY(getWorldY() + getSpeed());
+            case NONE -> {
+                switch (getHorizontalDirection()) {
+                    case LEFT -> setWorldX(getWorldX() - getSpeed());
+                    case RIGHT -> setWorldX(getWorldX() + getSpeed());
+                }
+            }
+        }
+    }
+
+    public void setDefaultSolidArea() {
+        solidArea.x = defaultSolidX;
+        solidArea.y = defaultSolidY;
+    }
+
+    public EntityType getEntityType() {
+        return entityType;
     }
 }
