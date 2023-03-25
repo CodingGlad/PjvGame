@@ -1,9 +1,10 @@
 package org.example.game;
 
 import org.example.entities.Entity;
+import org.example.entities.types.ActivityType;
+import org.example.entities.types.HorizontalDirectionType;
+import org.example.entities.types.VerticalDirectionType;
 import org.example.tiles.TileHandler;
-
-import static org.example.game.GamePanel.TILE_SIZE;
 
 public class CollisionHandler {
 
@@ -14,36 +15,43 @@ public class CollisionHandler {
     }
 
     public void checkCollisions(Entity entity) {
-        switch (entity.getVerticalDirection()) {
-            case TOP -> {
-                int directionRow = (entity.getTopWorldY() - entity.getSpeed()) / TILE_SIZE;
-                checkTilesInVerticalDirection(directionRow, entity.getTilesRowOrColumn(entity.getLeftWorldX()),
-                        entity.getTilesRowOrColumn(entity.getRightWorldX()), entity);
-            }
-            case DOWN -> {
-                int directionRow = (entity.getBottomWorldY() + entity.getSpeed()) / TILE_SIZE;
-                checkTilesInVerticalDirection(directionRow, entity.getTilesRowOrColumn(entity.getLeftWorldX()),
-                        entity.getTilesRowOrColumn(entity.getRightWorldX()), entity);
-            }
-            case NONE -> {
-                switch (entity.getHorizontalDirection()) {
-                    case LEFT -> {
-                        int directionColumn = (entity.getLeftWorldX() - entity.getSpeed()) / TILE_SIZE;
-                        checkTilesInHorizontalDirection(directionColumn, entity.getTilesRowOrColumn(entity.getTopWorldY()),
-                                entity.getTilesRowOrColumn(entity.getBottomWorldY()), entity);
-                    }
-                    case RIGHT -> {
-                        int directionColumn = (entity.getRightWorldX() + entity.getSpeed()) / TILE_SIZE;
-                        checkTilesInHorizontalDirection(directionColumn, entity.getTilesRowOrColumn(entity.getTopWorldY()),
-                                entity.getTilesRowOrColumn(entity.getBottomWorldY()), entity);
-                    }
-                }
+        if (entity.getActivityType().equals(ActivityType.WALK)) {
+            if (entity.getVerticalDirection().equals(VerticalDirectionType.NONE)) {
+                checkHorizontalCollisions(entity);
+            } else {
+                checkVerticalCollisions(entity);
             }
         }
     }
 
-    private boolean doTilesHaveCollisions(int tilenum1, int tilenum2) {
-        return (tileHandler.doesTileHaveCollision(tilenum1) || tileHandler.doesTileHaveCollision(tilenum2));
+    private void checkVerticalCollisions(Entity entity) {
+        int directionRow;
+
+        if (entity.getVerticalDirection().equals(VerticalDirectionType.UP)) {
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY() - entity.getSpeed());
+        } else {
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY() + entity.getSpeed());
+        }
+
+        checkTilesInVerticalDirection(directionRow, tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX()), entity);
+    }
+
+    private void checkHorizontalCollisions(Entity entity) {
+        int directionColumn;
+
+        if (entity.getHorizontalDirection().equals(HorizontalDirectionType.LEFT)) {
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX() - entity.getSpeed());
+        } else {
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX() + entity.getSpeed());
+        }
+
+        checkTilesInHorizontalDirection(directionColumn, tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY()), entity);
+    }
+
+    private boolean doTilesHaveCollisions(int tileInDirection1, int tileInDirection2) {
+        return (tileHandler.doesTileHaveCollision(tileInDirection1) || tileHandler.doesTileHaveCollision(tileInDirection2));
     }
 
     private void checkTilesInVerticalDirection(int verticalDirectionRow, int entityLeftCol, int entityRightCol, Entity entity) {

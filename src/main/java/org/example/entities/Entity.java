@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static org.example.game.GamePanel.TILE_SIZE;
-
 public class Entity {
     private int worldX;
     private int worldY;
@@ -171,9 +169,5 @@ public class Entity {
 
     public int getBottomWorldY() {
         return getTopWorldY() + solidArea.height;
-    }
-
-    public int getTilesRowOrColumn(int worldCoordinate) {
-        return worldCoordinate / TILE_SIZE;
     }
 }

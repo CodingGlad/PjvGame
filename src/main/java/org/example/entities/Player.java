@@ -36,7 +36,7 @@ public class Player extends Entity{
 
     public void update(CollisionHandler collisionHandler) {
         if (keyHandler.isUpPressed()) {
-            setVerticalDirection(VerticalDirectionType.TOP);
+            setVerticalDirection(VerticalDirectionType.UP);
         } else if (keyHandler.isDownPressed()) {
             setVerticalDirection(VerticalDirectionType.DOWN);
         } else if (keyHandler.isLeftPressed()) {
@@ -74,7 +74,7 @@ public class Player extends Entity{
 
     private void move() {
         switch (getVerticalDirection()) {
-            case TOP -> setWorldY(getWorldY() - getSpeed());
+            case UP -> setWorldY(getWorldY() - getSpeed());
             case DOWN -> setWorldY(getWorldY() + getSpeed());
             case NONE -> {
                 switch (getHorizontalDirection()) {
