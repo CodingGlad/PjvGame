@@ -4,6 +4,7 @@ import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
+import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,9 +14,8 @@ import java.util.*;
 import java.util.List;
 
 public class Entity {
-    private int worldX;
-    private int worldY;
-    private int speed;
+    private WorldCoordinates worldCoordinates;
+    private final int speed;
     private final EntityType entityType;
 
     private final Map<String, List<BufferedImage>> sprites;
@@ -28,11 +28,9 @@ public class Entity {
     private final Rectangle solidArea;
     private boolean collisionsOn;
 
-    //TODO less constructor parameters??
-    public Entity(int worldX, int worldY, int speed, EntityType entityType,
+    public Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
-        this.worldX = worldX;
-        this.worldY = worldY;
+        this.worldCoordinates = worldCoordinates;
         this.speed = speed;
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
@@ -89,27 +87,23 @@ public class Entity {
     }
 
     public int getWorldX() {
-        return worldX;
+        return worldCoordinates.getWorldX();
     }
 
     public void setWorldX(int worldX) {
-        this.worldX = worldX;
+        worldCoordinates.setWorldX(worldX);
     }
 
     public int getWorldY() {
-        return worldY;
+        return worldCoordinates.getWorldY();
     }
 
     public void setWorldY(int worldY) {
-        this.worldY = worldY;
+        worldCoordinates.setWorldY(worldY);
     }
 
     public int getSpeed() {
         return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
     }
 
     public VerticalDirectionType getVerticalDirection() {
@@ -151,23 +145,19 @@ public class Entity {
         this.collisionsOn = collisionsOn;
     }
 
-    public Rectangle getSolidArea() {
-        return solidArea;
+    public int getSolidLeftWorldX() {
+        return getWorldX() + solidArea.x;
     }
 
-    public int getLeftWorldX() {
-        return worldX + solidArea.x;
+    public int getSolidRightWorldX() {
+        return getSolidLeftWorldX() + solidArea.width;
     }
 
-    public int getRightWorldX() {
-        return getLeftWorldX() + solidArea.width;
+    public int getSolidTopWorldY() {
+        return getWorldY() + solidArea.y;
     }
 
-    public int getTopWorldY() {
-        return worldY + solidArea.y;
-    }
-
-    public int getBottomWorldY() {
-        return getTopWorldY() + solidArea.height;
+    public int getSolidBottomWorldY() {
+        return getSolidTopWorldY() + solidArea.height;
     }
 }

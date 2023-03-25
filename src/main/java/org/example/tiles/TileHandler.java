@@ -83,7 +83,6 @@ public class TileHandler {
 
     private boolean shouldTileBeRendered(int worldX, int worldY) {
         return isCoordinateWithinViewX(worldX) && isCoordinateWithinViewY(worldY);
-
     }
 
     private boolean isCoordinateWithinViewX(int worldX) {
