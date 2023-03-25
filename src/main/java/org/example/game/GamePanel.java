@@ -1,10 +1,16 @@
 package org.example.game;
 
 import org.example.entities.Player;
+import org.example.gameobjects.GameObject;
 import org.example.tiles.TileHandler;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.util.LinkedList;
+import java.util.List;
 
 //TODO handle public constants
 public class GamePanel extends JPanel implements Runnable{
@@ -31,6 +37,8 @@ public class GamePanel extends JPanel implements Runnable{
     Player player = new Player(keyHandler);
     TileHandler tileHandler = new TileHandler(player);
     CollisionHandler collisionHandler = new CollisionHandler(tileHandler);
+    ObjectHandler objectHandler = new ObjectHandler();
+    List<GameObject> displayedObjects = new LinkedList<>();
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -76,9 +84,20 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
+        //TILES
         tileHandler.draw(g2);
+
+        for (GameObject object: displayedObjects) {
+            object.draw(g2, player);
+        }
+
+        //PLAYER
         player.draw(g2);
 
         g2.dispose();
+    }
+
+    public void setupGame() {
+        objectHandler.setObjects(displayedObjects);
     }
 }
