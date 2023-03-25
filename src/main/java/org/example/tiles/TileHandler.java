@@ -114,4 +114,8 @@ public class TileHandler {
 
         throw new IllegalStateException("Tile number not found.");
     }
+
+    public int getRowOrColumnOfCoordinate(int worldCoordinate) {
+        return worldCoordinate / TILE_SIZE;
+    }
 }

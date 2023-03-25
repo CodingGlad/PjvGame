@@ -1,7 +1,7 @@
 package org.example.entities.types;
 
 public enum VerticalDirectionType {
-    TOP,
+    UP,
     DOWN,
     NONE
 }

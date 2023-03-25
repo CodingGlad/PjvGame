@@ -28,6 +28,7 @@ public class Entity {
     private final Rectangle solidArea;
     private boolean collisionsOn;
 
+    //TODO less constructor parameters??
     public Entity(int worldX, int worldY, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
         this.worldX = worldX;
@@ -152,5 +153,21 @@ public class Entity {
 
     public Rectangle getSolidArea() {
         return solidArea;
+    }
+
+    public int getLeftWorldX() {
+        return worldX + solidArea.x;
+    }
+
+    public int getRightWorldX() {
+        return getLeftWorldX() + solidArea.width;
+    }
+
+    public int getTopWorldY() {
+        return worldY + solidArea.y;
+    }
+
+    public int getBottomWorldY() {
+        return getTopWorldY() + solidArea.height;
     }
 }

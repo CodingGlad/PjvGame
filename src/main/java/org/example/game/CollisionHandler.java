@@ -1,9 +1,10 @@
 package org.example.game;
 
 import org.example.entities.Entity;
+import org.example.entities.types.ActivityType;
+import org.example.entities.types.HorizontalDirectionType;
+import org.example.entities.types.VerticalDirectionType;
 import org.example.tiles.TileHandler;
-
-import static org.example.game.GamePanel.TILE_SIZE;
 
 public class CollisionHandler {
 
@@ -13,65 +14,61 @@ public class CollisionHandler {
         this.tileHandler = tileHandler;
     }
 
-    public void checkTile(Entity entity) {
-        //SOLID AREA COORDS
-        int entityLeftWorldX = entity.getWorldX() + entity.getSolidArea().x;
-        int entityRightWorldX = entity.getWorldX() + entity.getSolidArea().x + entity.getSolidArea().width;
-        int entityTopWorldY = entity.getWorldY() + entity.getSolidArea().y;
-        int entityBottomWorldY = entity.getWorldY() + entity.getSolidArea().y + entity.getSolidArea().height;
-
-        int entityLeftCol = entityLeftWorldX/TILE_SIZE;
-        int entityRightCol = entityRightWorldX/TILE_SIZE;
-        int entityTopRow = entityTopWorldY/TILE_SIZE;
-        int entityBottomRow = entityBottomWorldY/TILE_SIZE;
-
-        int tilenum1, tilenum2;
-
-        switch (entity.getVerticalDirection()) {
-            case TOP -> {
-                int directionRow = (entityTopWorldY - entity.getSpeed()) / TILE_SIZE;
-                tilenum1 = tileHandler.getTileNumber(directionRow, entityLeftCol);
-                tilenum2 = tileHandler.getTileNumber(directionRow, entityRightCol);
-                System.out.println(tilenum1 + " " + tilenum2);
-                if (doTilesHaveCollisions(tilenum1, tilenum2)) {
-                    entity.setCollisionsOn(true);
-                }
-            }
-            case DOWN -> {
-                int directionRow = (entityBottomWorldY + entity.getSpeed()) / TILE_SIZE;
-                tilenum1 = tileHandler.getTileNumber(directionRow, entityLeftCol);
-                tilenum2 = tileHandler.getTileNumber(directionRow, entityRightCol);
-                System.out.println(tilenum1 + " " + tilenum2);
-                if (doTilesHaveCollisions(tilenum1, tilenum2)) {
-                    entity.setCollisionsOn(true);
-                }
-            }
-            case NONE -> {
-                switch (entity.getHorizontalDirection()) {
-                    case LEFT -> {
-                        int directionColumn = (entityLeftWorldX - entity.getSpeed()) / TILE_SIZE;
-                        tilenum1 = tileHandler.getTileNumber(entityTopRow, directionColumn);
-                        tilenum2 = tileHandler.getTileNumber(entityBottomRow, directionColumn);
-                        System.out.println(tilenum1 + " " + tilenum2);
-                        if (doTilesHaveCollisions(tilenum1, tilenum2)) {
-                            entity.setCollisionsOn(true);
-                        }
-                    }
-                    case RIGHT -> {
-                        int directionColumn = (entityRightWorldX + entity.getSpeed()) / TILE_SIZE;
-                        tilenum1 = tileHandler.getTileNumber(entityTopRow, directionColumn);
-                        tilenum2 = tileHandler.getTileNumber(entityBottomRow, directionColumn);
-                        System.out.println(tilenum1 + " " + tilenum2);
-                        if (doTilesHaveCollisions(tilenum1, tilenum2)) {
-                            entity.setCollisionsOn(true);
-                        }
-                    }
-                }
+    public void checkCollisions(Entity entity) {
+        if (entity.getActivityType().equals(ActivityType.WALK)) {
+            if (entity.getVerticalDirection().equals(VerticalDirectionType.NONE)) {
+                checkHorizontalCollisions(entity);
+            } else {
+                checkVerticalCollisions(entity);
             }
         }
     }
 
-    private boolean doTilesHaveCollisions(int tilenum1, int tilenum2) {
-        return (tileHandler.doesTileHaveCollision(tilenum1) || tileHandler.doesTileHaveCollision(tilenum2));
+    private void checkVerticalCollisions(Entity entity) {
+        int directionRow;
+
+        if (entity.getVerticalDirection().equals(VerticalDirectionType.UP)) {
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY() - entity.getSpeed());
+        } else {
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY() + entity.getSpeed());
+        }
+
+        checkTilesInVerticalDirection(directionRow, tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX()), entity);
+    }
+
+    private void checkHorizontalCollisions(Entity entity) {
+        int directionColumn;
+
+        if (entity.getHorizontalDirection().equals(HorizontalDirectionType.LEFT)) {
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX() - entity.getSpeed());
+        } else {
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX() + entity.getSpeed());
+        }
+
+        checkTilesInHorizontalDirection(directionColumn, tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY()), entity);
+    }
+
+    private boolean doTilesHaveCollisions(int tileInDirection1, int tileInDirection2) {
+        return (tileHandler.doesTileHaveCollision(tileInDirection1) || tileHandler.doesTileHaveCollision(tileInDirection2));
+    }
+
+    private void checkTilesInVerticalDirection(int verticalDirectionRow, int entityLeftCol, int entityRightCol, Entity entity) {
+        int tileInDirection1 = tileHandler.getTileNumber(verticalDirectionRow, entityLeftCol);
+        int tileInDirection2 = tileHandler.getTileNumber(verticalDirectionRow, entityRightCol);
+        checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
+    }
+
+    private void checkTilesInHorizontalDirection(int horizontalDirectionColumn, int entityTopRow, int entityBottomRow, Entity entity) {
+        int tileInDirection1 = tileHandler.getTileNumber(entityTopRow, horizontalDirectionColumn);
+        int tileInDirection2 = tileHandler.getTileNumber(entityBottomRow, horizontalDirectionColumn);
+        checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
+    }
+
+    private void checkCollisionsOfTilesInDirection(int tileInDirection1, int tileInDirection2, Entity entity) {
+        if (doTilesHaveCollisions(tileInDirection1, tileInDirection2)) {
+            entity.setCollisionsOn(true);
+        }
     }
 }
