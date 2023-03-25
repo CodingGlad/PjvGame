@@ -6,6 +6,7 @@ import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 import org.example.game.CollisionHandler;
 import org.example.game.KeyHandler;
+import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -26,7 +27,7 @@ public class Player extends Entity{
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(TILE_SIZE * 23, TILE_SIZE * 21, 4,
+        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4,
                 EntityType.HERO, SOLID_X, SOLID_Y, SOLID_WIDTH, SOLID_HEIGHT);
         this.keyHandler = keyHandler;
 

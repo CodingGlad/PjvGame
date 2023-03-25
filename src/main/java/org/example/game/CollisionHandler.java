@@ -28,26 +28,26 @@ public class CollisionHandler {
         int directionRow;
 
         if (entity.getVerticalDirection().equals(VerticalDirectionType.UP)) {
-            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY() - entity.getSpeed());
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getSolidTopWorldY() - entity.getSpeed());
         } else {
-            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY() + entity.getSpeed());
+            directionRow = tileHandler.getRowOrColumnOfCoordinate(entity.getSolidBottomWorldY() + entity.getSpeed());
         }
 
-        checkTilesInVerticalDirection(directionRow, tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX()),
-                tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX()), entity);
+        checkTilesInVerticalDirection(directionRow, tileHandler.getRowOrColumnOfCoordinate(entity.getSolidLeftWorldX()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidRightWorldX()), entity);
     }
 
     private void checkHorizontalCollisions(Entity entity) {
         int directionColumn;
 
         if (entity.getHorizontalDirection().equals(HorizontalDirectionType.LEFT)) {
-            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getLeftWorldX() - entity.getSpeed());
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getSolidLeftWorldX() - entity.getSpeed());
         } else {
-            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getRightWorldX() + entity.getSpeed());
+            directionColumn = tileHandler.getRowOrColumnOfCoordinate(entity.getSolidRightWorldX() + entity.getSpeed());
         }
 
-        checkTilesInHorizontalDirection(directionColumn, tileHandler.getRowOrColumnOfCoordinate(entity.getTopWorldY()),
-                tileHandler.getRowOrColumnOfCoordinate(entity.getBottomWorldY()), entity);
+        checkTilesInHorizontalDirection(directionColumn, tileHandler.getRowOrColumnOfCoordinate(entity.getSolidTopWorldY()),
+                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidBottomWorldY()), entity);
     }
 
     private boolean doTilesHaveCollisions(int tileInDirection1, int tileInDirection2) {
