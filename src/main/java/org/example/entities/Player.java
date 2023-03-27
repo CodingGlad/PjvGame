@@ -6,7 +6,6 @@ import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 import org.example.game.CollisionHandler;
 import org.example.game.KeyHandler;
-import org.example.gameobjects.GameObject;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
@@ -54,7 +53,7 @@ public class Player extends Entity{
 
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
-        GameObject ref = collisionHandler.checkObject(this);
+        collisionHandler.checkObject(this);
 
 
 

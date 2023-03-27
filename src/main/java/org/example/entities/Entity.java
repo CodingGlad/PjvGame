@@ -42,6 +42,8 @@ public abstract class Entity {
         this.spriteCounter = 0;
         this.collisionsOn = false;
         this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
+        this.defaultSolidX = solidAreaX;
+        this.defaultSolidY = solidAreaY;
         getAllImages();
     }
 
