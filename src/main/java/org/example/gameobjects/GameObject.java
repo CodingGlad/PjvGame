@@ -71,4 +71,8 @@ public abstract class GameObject {
 
         throw new IllegalStateException("Object type not found in enum> " + this.toString());
     }
+
+    public ObjectType getObjectType() {
+        return objectType;
+    }
 }

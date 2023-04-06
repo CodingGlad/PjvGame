@@ -3,7 +3,10 @@ package org.example.game;
 import org.example.entities.Entity;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
+import org.example.gameobjects.Chest;
 import org.example.gameobjects.GameObject;
+import org.example.gameobjects.types.ChestStateType;
+import org.example.gameobjects.types.ObjectType;
 import org.example.tiles.TileHandler;
 
 import java.awt.*;
@@ -81,7 +84,6 @@ public class CollisionHandler {
         }
     }
 
-    //TODO iterator over objects and remove those, that have intersecting solid areas, video
     public void checkObject(Entity entity) {
         Iterator<GameObject> objectsIter = objects.iterator();
 
@@ -119,8 +121,26 @@ public class CollisionHandler {
         return false;
     }
 
+    //TODO mby refactor fr object methods (different service?)
     public boolean canEntityPickUpThisObject(Entity entity, GameObject object) {
-        return entity.getEntityType().equals(EntityType.HERO);
+        if (entity.getEntityType().equals(EntityType.HERO)) {
+            if (object.getObjectType().equals(ObjectType.KEY)) {
+                return true;
+            }
+
+            if (object.getObjectType().equals(ObjectType.CHEST)) {
+                if (((Chest) object).getStateType().equals(ChestStateType.CLOSED)) {
+                    ((Chest) object).openChest();
+                }
+                return false; // TODO handle how to work with its different states and it being an object
+            }
+        }
+
+        return false;
+    }
+
+    public void test(Chest bitch) {
+        System.out.println("kkt");
     }
 
     public void shiftSolidArea(Rectangle entitySolidArea, Entity entity) {
