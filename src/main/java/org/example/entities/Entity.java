@@ -27,8 +27,6 @@ public abstract class Entity {
     private int spriteCounter;
     protected Rectangle solidArea;
     private boolean collisionsOn;
-    private int defaultSolidX;
-    private int defaultSolidY;
 
     protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
@@ -42,8 +40,6 @@ public abstract class Entity {
         this.spriteCounter = 0;
         this.collisionsOn = false;
         this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
-        this.defaultSolidX = solidAreaX;
-        this.defaultSolidY = solidAreaY;
         getAllImages();
     }
 
@@ -169,14 +165,6 @@ public abstract class Entity {
         return solidArea;
     }
 
-    public void setSolidAreaX(int solidAreaX) {
-        solidArea.x = solidAreaX;
-    }
-
-    public void setSolidAreaY(int solidAreaY) {
-        solidArea.y = solidAreaY;
-    }
-
     public void move() {
         switch (getVerticalDirection()) {
             case UP -> setWorldY(getWorldY() - getSpeed());
@@ -188,11 +176,6 @@ public abstract class Entity {
                 }
             }
         }
-    }
-
-    public void setDefaultSolidArea() {
-        solidArea.x = defaultSolidX;
-        solidArea.y = defaultSolidY;
     }
 
     public EntityType getEntityType() {

@@ -36,7 +36,6 @@ public abstract class GameObject {
         }
     }
 
-    //TODO same as tilehandler, mby own class?????
     private boolean shouldTileBeRendered(int worldX, int worldY, Player player) {
         return isCoordinateWithinViewX(worldX, player) && isCoordinateWithinViewY(worldY, player);
     }
@@ -55,33 +54,12 @@ public abstract class GameObject {
         return solidArea;
     }
 
-    public void setSolidAreaX(int solidAreaX) {
-        solidArea.x = solidAreaX;
-    }
-
-    public void setSolidAreaY(int solidAreaY) {
-        solidArea.y = solidAreaY;
-    }
-
     public int getWorldX() {
         return worldCoordinates.getWorldX();
     }
 
-    public void setWorldX(int worldX) {
-        worldCoordinates.setWorldX(worldX);
-    }
-
     public int getWorldY() {
         return worldCoordinates.getWorldY();
-    }
-
-    public void setWorldY(int worldY) {
-        worldCoordinates.setWorldY(worldY);
-    }
-
-    public void setDefaultSolidArea() {
-        solidArea.x = DEFAULT_SOLID_X;
-        solidArea.y = DEFAULT_SOLID_Y;
     }
 
     public boolean hasCollisions() {

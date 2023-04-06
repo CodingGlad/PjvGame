@@ -6,6 +6,7 @@ import org.example.entities.types.EntityType;
 import org.example.gameobjects.GameObject;
 import org.example.tiles.TileHandler;
 
+import java.awt.*;
 import java.util.Iterator;
 import java.util.List;
 
@@ -87,37 +88,49 @@ public class CollisionHandler {
         while (objectsIter.hasNext()) {
             GameObject item = objectsIter.next();
 
-            entity.setSolidAreaX(entity.getWorldX() + entity.getSolidArea().x);
-            entity.setSolidAreaY(entity.getWorldY() + entity.getSolidArea().y);
+            Rectangle entitySolidAreaWorld = new Rectangle(
+                    entity.getSolidArea().x + entity.getWorldX(),
+                    entity.getSolidArea().y + entity.getWorldY(),
+                    entity.getSolidArea().width, entity.getSolidArea().height);
 
-            item.setSolidAreaX(item.getWorldX() + item.getSolidArea().x);
-            item.setSolidAreaY(item.getWorldY() + item.getSolidArea().y);
+            Rectangle itemSolidAreaWorld = new Rectangle(
+                    item.getSolidArea().x + item.getWorldX(),
+                    item.getSolidArea().y + item.getWorldY(),
+                    item.getSolidArea().width, item.getSolidArea().height);
 
-            shiftSolidArea(entity);
+            shiftSolidArea(entitySolidAreaWorld, entity);
 
-            if (entity.getSolidArea().intersects(item.getSolidArea())) {
-                if (item.hasCollisions()) {
-                    entity.setCollisionsOn(true);
-                }
-                if (entity.getEntityType().equals(EntityType.HERO)) {
-                    objectsIter.remove();
-                    return;
-                }
+            if (handleIntersection(entitySolidAreaWorld, entity, itemSolidAreaWorld, item)) {
+                objectsIter.remove();
+                return;
             }
-
-            entity.setDefaultSolidArea();
-            item.setDefaultSolidArea();
         }
     }
 
-    public void shiftSolidArea(Entity entity) {
+    public boolean handleIntersection(Rectangle entitySolidAreaWorld, Entity entity, Rectangle itemSolidAreaWorld, GameObject item) {
+        if (entitySolidAreaWorld.intersects(itemSolidAreaWorld)) {
+            if (item.hasCollisions()) {
+                entity.setCollisionsOn(true);
+            }
+
+            return canEntityPickUpThisObject(entity, item);
+        }
+
+        return false;
+    }
+
+    public boolean canEntityPickUpThisObject(Entity entity, GameObject object) {
+        return entity.getEntityType().equals(EntityType.HERO);
+    }
+
+    public void shiftSolidArea(Rectangle entitySolidArea, Entity entity) {
         switch (entity.getVerticalDirection()) {
-            case UP ->  entity.setSolidAreaY(entity.getSolidArea().y - entity.getSpeed());
-            case DOWN -> entity.setSolidAreaY(entity.getSolidArea().y + entity.getSpeed());
+            case UP ->  entitySolidArea.y = (entitySolidArea.y - entity.getSpeed());
+            case DOWN -> entitySolidArea.y = (entitySolidArea.y + entity.getSpeed());
             case NONE -> {
                 switch (entity.getHorizontalDirection()) {
-                    case LEFT -> entity.setSolidAreaX(entity.getSolidArea().x - entity.getSpeed());
-                    case RIGHT -> entity.setSolidAreaX(entity.getSolidArea().x + entity.getSpeed());
+                    case LEFT -> entitySolidArea.x = (entitySolidArea.x - entity.getSpeed());
+                    case RIGHT -> entitySolidArea.x = (entitySolidArea.x + entity.getSpeed());
                 }
             }
         }
