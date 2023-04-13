@@ -7,7 +7,6 @@ import org.example.gameobjects.Chest;
 import org.example.gameobjects.GameObject;
 import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ObjectType;
-import org.example.tiles.TileHandler;
 
 import java.awt.*;
 import java.util.Iterator;

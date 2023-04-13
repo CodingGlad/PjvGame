@@ -2,7 +2,6 @@ package org.example.game;
 
 import org.example.entities.Player;
 import org.example.gameobjects.GameObject;
-import org.example.tiles.TileHandler;
 
 import javax.swing.*;
 import java.awt.Dimension;
