@@ -52,6 +52,9 @@ public class PanelHandler extends JPanel implements Runnable{
         gameThread.start();
     }
 
+    /**
+     * Code from RyiShow, zdroj
+     */
     @Override
     public void run() {
         double drawInterval = (double)NANOS_IN_SECONDS/FPS;
@@ -83,14 +86,12 @@ public class PanelHandler extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        //TILES
         tileHandler.draw(g2);
 
         for (GameObject object: displayedObjects) {
             object.draw(g2, player);
         }
 
-        //PLAYER
         player.draw(g2);
 
         g2.dispose();

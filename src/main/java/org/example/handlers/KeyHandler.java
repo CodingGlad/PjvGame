@@ -3,9 +3,13 @@ package org.example.handlers;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/**
+ * From internet, bookmark
+ */
+
 public class KeyHandler implements KeyListener {
 
-    private boolean  upPressed;
+    private boolean upPressed;
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;

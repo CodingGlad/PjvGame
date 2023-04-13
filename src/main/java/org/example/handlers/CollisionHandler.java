@@ -138,10 +138,6 @@ public class CollisionHandler {
         return false;
     }
 
-    public void test(Chest bitch) {
-        System.out.println("kkt");
-    }
-
     public void shiftSolidArea(Rectangle entitySolidArea, Entity entity) {
         switch (entity.getVerticalDirection()) {
             case UP ->  entitySolidArea.y = (entitySolidArea.y - entity.getSpeed());
