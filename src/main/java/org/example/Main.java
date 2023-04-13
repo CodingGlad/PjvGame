@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.game.GamePanel;
+import org.example.handlers.PanelHandler;
 
 import javax.swing.*;
 
@@ -11,7 +11,7 @@ public class Main {
         window.setResizable(false);
         window.setTitle("Wodecki Adventure Game");
 
-        GamePanel panel = new GamePanel();
+        PanelHandler panel = new PanelHandler();
         window.add(panel);
 
         window.pack();

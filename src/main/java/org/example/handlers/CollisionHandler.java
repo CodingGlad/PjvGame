@@ -1,4 +1,4 @@
-package org.example.game;
+package org.example.handlers;
 
 import org.example.entities.Entity;
 import org.example.entities.types.ActivityType;

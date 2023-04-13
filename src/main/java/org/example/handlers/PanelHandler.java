@@ -1,4 +1,4 @@
-package org.example.game;
+package org.example.handlers;
 
 import org.example.entities.Player;
 import org.example.gameobjects.GameObject;
@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //TODO handle public constants
-public class GamePanel extends JPanel implements Runnable{
+public class PanelHandler extends JPanel implements Runnable{
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
 
@@ -31,15 +31,15 @@ public class GamePanel extends JPanel implements Runnable{
     public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
     public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
-    KeyHandler keyHandler = new KeyHandler();
-    Thread gameThread;
-    Player player = new Player(keyHandler);
-    TileHandler tileHandler = new TileHandler(player);
-    ObjectHandler objectHandler = new ObjectHandler();
-    List<GameObject> displayedObjects = new LinkedList<>();
-    CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
+    private KeyHandler keyHandler = new KeyHandler();
+    private Thread gameThread;
+    private Player player = new Player(keyHandler);
+    private TileHandler tileHandler = new TileHandler(player);
+    private GameObjectHandler objectHandler = new GameObjectHandler();
+    private List<GameObject> displayedObjects = new LinkedList<>();
+    private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
 
-    public GamePanel() {
+    public PanelHandler() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
