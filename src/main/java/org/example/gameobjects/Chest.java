@@ -19,13 +19,13 @@ public class Chest extends GameObject{
         if (objectType.equals(ObjectType.CHEST)) {
             this.chestType = chestType;
             this.stateType = ChestStateType.CLOSED;
-            setChestClosedImage();
+            upsertChestClosedImage();
         } else {
             throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a chest.");
         }
     }
 
-    private void setChestClosedImage() {
+    private void upsertChestClosedImage() {
         try {
             setStaticImage(ImageIO.read(Objects.requireNonNull(
                     getClass().getResourceAsStream("/sprites/objects/chest/" + getSpriteName() + ".png"))));
@@ -36,5 +36,19 @@ public class Chest extends GameObject{
 
     private String getSpriteName() {
         return chestType.getName() + "-" + stateType.getState();
+    }
+
+    public ChestType getChestType() {
+        return chestType;
+    }
+
+    public ChestStateType getStateType() {
+        return stateType;
+    }
+
+    public void openChest() {
+        stateType = ChestStateType.OPENED;
+
+        upsertChestClosedImage();
     }
 }

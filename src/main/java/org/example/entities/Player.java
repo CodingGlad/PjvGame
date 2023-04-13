@@ -15,10 +15,10 @@ import static org.example.game.GamePanel.*;
 
 public class Player extends Entity{
 
-    private static final int SOLID_X = 8;
-    private static final int SOLID_Y = 25;
-    private static final int SOLID_WIDTH = 12;
-    private static final int SOLID_HEIGHT = 4;
+    private static final int DEFAULT_SOLID_X = 8;
+    private static final int DEFAULT_SOLID_Y = 25;
+    private static final int DEFAULT_SOLID_WIDTH = 12;
+    private static final int DEFAULT_SOLID_HEIGHT = 4;
 
     private KeyHandler keyHandler;
 
@@ -28,13 +28,14 @@ public class Player extends Entity{
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
         super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4,
-                EntityType.HERO, SOLID_X, SOLID_Y, SOLID_WIDTH, SOLID_HEIGHT);
+                EntityType.HERO, DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
         this.keyHandler = keyHandler;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
     }
 
+    //TODO refactor
     public void update(CollisionHandler collisionHandler) {
         if (keyHandler.isUpPressed()) {
             setVerticalDirection(VerticalDirectionType.UP);
@@ -52,6 +53,9 @@ public class Player extends Entity{
 
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
+        collisionHandler.checkObject(this);
+
+
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();
@@ -71,18 +75,5 @@ public class Player extends Entity{
 
     public int getScreenY() {
         return screenY;
-    }
-
-    private void move() {
-        switch (getVerticalDirection()) {
-            case UP -> setWorldY(getWorldY() - getSpeed());
-            case DOWN -> setWorldY(getWorldY() + getSpeed());
-            case NONE -> {
-                switch (getHorizontalDirection()) {
-                    case LEFT -> setWorldX(getWorldX() - getSpeed());
-                    case RIGHT -> setWorldX(getWorldX() + getSpeed());
-                }
-            }
-        }
     }
 }

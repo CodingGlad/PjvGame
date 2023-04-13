@@ -1,6 +1,7 @@
-package org.example.tiles;
+package org.example.game;
 
 import org.example.entities.Player;
+import org.example.tiles.Tile;
 import org.example.tiles.types.TileType;
 
 import javax.imageio.ImageIO;
