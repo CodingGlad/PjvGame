@@ -1,4 +1,4 @@
-package org.example.game;
+package org.example.handlers;
 
 import org.example.entities.Entity;
 import org.example.entities.types.ActivityType;
@@ -136,10 +136,6 @@ public class CollisionHandler {
         }
 
         return false;
-    }
-
-    public void test(Chest bitch) {
-        System.out.println("kkt");
     }
 
     public void shiftSolidArea(Rectangle entitySolidArea, Entity entity) {

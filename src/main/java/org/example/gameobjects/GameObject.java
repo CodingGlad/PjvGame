@@ -7,7 +7,7 @@ import org.example.utils.WorldCoordinates;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static org.example.game.GamePanel.TILE_SIZE;
+import static org.example.handlers.PanelHandler.TILE_SIZE;
 
 public abstract class GameObject {
     private static final int DEFAULT_SOLID_X = 0;

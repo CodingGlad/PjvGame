@@ -1,4 +1,4 @@
-package org.example.game;
+package org.example.handlers;
 
 import org.example.entities.Player;
 import org.example.tiles.Tile;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.example.game.GamePanel.*;
+import static org.example.handlers.PanelHandler.*;
 
 public class TileHandler {
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";

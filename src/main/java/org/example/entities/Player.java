@@ -4,14 +4,14 @@ import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
-import org.example.game.CollisionHandler;
-import org.example.game.KeyHandler;
+import org.example.handlers.CollisionHandler;
+import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static org.example.game.GamePanel.*;
+import static org.example.handlers.PanelHandler.*;
 
 public class Player extends Entity{
 
