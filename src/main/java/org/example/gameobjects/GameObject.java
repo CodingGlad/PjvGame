@@ -75,4 +75,8 @@ public abstract class GameObject {
     public ObjectType getObjectType() {
         return objectType;
     }
+
+    public BufferedImage getStaticImage() {
+        return staticImage;
+    }
 }

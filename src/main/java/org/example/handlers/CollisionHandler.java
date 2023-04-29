@@ -1,6 +1,7 @@
 package org.example.handlers;
 
 import org.example.entities.Entity;
+import org.example.entities.Player;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.gameobjects.Chest;
@@ -102,6 +103,10 @@ public class CollisionHandler {
             shiftSolidArea(entitySolidAreaWorld, entity);
 
             if (handleIntersection(entitySolidAreaWorld, entity, itemSolidAreaWorld, item)) {
+                if (entity.getEntityType().equals(EntityType.HERO) && item.getObjectType().equals(ObjectType.KEY)) {
+                    ((Player)entity).incrementKeys();
+                }
+
                 objectsIter.remove();
                 return;
             }
@@ -125,11 +130,11 @@ public class CollisionHandler {
         if (entity.getEntityType().equals(EntityType.HERO)) {
             if (object.getObjectType().equals(ObjectType.KEY)) {
                 return true;
-            }
-
-            if (object.getObjectType().equals(ObjectType.CHEST)) {
-                if (((Chest) object).getStateType().equals(ChestStateType.CLOSED)) {
+            } else if (object.getObjectType().equals(ObjectType.CHEST)) {
+                if (((Chest) object).getStateType().equals(ChestStateType.CLOSED) &&
+                        ((Player) entity).getNumberOfKeys() > 0) {
                     ((Chest) object).openChest();
+                    ((Player) entity).decrementKeys();
                 }
                 return false; // TODO handle how to work with its different states and it being an object
             }
