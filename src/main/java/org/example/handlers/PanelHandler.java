@@ -39,6 +39,8 @@ public class PanelHandler extends JPanel implements Runnable{
     private List<GameObject> displayedObjects = new LinkedList<>();
     private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
 
+    private UserInterfaceHandler userInterface = new UserInterfaceHandler(player);
+
     public PanelHandler() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -93,6 +95,8 @@ public class PanelHandler extends JPanel implements Runnable{
         }
 
         player.draw(g2);
+
+        userInterface.draw(g2);
 
         g2.dispose();
     }

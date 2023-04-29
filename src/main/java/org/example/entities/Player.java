@@ -24,6 +24,7 @@ public class Player extends Entity{
 
     private final int screenX;
     private final int screenY;
+    private int numberOfKeys;
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
@@ -75,5 +76,17 @@ public class Player extends Entity{
 
     public int getScreenY() {
         return screenY;
+    }
+
+    public int getNumberOfKeys() {
+        return numberOfKeys;
+    }
+
+    public void incrementKeys() {
+        ++numberOfKeys;
+    }
+
+    public void decrementKeys() {
+        --numberOfKeys;
     }
 }
