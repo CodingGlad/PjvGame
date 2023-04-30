@@ -14,6 +14,12 @@ public class KeyHandler implements KeyListener {
     private boolean leftPressed;
     private boolean rightPressed;
 
+    private GameStateHandler gameState;
+
+    public KeyHandler(GameStateHandler gameState) {
+        this.gameState = gameState;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -34,6 +40,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D) {
             rightPressed = true;
+        }
+        if (code == KeyEvent.VK_P) {
+            gameState.switchPause();
         }
     }
 
