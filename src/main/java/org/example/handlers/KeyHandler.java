@@ -2,6 +2,7 @@ package org.example.handlers;
 
 import org.example.handlers.types.GameStateType;
 import org.example.handlers.types.MenuSelectionType;
+import org.example.handlers.types.PauseSelectionType;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -34,16 +35,29 @@ public class KeyHandler implements KeyListener {
 
         if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
             if (code == KeyEvent.VK_1) {
-                gameState.setCursorState(MenuSelectionType.NEW_GAME);
+                gameState.setMenuCursorState(MenuSelectionType.NEW_GAME);
             }
             if (code == KeyEvent.VK_2) {
-                gameState.setCursorState(MenuSelectionType.LOAD_GAME);
+                gameState.setMenuCursorState(MenuSelectionType.LOAD_GAME);
             }
             if (code == KeyEvent.VK_3) {
-                gameState.setCursorState(MenuSelectionType.QUIT);
+                gameState.setMenuCursorState(MenuSelectionType.QUIT);
             }
             if (code == KeyEvent.VK_SPACE) {
                 gameState.selectMenuOption();
+            }
+        } else if (gameState.getStateType().equals(GameStateType.PAUSE)) {
+            if (code == KeyEvent.VK_1) {
+                gameState.setPauseCursorState(PauseSelectionType.RESUME);
+            }
+            if (code == KeyEvent.VK_2) {
+                gameState.setPauseCursorState(PauseSelectionType.SAVE);
+            }
+            if (code == KeyEvent.VK_3) {
+                gameState.setPauseCursorState(PauseSelectionType.QUIT);
+            }
+            if (code == KeyEvent.VK_SPACE) {
+                gameState.selectPauseOption();
             }
         } else {
             if (code == KeyEvent.VK_W) {

@@ -6,6 +6,7 @@ import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.handlers.types.MenuSelectionType;
 import org.example.handlers.types.GameStateType;
+import org.example.handlers.types.PauseSelectionType;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
@@ -38,9 +39,15 @@ public class UserInterfaceHandler {
             g2.drawImage(keyImage, TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, null);
             g2.drawString("x " + player.getNumberOfKeys(), 50, 40);
         } else if (gameState.getStateType().equals(GameStateType.PAUSE)) {
-            g2.drawString("PAUSED",
-                    SCREEN_WIDTH/2 - ((int)g2.getFontMetrics().getStringBounds("PAUSED", g2).getWidth()),
-                    SCREEN_HEIGHT/2);
+            g2.setFont(menuTitleFont);
+            g2.drawString("PAUSED", 50, 80);
+            g2.setFont(menuSelectionFont);
+            g2.drawString("1-RESUME", PauseSelectionType.RESUME.getX(), PauseSelectionType.RESUME.getY());
+            g2.drawString("2-SAVE", PauseSelectionType.SAVE.getX(), PauseSelectionType.SAVE.getY());
+            g2.drawString("3-QUIT", PauseSelectionType.QUIT.getX(), PauseSelectionType.QUIT.getY());
+            if (Objects.nonNull(gameState.getPauseCursorState())) {
+                g2.drawString(">", 50, gameState.getPauseCursorState().getY());
+            }
         } else if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
             g2.setFont(menuTitleFont);
             g2.setColor(Color.white);
@@ -49,8 +56,8 @@ public class UserInterfaceHandler {
             g2.drawString("1-NEW GAME", MenuSelectionType.NEW_GAME.getX(), MenuSelectionType.NEW_GAME.getY());
             g2.drawString("2-LOAD GAME", MenuSelectionType.LOAD_GAME.getX(), MenuSelectionType.LOAD_GAME.getY());
             g2.drawString("3-QUIT", MenuSelectionType.QUIT.getX(), MenuSelectionType.QUIT.getY());
-            if (Objects.nonNull(gameState.getCursorState())) {
-                g2.drawString(">", 50, gameState.getCursorState().getY());
+            if (Objects.nonNull(gameState.getMenuCursorState())) {
+                g2.drawString(">", 50, gameState.getMenuCursorState().getY());
             }
         }
     }
