@@ -2,6 +2,7 @@ package org.example.handlers;
 
 import org.example.entities.Player;
 import org.example.gameobjects.GameObject;
+import org.example.handlers.types.GameStateType;
 
 import javax.swing.*;
 import java.awt.Dimension;
@@ -31,14 +32,16 @@ public class PanelHandler extends JPanel implements Runnable{
     public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
     public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
-    private KeyHandler keyHandler = new KeyHandler();
+
+    //GAMESTATE REFACTOR TODO
+    private GameStateHandler gameState = new GameStateHandler();
+    private KeyHandler keyHandler = new KeyHandler(gameState);
     private Thread gameThread;
     private Player player = new Player(keyHandler);
     private TileHandler tileHandler = new TileHandler(player);
     private GameObjectHandler objectHandler = new GameObjectHandler();
     private List<GameObject> displayedObjects = new LinkedList<>();
     private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
-
     private UserInterfaceHandler userInterface = new UserInterfaceHandler(player);
 
     public PanelHandler() {
@@ -80,7 +83,9 @@ public class PanelHandler extends JPanel implements Runnable{
     }
 
     public void update() {
-        player.update(collisionHandler);
+        if (gameState.getStateType().equals(GameStateType.RUNNING)) {
+            player.update(collisionHandler);
+        }
     }
 
     @Override
@@ -88,15 +93,19 @@ public class PanelHandler extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        tileHandler.draw(g2);
+        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
+            userInterface.drawGame(g2, gameState);
+        } else {
+            tileHandler.draw(g2);
 
-        for (GameObject object: displayedObjects) {
-            object.draw(g2, player);
+            for (GameObject object: displayedObjects) {
+                object.draw(g2, player);
+            }
+
+            player.draw(g2);
+
+            userInterface.drawGame(g2, gameState);
         }
-
-        player.draw(g2);
-
-        userInterface.draw(g2);
 
         g2.dispose();
     }

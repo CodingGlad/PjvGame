@@ -1,5 +1,8 @@
 package org.example.handlers;
 
+import org.example.handlers.types.GameStateType;
+import org.example.handlers.types.MenuSelectionType;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -29,20 +32,35 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
-        }
-        if (code == KeyEvent.VK_P) {
-            gameState.switchPause();
+        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
+            if (code == KeyEvent.VK_1) {
+                gameState.setCursorState(MenuSelectionType.NEW_GAME);
+            }
+            if (code == KeyEvent.VK_2) {
+                gameState.setCursorState(MenuSelectionType.LOAD_GAME);
+            }
+            if (code == KeyEvent.VK_3) {
+                gameState.setCursorState(MenuSelectionType.QUIT);
+            }
+            if (code == KeyEvent.VK_SPACE) {
+                gameState.selectMenuOption();
+            }
+        } else {
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
+            }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_P) {
+                gameState.switchPause();
+            }
         }
     }
 
