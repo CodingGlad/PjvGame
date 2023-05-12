@@ -13,7 +13,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import static org.example.handlers.PanelHandler.*;
+import static org.example.handlers.WindowHandler.*;
 
 public class UserInterfaceHandler {
 

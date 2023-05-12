@@ -11,7 +11,7 @@ import org.example.utils.WorldCoordinates;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static org.example.handlers.PanelHandler.*;
+import static org.example.handlers.WindowHandler.*;
 
 public class Player extends Entity{
 

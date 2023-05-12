@@ -10,7 +10,7 @@ import org.example.utils.WorldCoordinates;
 
 import java.util.List;
 
-import static org.example.handlers.PanelHandler.TILE_SIZE;
+import static org.example.handlers.WindowHandler.TILE_SIZE;
 
 public class GameObjectHandler {
     public void setObjects(List<GameObject> objects) {

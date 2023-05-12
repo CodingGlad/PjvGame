@@ -13,9 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 //TODO handle public constants
-public class PanelHandler extends JPanel implements Runnable{
-    private static final long NANOS_IN_SECONDS = 1000000000L;
-    private static final int FPS = 60;
+public class WindowHandler extends JPanel{
 
     public static final int ORIGINAL_TILE_SIZE = 16;
     public static final int SCALE_FACTOR = 2;
@@ -34,58 +32,17 @@ public class PanelHandler extends JPanel implements Runnable{
 
 
     //GAMESTATE REFACTOR TODO
-    private GameStateHandler gameState = new GameStateHandler();
-    private KeyHandler keyHandler = new KeyHandler(gameState);
-    private Thread gameThread;
     private Player player = new Player(keyHandler);
     private TileHandler tileHandler = new TileHandler(player);
-    private GameObjectHandler objectHandler = new GameObjectHandler();
-    private List<GameObject> displayedObjects = new LinkedList<>();
     private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
     private UserInterfaceHandler userInterface = new UserInterfaceHandler(player);
 
-    public PanelHandler() {
+    public WindowHandler() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
-    }
-
-    public void startGameThread() {
-        gameThread = new Thread(this);
-        gameThread.start();
-    }
-
-    /**
-     * Code from RyiShow, zdroj
-     */
-    @Override
-    public void run() {
-        double drawInterval = (double)NANOS_IN_SECONDS/FPS;
-        double delta = 0;
-        long lastTime = System.nanoTime();
-        long currentTime;
-
-        while (gameThread != null) {
-            currentTime = System.nanoTime();
-
-            delta += (currentTime - lastTime) / drawInterval;
-
-            lastTime = currentTime;
-
-            if (delta >= 1) {
-                update();
-                repaint();
-                delta--;
-            }
-        }
-    }
-
-    public void update() {
-        if (gameState.getStateType().equals(GameStateType.RUNNING)) {
-            player.update(collisionHandler);
-        }
     }
 
     @Override
@@ -110,7 +67,5 @@ public class PanelHandler extends JPanel implements Runnable{
         g2.dispose();
     }
 
-    public void setupGame() {
-        objectHandler.setObjects(displayedObjects);
-    }
+
 }

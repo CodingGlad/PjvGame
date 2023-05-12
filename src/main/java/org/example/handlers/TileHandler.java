@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.example.handlers.PanelHandler.*;
+import static org.example.handlers.WindowHandler.*;
 
 public class TileHandler {
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";
