@@ -20,11 +20,9 @@ public class UserInterfaceHandler {
     private Font gameFont;
     private Font menuTitleFont;
     private Font menuSelectionFont;
-    private final Player player;
     private final BufferedImage keyImage;
 
-    public UserInterfaceHandler(Player player) {
-        this.player = player;
+    public UserInterfaceHandler() {
         this.gameFont = new Font("Arial", Font.PLAIN, 20);
         this.menuTitleFont = new Font("Arial", Font.BOLD, 40);
         this.menuSelectionFont = new Font("Arial", Font.BOLD, 30);
@@ -32,6 +30,7 @@ public class UserInterfaceHandler {
         this.keyImage = (new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(0, 0))).getStaticImage();
     }
 
+    //TODO replace number of keys for player
     public void drawGame(Graphics2D g2, GameStateHandler gameState) {
         if (gameState.getStateType().equals(GameStateType.RUNNING)) {
             g2.setFont(gameFont);

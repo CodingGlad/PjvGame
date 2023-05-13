@@ -30,14 +30,11 @@ public class WindowHandler extends JPanel{
     public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
     public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
+    private UserInterfaceHandler userInterface;
 
-    //GAMESTATE REFACTOR TODO
-    private Player player = new Player(keyHandler);
-    private TileHandler tileHandler = new TileHandler(player);
-    private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
-    private UserInterfaceHandler userInterface = new UserInterfaceHandler(player);
+    public WindowHandler(KeyHandler keyHandler) {
+        userInterface = new UserInterfaceHandler();
 
-    public WindowHandler() {
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
@@ -50,19 +47,19 @@ public class WindowHandler extends JPanel{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
-            userInterface.drawGame(g2, gameState);
-        } else {
-            tileHandler.draw(g2);
-
-            for (GameObject object: displayedObjects) {
-                object.draw(g2, player);
-            }
-
-            player.draw(g2);
-
-            userInterface.drawGame(g2, gameState);
-        }
+//        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
+//            userInterface.drawGame(g2, gameState);
+//        } else {
+//            tileHandler.draw(g2);
+//
+//            for (GameObject object: displayedObjects) {
+//                object.draw(g2, player);
+//            }
+//
+//            player.draw(g2);
+//
+//            userInterface.drawGame(g2, gameState);
+//        }
 
         g2.dispose();
     }

@@ -22,10 +22,8 @@ public class TileHandler {
 
     private Map<Integer, Tile> tileSprites;
     private int[][] mapTileNum;
-    private Player player;
 
-    public TileHandler(Player player) {
-        this.player = player;
+    public TileHandler() {
         tileSprites = new HashMap<>();
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 
@@ -47,6 +45,7 @@ public class TileHandler {
         }
     }
 
+    //TODO replace player coords somehow during rendering
     public void draw(Graphics2D g2) {
         for (int i = 0; i < mapTileNum.length; ++i) {
             for (int j = 0; j < mapTileNum[i].length; ++j) {

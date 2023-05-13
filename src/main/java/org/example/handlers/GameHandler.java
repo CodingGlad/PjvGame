@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import org.example.entities.Player;
 import org.example.gameobjects.GameObject;
 import org.example.handlers.types.GameStateType;
 
@@ -12,20 +13,22 @@ public class GameHandler implements Runnable{
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
     private Thread gameThread;
-    private WindowHandler windowHandler;
-    private GameStateHandler gameState;
-    private KeyHandler keyHandler;
-
-
-    private GameObjectHandler objectHandler;
-    private List<GameObject> displayedObjects;
+    private final WindowHandler windowHandler;
+    private final GameStateHandler gameState;
+    private final KeyHandler keyHandler;
+    private final GameObjectHandler objectHandler;
+    private final TileHandler tileHandler;
+    private final Player player;
+    private final CollisionHandler collisionHandler;
 
     public GameHandler() {
         gameState = new GameStateHandler();
-        windowHandler = new WindowHandler();
         keyHandler = new KeyHandler(gameState); //TODO keyHandler switches the state to "saving" or something and save happens?
+        windowHandler = new WindowHandler(keyHandler);
         objectHandler = new GameObjectHandler();
-        displayedObjects = new LinkedList<>(); //TODO get this into the object handler so its in one place
+        tileHandler = new TileHandler();
+        player = new Player(keyHandler); //TODO is keyhandler useful here?
+        collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
 
     }
 
@@ -43,7 +46,7 @@ public class GameHandler implements Runnable{
     }
 
     public void setupGame() {
-        objectHandler.setObjects(displayedObjects);
+        objectHandler.setDefaultObjects();
     }
 
     public void startGameThread() {
