@@ -33,48 +33,65 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
-            if (code == KeyEvent.VK_1) {
-                gameState.setMenuCursorState(MenuSelectionType.NEW_GAME);
-            }
-            if (code == KeyEvent.VK_2) {
-                gameState.setMenuCursorState(MenuSelectionType.LOAD_GAME);
-            }
-            if (code == KeyEvent.VK_3) {
-                gameState.setMenuCursorState(MenuSelectionType.QUIT);
-            }
-            if (code == KeyEvent.VK_SPACE) {
-                gameState.selectMenuOption();
-            }
-        } else if (gameState.getStateType().equals(GameStateType.PAUSE)) {
-            if (code == KeyEvent.VK_1) {
-                gameState.setPauseCursorState(PauseSelectionType.RESUME);
-            }
-            if (code == KeyEvent.VK_2) {
-                gameState.setPauseCursorState(PauseSelectionType.SAVE);
-            }
-            if (code == KeyEvent.VK_3) {
-                gameState.setPauseCursorState(PauseSelectionType.QUIT);
-            }
-            if (code == KeyEvent.VK_SPACE) {
-                gameState.selectPauseOption();
-            }
-        } else {
-            if (code == KeyEvent.VK_W) {
-                upPressed = true;
-            }
-            if (code == KeyEvent.VK_S) {
-                downPressed = true;
-            }
-            if (code == KeyEvent.VK_A) {
-                leftPressed = true;
-            }
-            if (code == KeyEvent.VK_D) {
-                rightPressed = true;
-            }
-            if (code == KeyEvent.VK_P) {
-                gameState.switchPause();
-            }
+        switch (gameState.getStateType()) {
+            case MAIN_MENU -> menuKeys(code);
+            case PAUSE -> pausedKeys(code);
+            case RUNNING -> runningKeys(code);
+            case FIGHTING -> fightingKeys(code);
+        }
+    }
+
+    private void menuKeys(int code) {
+        if (code == KeyEvent.VK_1) {
+            gameState.setMenuCursorState(MenuSelectionType.NEW_GAME);
+        }
+        if (code == KeyEvent.VK_2) {
+            gameState.setMenuCursorState(MenuSelectionType.LOAD_GAME);
+        }
+        if (code == KeyEvent.VK_3) {
+            gameState.setMenuCursorState(MenuSelectionType.QUIT);
+        }
+        if (code == KeyEvent.VK_SPACE) {
+            gameState.selectMenuOption();
+        }
+    }
+
+    private void pausedKeys(int code) {
+        if (code == KeyEvent.VK_1) {
+            gameState.setPauseCursorState(PauseSelectionType.RESUME);
+        }
+        if (code == KeyEvent.VK_2) {
+            gameState.setPauseCursorState(PauseSelectionType.SAVE);
+        }
+        if (code == KeyEvent.VK_3) {
+            gameState.setPauseCursorState(PauseSelectionType.QUIT);
+        }
+        if (code == KeyEvent.VK_SPACE) {
+            gameState.selectPauseOption();
+        }
+    }
+
+    private void runningKeys(int code) {
+        if (code == KeyEvent.VK_W) {
+            upPressed = true;
+        }
+        if (code == KeyEvent.VK_S) {
+            downPressed = true;
+        }
+        if (code == KeyEvent.VK_A) {
+            leftPressed = true;
+        }
+        if (code == KeyEvent.VK_D) {
+            rightPressed = true;
+        }
+        if (code == KeyEvent.VK_P) {
+            gameState.switchPause();
+        }
+    }
+
+    private void fightingKeys(int code) {
+        if (code == KeyEvent.VK_SPACE) {
+            System.out.println("SKAP TY KOKOT");
         }
     }
 
