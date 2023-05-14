@@ -59,7 +59,7 @@ public class GameStateHandler {
         if (Objects.nonNull(pauseCursorState)) {
             switch (pauseCursorState) {
                 case RESUME -> switchPause();
-                case SAVE -> saveGameState(); //TODO SAVE
+                case SAVE -> saveGameState();
                 case QUIT -> System.exit(0);
             }
         }

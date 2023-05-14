@@ -5,6 +5,7 @@ import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 import org.example.utils.WorldCoordinates;
+import org.example.views.EntityView;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -28,6 +29,8 @@ public abstract class Entity {
     protected Rectangle solidArea;
     private boolean collisionsOn;
 
+    private final EntityView view;
+
     protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
                   int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
         this.worldCoordinates = worldCoordinates;
@@ -40,6 +43,7 @@ public abstract class Entity {
         this.spriteCounter = 0;
         this.collisionsOn = false;
         this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
+        this.view = new EntityView();
         getAllImages();
     }
 
@@ -180,5 +184,9 @@ public abstract class Entity {
 
     public EntityType getEntityType() {
         return entityType;
+    }
+
+    protected void drawEntity(Graphics2D g2, int screenX, int screenY) {
+        view.draw(g2, getImage(), screenX, screenY);
     }
 }

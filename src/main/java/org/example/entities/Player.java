@@ -9,9 +9,8 @@ import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-import static org.example.handlers.PanelHandler.*;
+import static org.example.utils.GameConstants.*;
 
 public class Player extends Entity{
 
@@ -56,8 +55,6 @@ public class Player extends Entity{
         collisionHandler.checkCollisions(this);
         collisionHandler.checkObject(this);
 
-
-
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();
         }
@@ -65,9 +62,8 @@ public class Player extends Entity{
         incrementCounter();
     }
 
-    public void draw(Graphics2D g2) {
-        BufferedImage image = getImage();
-        g2.drawImage(image, screenX, screenY, TILE_SIZE, TILE_SIZE, null);
+    public void drawPlayer(Graphics2D g2) {
+        super.drawEntity(g2, screenX, screenY);
     }
 
     public int getScreenX() {

@@ -1,19 +1,14 @@
 package org.example.handlers;
 
 import org.example.entities.Player;
-import org.example.gameobjects.GameObject;
 import org.example.handlers.types.GameStateType;
 
 import javax.swing.*;
-import java.awt.Dimension;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.LinkedList;
-import java.util.List;
+import java.awt.*;
 
-//TODO handle public constants
-public class PanelHandler extends JPanel implements Runnable{
+import static org.example.handlers.types.GameStateType.MAIN_MENU;
+public class GameHandler extends JPanel implements Runnable {
+
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
 
@@ -32,24 +27,46 @@ public class PanelHandler extends JPanel implements Runnable{
     public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
     public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
-
-    //GAMESTATE REFACTOR TODO
-    private GameStateHandler gameState = new GameStateHandler();
-    private KeyHandler keyHandler = new KeyHandler(gameState);
     private Thread gameThread;
-    private Player player = new Player(keyHandler);
-    private TileHandler tileHandler = new TileHandler(player);
-    private GameObjectHandler objectHandler = new GameObjectHandler();
-    private List<GameObject> displayedObjects = new LinkedList<>();
-    private CollisionHandler collisionHandler = new CollisionHandler(tileHandler, displayedObjects);
-    private UserInterfaceHandler userInterface = new UserInterfaceHandler(player);
+    private final GameStateHandler gameState;
+    private final KeyHandler keyHandler;
+    private final GameObjectHandler objectHandler;
+    private final TileHandler tileHandler;
+    private final Player player;
+    private final CollisionHandler collisionHandler;
+    private final UserInterfaceHandler userInterfaceHandler;
 
-    public PanelHandler() {
+    public GameHandler() {
+        gameState = new GameStateHandler();
+        keyHandler = new KeyHandler(gameState); //TODO keyHandler switches the state to "saving" or something and save happens?
+        objectHandler = new GameObjectHandler();
+        tileHandler = new TileHandler();
+        player = new Player(keyHandler); //TODO is keyhandler useful here?
+        collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
+        userInterfaceHandler = new UserInterfaceHandler();
+
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setFocusable(true);
+    }
+
+    public void setupWindow() {
+        JFrame window = new JFrame();
+        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        window.setResizable(false);
+        window.setTitle("Wodecki Adventure Game");
+
+        window.add(this);
+        window.pack();
+
+        window.setLocationRelativeTo(null);
+        window.setVisible(true);
+    }
+
+    public void setupGame() {
+        objectHandler.setDefaultObjects();
     }
 
     public void startGameThread() {
@@ -82,7 +99,7 @@ public class PanelHandler extends JPanel implements Runnable{
         }
     }
 
-    public void update() {
+    private void update() {
         if (gameState.getStateType().equals(GameStateType.RUNNING)) {
             player.update(collisionHandler);
         }
@@ -93,24 +110,16 @@ public class PanelHandler extends JPanel implements Runnable{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
-            userInterface.drawGame(g2, gameState);
-        } else {
-            tileHandler.draw(g2);
+        userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
+                gameState.getMenuCursorState(), gameState.getPauseCursorState(),
+                player.getNumberOfKeys());
 
-            for (GameObject object: displayedObjects) {
-                object.draw(g2, player);
-            }
-
-            player.draw(g2);
-
-            userInterface.drawGame(g2, gameState);
+        if (!gameState.getStateType().equals(MAIN_MENU)) {
+            tileHandler.drawTiles(g2, player);
+            objectHandler.drawObjects(g2, player);
+            player.drawPlayer(g2);
         }
 
         g2.dispose();
-    }
-
-    public void setupGame() {
-        objectHandler.setObjects(displayedObjects);
     }
 }
