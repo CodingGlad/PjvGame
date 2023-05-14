@@ -2,6 +2,7 @@ package org.example.handlers;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import org.example.entities.Enemy;
 import org.example.entities.Player;
 
 import javax.swing.*;
@@ -37,10 +38,11 @@ public class GameHandler extends JPanel implements Runnable {
         keyHandler = new KeyHandler(gameState);
         objectHandler = new GameObjectHandler();
         tileHandler = new TileHandler();
-        collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
-        userInterfaceHandler = new UserInterfaceHandler();
         player = new Player(keyHandler);
         enemiesHandler = new EnemiesHandler();
+        collisionHandler = new CollisionHandler(tileHandler, gameState,
+                objectHandler.getDisplayedObjects(), enemiesHandler.getEnemies());
+        userInterfaceHandler = new UserInterfaceHandler();
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -104,6 +106,12 @@ public class GameHandler extends JPanel implements Runnable {
             }
             case SAVING -> saveGame();
             case LOADING -> loadGame();
+            case FIGHTING -> {
+                Enemy enemy = gameState.getOpponent();
+
+//                player.fightUpdate(enemy);
+//                enemy.fightUpdate(player);
+            }
         }
     }
 

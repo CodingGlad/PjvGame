@@ -52,4 +52,8 @@ public class EnemiesHandler {
         return worldY + TILE_SIZE > (player.getWorldY() - player.getScreenY()) &&
                 worldY - TILE_SIZE < (player.getWorldY() + player.getScreenY());
     }
+
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
 }

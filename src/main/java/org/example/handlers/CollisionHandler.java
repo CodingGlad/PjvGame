@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import org.example.entities.Enemy;
 import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.entities.types.ActivityType;
@@ -18,12 +19,16 @@ import static org.example.entities.types.VerticalDirectionType.*;
 
 public class CollisionHandler {
 
-    private TileHandler tileHandler;
+    private final TileHandler tileHandler;
+    private final GameStateHandler gameState;
     private List<GameObject> objects;
+    private List<Enemy> enemies;
 
-    public CollisionHandler(TileHandler tileHandler, List<GameObject> objects) {
+    public CollisionHandler(TileHandler tileHandler, GameStateHandler gameState, List<GameObject> objects, List<Enemy> enemies) {
         this.tileHandler = tileHandler;
         this.objects = objects;
+        this.enemies = enemies;
+        this.gameState = gameState;
     }
 
     public void checkCollisions(Entity entity) {
@@ -100,7 +105,7 @@ public class CollisionHandler {
                     item.getSolidArea().y + item.getWorldY(),
                     item.getSolidArea().width, item.getSolidArea().height);
 
-            shiftSolidArea(entitySolidAreaWorld, entity);
+            shiftSolidArea(entitySolidAreaWorld, entity, 1);
 
             if (handleIntersection(entitySolidAreaWorld, entity, itemSolidAreaWorld, item)) {
                 if (entity.getEntityType().equals(EntityType.HERO) && item.getObjectType().equals(ObjectType.KEY)) {
@@ -125,6 +130,10 @@ public class CollisionHandler {
         return false;
     }
 
+    public boolean handleIntersection(Rectangle playerSolidAreaWorld, Rectangle enemySolidAreaWorld) {
+        return playerSolidAreaWorld.intersects(enemySolidAreaWorld);
+    }
+
     //TODO mby refactor fr object methods (different service?)
     public boolean canEntityPickUpThisObject(Entity entity, GameObject object) {
         if (entity.getEntityType().equals(EntityType.HERO)) {
@@ -143,15 +152,36 @@ public class CollisionHandler {
         return false;
     }
 
-    public void shiftSolidArea(Rectangle entitySolidArea, Entity entity) {
+    public void shiftSolidArea(Rectangle entitySolidArea, Entity entity, int scaleFactor) {
         switch (entity.getVerticalDirection()) {
-            case UP ->  entitySolidArea.y = (entitySolidArea.y - entity.getSpeed());
-            case DOWN -> entitySolidArea.y = (entitySolidArea.y + entity.getSpeed());
+            case UP ->  entitySolidArea.y = (entitySolidArea.y - entity.getSpeed() * scaleFactor);
+            case DOWN -> entitySolidArea.y = (entitySolidArea.y + entity.getSpeed() * scaleFactor);
             case NONE -> {
                 switch (entity.getHorizontalDirection()) {
-                    case LEFT -> entitySolidArea.x = (entitySolidArea.x - entity.getSpeed());
-                    case RIGHT -> entitySolidArea.x = (entitySolidArea.x + entity.getSpeed());
+                    case LEFT -> entitySolidArea.x = (entitySolidArea.x - entity.getSpeed() * scaleFactor);
+                    case RIGHT -> entitySolidArea.x = (entitySolidArea.x + entity.getSpeed() * scaleFactor);
                 }
+            }
+        }
+    }
+
+    public void checkEnemies(Entity player) {
+        for (Enemy en: enemies) {
+            Rectangle enemySolidAreaWorld = new Rectangle(
+                    en.getSolidArea().x + en.getWorldX(),
+                    en.getSolidArea().y + en.getWorldY(),
+                    en.getVisibleArea().width, en.getVisibleArea().height);
+
+            Rectangle playerSolidAreaWorld = new Rectangle(
+                    player.getSolidArea().x + player.getWorldX(),
+                    player.getSolidArea().y + player.getWorldY(),
+                    player.getVisibleArea().width, player.getVisibleArea().height);
+
+            shiftSolidArea(playerSolidAreaWorld, player, 3);
+
+            if (handleIntersection(playerSolidAreaWorld, enemySolidAreaWorld)) {
+                gameState.setFighting(en, player);
+                return;
             }
         }
     }

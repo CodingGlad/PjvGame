@@ -1,5 +1,9 @@
 package org.example.handlers;
 
+import org.example.entities.Enemy;
+import org.example.entities.Entity;
+import org.example.entities.Player;
+import org.example.entities.types.HorizontalDirectionType;
 import org.example.handlers.types.GameStateType;
 import org.example.handlers.types.MenuSelectionType;
 import org.example.handlers.types.PauseSelectionType;
@@ -9,7 +13,7 @@ import java.util.Objects;
 
 public class GameStateHandler {
     private GameStateType stateType;
-
+    private Enemy opponent;
     private MenuSelectionType menuCursorState;
     private PauseSelectionType pauseCursorState;
 
@@ -35,6 +39,18 @@ public class GameStateHandler {
 
     public void setRunning() {
         stateType = GameStateType.RUNNING;
+    }
+
+    public void setFighting(Enemy opponent, Entity player) {
+        stateType = GameStateType.FIGHTING;
+
+        if (player.getHorizontalDirection().equals(HorizontalDirectionType.RIGHT)) {
+            opponent.setHorizontalDirection(HorizontalDirectionType.LEFT);
+        } else {
+            opponent.setHorizontalDirection(HorizontalDirectionType.RIGHT);
+        }
+
+        this.opponent = opponent;
     }
 
     public MenuSelectionType getMenuCursorState() {
@@ -71,5 +87,9 @@ public class GameStateHandler {
                 case QUIT -> System.exit(0);
             }
         }
+    }
+
+    public Enemy getOpponent() {
+        return opponent;
     }
 }

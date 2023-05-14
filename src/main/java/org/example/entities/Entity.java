@@ -19,6 +19,7 @@ public abstract class Entity {
     protected static final int DEFAULT_SOLID_Y = 25;
     protected static final int DEFAULT_SOLID_WIDTH = 12;
     protected static final int DEFAULT_SOLID_HEIGHT = 4;
+    protected static final int DEFAULT_VISIBLE_HEIGHT = 16;
     private WorldCoordinates worldCoordinates;
     private final int speed;
     private final EntityType entityType;
@@ -31,12 +32,12 @@ public abstract class Entity {
 
     private int spriteCounter;
     protected Rectangle solidArea;
+    protected Rectangle visibleArea;
     private boolean collisionsOn;
     private int health;
     private final EntityView view;
 
-    protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
-                  int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
+    protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType) {
         this.worldCoordinates = worldCoordinates;
         this.speed = speed;
         this.entityType = entityType;
@@ -47,7 +48,8 @@ public abstract class Entity {
         this.spriteCounter = 0;
         this.health = 100;
         this.collisionsOn = false;
-        this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
+        this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
+        this.visibleArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_VISIBLE_HEIGHT);
         this.view = new EntityView();
         getAllImages();
     }
@@ -172,6 +174,10 @@ public abstract class Entity {
 
     public Rectangle getSolidArea() {
         return solidArea;
+    }
+
+    public Rectangle getVisibleArea() {
+        return visibleArea;
     }
 
     public void move() {

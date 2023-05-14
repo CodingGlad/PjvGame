@@ -24,6 +24,10 @@ public class UserInterfaceHandler {
             case RUNNING -> view.drawGame(g2, player);
             case PAUSE -> view.drawPause(g2, pauseCursor);
             case MAIN_MENU -> view.drawMenu(g2, menuCursor);
+            case FIGHTING -> {
+                view.drawGame(g2, player);
+//                view.drawFight(g2, player);
+            }
         }
     }
 }
