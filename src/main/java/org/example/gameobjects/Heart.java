@@ -1,6 +1,5 @@
 package org.example.gameobjects;
 
-import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
 

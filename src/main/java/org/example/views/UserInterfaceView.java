@@ -27,12 +27,10 @@ public class UserInterfaceView{
         this.gameFont = new Font("Arial", Font.BOLD, 20);
         this.menuTitleFont = new Font("Arial", Font.BOLD, 40);
         this.menuSelectionFont = new Font("Arial", Font.BOLD, 30);
-        //TODO change getting of key image
         this.keyImage = (new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(0, 0))).getStaticImage();
         this.heartImage = (new Heart(ObjectType.HEART, new WorldCoordinates(0, 0))).getStaticImage();
     }
 
-    //TODO replace number of keys for player
     public void drawGame(Graphics2D g2, Player player) {
         g2.setFont(gameFont);
         g2.setColor(Color.black);

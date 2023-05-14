@@ -8,7 +8,8 @@ import java.awt.*;
 import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class Enemy extends Entity {
-    public Enemy(EntityType entityType) { //TODO handle coords
+    //TODO handle coords
+    public Enemy(EntityType entityType) {
         super(new WorldCoordinates(TILE_SIZE * 24, TILE_SIZE * 22), 4,
                 entityType, DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
     }

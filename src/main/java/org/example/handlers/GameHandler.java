@@ -3,8 +3,6 @@ package org.example.handlers;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Player;
-import org.example.utils.WorldCoordinates;
-import org.example.views.EntityView;
 
 import javax.swing.*;
 import java.awt.*;
