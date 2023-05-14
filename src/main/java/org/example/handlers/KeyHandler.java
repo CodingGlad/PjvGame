@@ -1,5 +1,9 @@
 package org.example.handlers;
 
+import org.example.handlers.types.GameStateType;
+import org.example.handlers.types.MenuSelectionType;
+import org.example.handlers.types.PauseSelectionType;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -14,6 +18,12 @@ public class KeyHandler implements KeyListener {
     private boolean leftPressed;
     private boolean rightPressed;
 
+    private GameStateHandler gameState;
+
+    public KeyHandler(GameStateHandler gameState) {
+        this.gameState = gameState;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -23,17 +33,48 @@ public class KeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int code = e.getKeyCode();
 
-        if (code == KeyEvent.VK_W) {
-            upPressed = true;
-        }
-        if (code == KeyEvent.VK_S) {
-            downPressed = true;
-        }
-        if (code == KeyEvent.VK_A) {
-            leftPressed = true;
-        }
-        if (code == KeyEvent.VK_D) {
-            rightPressed = true;
+        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
+            if (code == KeyEvent.VK_1) {
+                gameState.setMenuCursorState(MenuSelectionType.NEW_GAME);
+            }
+            if (code == KeyEvent.VK_2) {
+                gameState.setMenuCursorState(MenuSelectionType.LOAD_GAME);
+            }
+            if (code == KeyEvent.VK_3) {
+                gameState.setMenuCursorState(MenuSelectionType.QUIT);
+            }
+            if (code == KeyEvent.VK_SPACE) {
+                gameState.selectMenuOption();
+            }
+        } else if (gameState.getStateType().equals(GameStateType.PAUSE)) {
+            if (code == KeyEvent.VK_1) {
+                gameState.setPauseCursorState(PauseSelectionType.RESUME);
+            }
+            if (code == KeyEvent.VK_2) {
+                gameState.setPauseCursorState(PauseSelectionType.SAVE);
+            }
+            if (code == KeyEvent.VK_3) {
+                gameState.setPauseCursorState(PauseSelectionType.QUIT);
+            }
+            if (code == KeyEvent.VK_SPACE) {
+                gameState.selectPauseOption();
+            }
+        } else {
+            if (code == KeyEvent.VK_W) {
+                upPressed = true;
+            }
+            if (code == KeyEvent.VK_S) {
+                downPressed = true;
+            }
+            if (code == KeyEvent.VK_A) {
+                leftPressed = true;
+            }
+            if (code == KeyEvent.VK_D) {
+                rightPressed = true;
+            }
+            if (code == KeyEvent.VK_P) {
+                gameState.switchPause();
+            }
         }
     }
 
