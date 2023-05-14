@@ -2,7 +2,8 @@ package org.example.gameobjects.types;
 
 public enum ObjectType {
     KEY("key", false),
-    CHEST("chest", true);
+    CHEST("chest", true),
+    HEART("heart", false);
 
     private final String name;
     private final boolean collision;

@@ -1,7 +1,6 @@
 package org.example.entities;
 
 import org.example.entities.types.EntityType;
-import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;

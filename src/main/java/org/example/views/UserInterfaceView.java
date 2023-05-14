@@ -1,5 +1,7 @@
 package org.example.views;
 
+import org.example.entities.Player;
+import org.example.gameobjects.Heart;
 import org.example.gameobjects.Key;
 import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
@@ -19,22 +21,25 @@ public class UserInterfaceView{
     private Font menuTitleFont;
     private Font menuSelectionFont;
     private final BufferedImage keyImage;
+    private final BufferedImage heartImage;
 
     public UserInterfaceView() {
-        this.gameFont = new Font("Arial", Font.PLAIN, 20);
+        this.gameFont = new Font("Arial", Font.BOLD, 20);
         this.menuTitleFont = new Font("Arial", Font.BOLD, 40);
         this.menuSelectionFont = new Font("Arial", Font.BOLD, 30);
         //TODO change getting of key image
         this.keyImage = (new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(0, 0))).getStaticImage();
-
+        this.heartImage = (new Heart(ObjectType.HEART, new WorldCoordinates(0, 0))).getStaticImage();
     }
 
     //TODO replace number of keys for player
-    public void drawGame(Graphics2D g2, int numberOfKeys) {
+    public void drawGame(Graphics2D g2, Player player) {
         g2.setFont(gameFont);
         g2.setColor(Color.black);
         g2.drawImage(keyImage, TILE_SIZE/2, TILE_SIZE/2, TILE_SIZE, TILE_SIZE, null);
-        g2.drawString("x " + numberOfKeys, 50, 40);
+        g2.drawString("x " + player.getNumberOfKeys(), 50, 40);
+        g2.drawImage(heartImage, 460, 15, TILE_SIZE, TILE_SIZE, null);
+        g2.drawString(String.valueOf(player.getHealth()), 420, 40);
     }
 
     public void drawMenu(Graphics2D g2, MenuSelectionType menuCursor) {

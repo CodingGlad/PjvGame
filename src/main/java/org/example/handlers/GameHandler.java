@@ -123,7 +123,7 @@ public class GameHandler extends JPanel implements Runnable {
 
         userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
                 gameState.getMenuCursorState(), gameState.getPauseCursorState(),
-                player.getNumberOfKeys());
+                player);
 
         g2.dispose();
     }
