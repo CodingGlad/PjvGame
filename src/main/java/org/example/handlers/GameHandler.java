@@ -73,7 +73,7 @@ public class GameHandler implements Runnable{
 
             if (delta >= 1) {
                 update();
-                repaint();
+                windowHandler.repaint();
                 delta--;
             }
         }

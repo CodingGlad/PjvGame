@@ -47,22 +47,20 @@ public class WindowHandler extends JPanel{
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-//        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
-//            userInterface.drawGame(g2, gameState);
-//        } else {
-//            tileHandler.draw(g2);
-//
-//            for (GameObject object: displayedObjects) {
-//                object.draw(g2, player);
-//            }
-//
-//            player.draw(g2);
-//
-//            userInterface.drawGame(g2, gameState);
-//        }
+        if (gameState.getStateType().equals(GameStateType.MAIN_MENU)) {
+            userInterface.drawGame(g2, gameState);
+        } else {
+            tileHandler.draw(g2);
+
+            for (GameObject object: displayedObjects) {
+                object.draw(g2, player);
+            }
+
+            player.draw(g2);
+
+            userInterface.drawGame(g2, gameState);
+        }
 
         g2.dispose();
     }
-
-
 }
