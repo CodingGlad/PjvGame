@@ -181,6 +181,8 @@ public class CollisionHandler {
 
             if (handleIntersection(playerSolidAreaWorld, enemySolidAreaWorld)) {
                 gameState.setFighting(en, player);
+                player.setIdleActivity();
+                en.setIdleActivity();
                 return;
             }
         }

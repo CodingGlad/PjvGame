@@ -17,6 +17,7 @@ public class KeyHandler implements KeyListener {
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
+    private boolean spacePressed;
 
     private GameStateHandler gameState;
 
@@ -91,6 +92,7 @@ public class KeyHandler implements KeyListener {
 
     private void fightingKeys(int code) {
         if (code == KeyEvent.VK_SPACE) {
+            spacePressed = true;
             System.out.println("SKAP TY KOKOT");
         }
     }
@@ -110,6 +112,9 @@ public class KeyHandler implements KeyListener {
         }
         if (code == KeyEvent.VK_D) {
             rightPressed = false;
+        }
+        if (code == KeyEvent.VK_SPACE) {
+            spacePressed = false;
         }
     }
 

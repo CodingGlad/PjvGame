@@ -31,21 +31,25 @@ public abstract class Entity {
     private HorizontalDirectionType horizontalDirection;
 
     private int spriteCounter;
+    private int attackSpeed;
+    private int attackCounter;
     protected Rectangle solidArea;
     protected Rectangle visibleArea;
     private boolean collisionsOn;
     private int health;
     private final EntityView view;
 
-    protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType) {
+    protected Entity(WorldCoordinates worldCoordinates, int speed, int attackSpeed, EntityType entityType) {
         this.worldCoordinates = worldCoordinates;
         this.speed = speed;
+        this.attackSpeed = attackSpeed;
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
         this.sprites = new HashMap<>();
         this.verticalDirection = VerticalDirectionType.NONE;
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
+        this.attackCounter = 0;
         this.health = 100;
         this.collisionsOn = false;
         this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
@@ -134,9 +138,12 @@ public abstract class Entity {
         this.horizontalDirection = horizontalDirection;
     }
 
-    public void incrementCounter() {
+    public void incrementCounters() {
         if (++spriteCounter == entityType.getSpritesNumber() * 10) {
             spriteCounter = 0;
+            if (attackCounter < attackSpeed) {
+                ++attackCounter;
+            }
         }
     }
 
@@ -207,5 +214,19 @@ public abstract class Entity {
 
     public int getHealth() {
         return health;
+    }
+
+    public boolean attack() {
+        if (attackCounter == attackSpeed) {
+            System.out.println("SKAP KUNDO");
+            attackCounter = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
     }
 }

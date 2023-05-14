@@ -7,7 +7,6 @@ import org.example.entities.types.VerticalDirectionType;
 import org.example.handlers.CollisionHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
-import org.example.views.EntityView;
 
 import java.awt.*;
 
@@ -21,7 +20,7 @@ public class Player extends Entity{
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, EntityType.HERO);
+        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
         this.keyHandler = keyHandler;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
@@ -52,7 +51,14 @@ public class Player extends Entity{
             move();
         }
 
-        incrementCounter();
+        incrementCounters();
+    }
+
+    public void fightUpdate(Enemy enemy) {
+        incrementCounters();
+        if (attack()) {
+            enemy.takeDamage(15);
+        }
     }
 
     public void drawPlayer(Graphics2D g2) {

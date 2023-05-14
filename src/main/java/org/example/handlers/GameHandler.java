@@ -109,8 +109,8 @@ public class GameHandler extends JPanel implements Runnable {
             case FIGHTING -> {
                 Enemy enemy = gameState.getOpponent();
 
-//                player.fightUpdate(enemy);
-//                enemy.fightUpdate(player);
+                player.fightUpdate(enemy);
+                enemy.fightUpdate(player);
             }
         }
     }
