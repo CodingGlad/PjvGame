@@ -1,7 +1,8 @@
 package org.example.entities.types;
 
 public enum EntityType {
-    HERO("hero", 4);
+    HERO("hero", 4),
+    DEMON("demon", 4);
 
     private final String entityString;
     private final int spritesNumber;

@@ -15,6 +15,10 @@ import java.util.*;
 import java.util.List;
 
 public abstract class Entity {
+    protected static final int DEFAULT_SOLID_X = 8;
+    protected static final int DEFAULT_SOLID_Y = 25;
+    protected static final int DEFAULT_SOLID_WIDTH = 12;
+    protected static final int DEFAULT_SOLID_HEIGHT = 4;
     private WorldCoordinates worldCoordinates;
     private final int speed;
     private final EntityType entityType;
@@ -28,7 +32,7 @@ public abstract class Entity {
     private int spriteCounter;
     protected Rectangle solidArea;
     private boolean collisionsOn;
-
+    private int health;
     private final EntityView view;
 
     protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
@@ -41,6 +45,7 @@ public abstract class Entity {
         this.verticalDirection = VerticalDirectionType.NONE;
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
+        this.health = 100;
         this.collisionsOn = false;
         this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
         this.view = new EntityView();
@@ -186,12 +191,15 @@ public abstract class Entity {
         return entityType;
     }
 
-    protected void drawEntity(Graphics2D g2, int screenX, int screenY) {
-        view.draw(g2, getImage(), screenX, screenY);
+    protected void drawEntity(Graphics2D g2, int coordX, int coordY) {
+        view.draw(g2, getImage(), coordX, coordY);
     }
 
     public void loadCoordinations(int worldX, int worldY) {
         this.worldCoordinates = new WorldCoordinates(worldX, worldY);
+    }
 
+    public int getHealth() {
+        return health;
     }
 }
