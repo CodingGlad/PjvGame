@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import org.example.entities.Player;
 import org.example.gameobjects.Chest;
 import org.example.gameobjects.GameObject;
 import org.example.gameobjects.Key;
@@ -7,7 +8,9 @@ import org.example.gameobjects.types.ChestType;
 import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
+import org.example.views.GameObjectView;
 
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,8 +18,10 @@ import static org.example.handlers.WindowHandler.TILE_SIZE;
 
 public class GameObjectHandler {
     private List<GameObject> displayedObjects;
+    private final GameObjectView view;
 
     public GameObjectHandler() {
+        view = new GameObjectView();
         this.displayedObjects = new LinkedList<>();
     }
 
@@ -28,5 +33,11 @@ public class GameObjectHandler {
 
     public List<GameObject> getDisplayedObjects() {
         return displayedObjects;
+    }
+
+    public void drawObjects(Graphics2D g2, Player player) {
+        for (GameObject object: displayedObjects) {
+            view.draw(g2, player, object);
+        }
     }
 }

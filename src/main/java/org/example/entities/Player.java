@@ -65,9 +65,8 @@ public class Player extends Entity{
         incrementCounter();
     }
 
-    public void draw(Graphics2D g2) {
-        BufferedImage image = getImage();
-        g2.drawImage(image, screenX, screenY, TILE_SIZE, TILE_SIZE, null);
+    public void drawPlayer(Graphics2D g2) {
+        super.drawEntity(g2, screenX, screenY);
     }
 
     public int getScreenX() {

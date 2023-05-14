@@ -3,6 +3,7 @@ package org.example.handlers;
 import org.example.entities.Player;
 import org.example.tiles.Tile;
 import org.example.tiles.types.TileType;
+import org.example.views.TileView;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,8 +24,11 @@ public class TileHandler {
     private Map<Integer, Tile> tileSprites;
     private int[][] mapTileNum;
 
+    private final TileView tileView;
+
     public TileHandler() {
         tileSprites = new HashMap<>();
+        tileView = new TileView();
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 
         getTileImages();
@@ -45,25 +49,6 @@ public class TileHandler {
         }
     }
 
-    //TODO replace player coords somehow during rendering
-    public void draw(Graphics2D g2) {
-        for (int i = 0; i < mapTileNum.length; ++i) {
-            for (int j = 0; j < mapTileNum[i].length; ++j) {
-                final int worldX = j * TILE_SIZE;
-                final int worldY = i * TILE_SIZE;
-                final int screenX = worldX - player.getWorldX() + player.getScreenX();
-                final int screenY = worldY - player.getWorldY() + player.getScreenY();
-
-                if (shouldTileBeRendered(worldX, worldY)) {
-                    g2.drawImage(
-                            tileSprites.get(mapTileNum[i][j]).getImage(), screenX, screenY,
-                            TILE_SIZE, TILE_SIZE, null
-                    );
-                }
-            }
-        }
-    }
-
     private void loadMap() {
         InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map02.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -81,21 +66,6 @@ public class TileHandler {
         }
     }
 
-    private boolean shouldTileBeRendered(int worldX, int worldY) {
-        return isCoordinateWithinViewX(worldX) && isCoordinateWithinViewY(worldY);
-    }
-
-    private boolean isCoordinateWithinViewX(int worldX) {
-        return worldX + TILE_SIZE > (player.getWorldX() - player.getScreenX()) &&
-                worldX - TILE_SIZE < (player.getWorldX() + player.getScreenX());
-    }
-
-    private boolean isCoordinateWithinViewY(int worldY) {
-        return worldY + TILE_SIZE > (player.getWorldY() - player.getScreenY()) &&
-                worldY - TILE_SIZE < (player.getWorldY() + player.getScreenY());
-    }
-
-    //TODO mby add void
     public int getTileNumber(int row, int column) {
         if (mapTileNum.length > row && mapTileNum[row].length > column) {
             return mapTileNum[row][column];
@@ -116,5 +86,9 @@ public class TileHandler {
 
     public int getRowOrColumnOfCoordinate(int worldCoordinate) {
         return worldCoordinate / TILE_SIZE;
+    }
+
+    public void drawTiles(Graphics2D g2, Player player) {
+        tileView.draw(g2, tileSprites, mapTileNum, player);
     }
 }
