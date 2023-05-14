@@ -1,11 +1,16 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
+import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileWriter;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static org.example.handlers.types.GameStateType.*;
 import static org.example.utils.GameConstants.SCREEN_HEIGHT;
@@ -89,10 +94,10 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     private void update() {
-        if (gameState.getStateType().equals(RUNNING)) {
-            player.update(collisionHandler);
-        } else if (gameState.getStateType().equals(SAVING)) {
-            saveGame();
+        switch (gameState.getStateType()) {
+            case RUNNING -> player.update(collisionHandler);
+            case SAVING -> saveGame();
+            case LOADING -> loadGame();
         }
     }
 
@@ -117,11 +122,26 @@ public class GameHandler extends JPanel implements Runnable {
 
     private void saveGame() {
         try {
-            FileWriter fw = new FileWriter("save.txt");
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get("save.json"));
 
-            fw.write(String.valueOf(player.getNumberOfKeys()));
+            JsonObject playerJson = new JsonObject();
 
-            fw.close();
+            playerJson.put("worldx", player.getWorldX());
+            playerJson.put("worldy", player.getWorldY());
+            playerJson.put("keys", player.getNumberOfKeys());
+
+            JsonObject gameObjects = new JsonObject();
+
+//            gameObjects.put("objects", objectHandler.getDisplayedObjects());
+
+            JsonObject save = new JsonObject();
+
+            save.put("player", playerJson);
+//            save.put("objects", gameObjects);
+
+            Jsoner.serialize(save, writer);
+
+            writer.close();
 
             gameState.setRunning();
         } catch (IOException e) {

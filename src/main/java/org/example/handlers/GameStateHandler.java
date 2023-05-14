@@ -57,7 +57,7 @@ public class GameStateHandler {
         if (Objects.nonNull(menuCursorState)){
             switch (menuCursorState) {
                 case NEW_GAME -> this.stateType = GameStateType.RUNNING;
-                case LOAD_GAME -> this.stateType = GameStateType.MAIN_MENU; //TODO LOADING
+                case LOAD_GAME -> this.stateType = GameStateType.LOADING;
                 case QUIT -> System.exit(0);
             }
         }

@@ -189,4 +189,8 @@ public abstract class Entity {
     protected void drawEntity(Graphics2D g2, int screenX, int screenY) {
         view.draw(g2, getImage(), screenX, screenY);
     }
+
+    public void loadCoordinations(int worldX, int worldY) {
+
+    }
 }
