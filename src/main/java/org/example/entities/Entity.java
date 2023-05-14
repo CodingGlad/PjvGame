@@ -191,6 +191,7 @@ public abstract class Entity {
     }
 
     public void loadCoordinations(int worldX, int worldY) {
+        this.worldCoordinates = new WorldCoordinates(worldX, worldY);
 
     }
 }

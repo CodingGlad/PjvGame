@@ -3,12 +3,14 @@ package org.example.handlers;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Player;
+import org.example.utils.WorldCoordinates;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -130,14 +132,9 @@ public class GameHandler extends JPanel implements Runnable {
             playerJson.put("worldy", player.getWorldY());
             playerJson.put("keys", player.getNumberOfKeys());
 
-            JsonObject gameObjects = new JsonObject();
-
-//            gameObjects.put("objects", objectHandler.getDisplayedObjects());
-
             JsonObject save = new JsonObject();
 
             save.put("player", playerJson);
-//            save.put("objects", gameObjects);
 
             Jsoner.serialize(save, writer);
 
@@ -145,6 +142,29 @@ public class GameHandler extends JPanel implements Runnable {
 
             gameState.setRunning();
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void loadGame() {
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get("save.json"));
+
+            JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
+
+            JsonObject playerInfo = (JsonObject) parser.get("player");
+
+            BigDecimal x = (BigDecimal) playerInfo.get("worldx");
+            BigDecimal y = (BigDecimal) playerInfo.get("worldy");
+            BigDecimal keys = (BigDecimal) playerInfo.get("keys");
+
+            reader.close();
+
+            player.loadCoordinations(x.intValue(), y.intValue());
+            player.setNumberOfKeys(keys.intValue());
+
+            gameState.setRunning();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

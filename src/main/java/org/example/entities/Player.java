@@ -78,6 +78,10 @@ public class Player extends Entity{
         return numberOfKeys;
     }
 
+    public void setNumberOfKeys(int numberOfKeys) {
+        this.numberOfKeys = numberOfKeys;
+    }
+
     public void incrementKeys() {
         ++numberOfKeys;
     }
