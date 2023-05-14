@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
-
 public abstract class Entity {
     private WorldCoordinates worldCoordinates;
     private final int speed;

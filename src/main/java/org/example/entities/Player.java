@@ -9,9 +9,8 @@ import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-import static org.example.handlers.WindowHandler.*;
+import static org.example.utils.GameConstants.*;
 
 public class Player extends Entity{
 
@@ -55,8 +54,6 @@ public class Player extends Entity{
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
         collisionHandler.checkObject(this);
-
-
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();

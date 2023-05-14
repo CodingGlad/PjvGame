@@ -14,7 +14,7 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class GameObjectHandler {
     private List<GameObject> displayedObjects;

@@ -1,13 +1,12 @@
 package org.example.gameobjects;
 
-import org.example.entities.Player;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public abstract class GameObject {
     private static final int DEFAULT_SOLID_X = 0;

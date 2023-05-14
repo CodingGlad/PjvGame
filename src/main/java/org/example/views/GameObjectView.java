@@ -5,7 +5,7 @@ import org.example.gameobjects.GameObject;
 
 import java.awt.*;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class GameObjectView {
     public void draw(Graphics2D g2, Player player, GameObject object) {

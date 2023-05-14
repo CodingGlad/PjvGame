@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class UserInterfaceView{
 

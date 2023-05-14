@@ -6,7 +6,7 @@ import org.example.tiles.Tile;
 import java.awt.*;
 import java.util.Map;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class TileView{
     //TODO replace player coords somehow during rendering

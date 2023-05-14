@@ -1,16 +1,12 @@
 package org.example.handlers;
 
 import org.example.entities.Player;
-import org.example.gameobjects.GameObject;
 import org.example.handlers.types.GameStateType;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static org.example.handlers.types.GameStateType.RUNNING;
 import static org.example.handlers.types.GameStateType.MAIN_MENU;
-import static org.example.handlers.types.GameStateType.PAUSE;
-
 public class GameHandler extends JPanel implements Runnable {
 
     private static final long NANOS_IN_SECONDS = 1000000000L;

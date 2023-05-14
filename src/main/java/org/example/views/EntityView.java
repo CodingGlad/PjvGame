@@ -3,7 +3,7 @@ package org.example.views;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static org.example.handlers.WindowHandler.TILE_SIZE;
+import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class EntityView {
     public void draw(Graphics2D g2, BufferedImage image,
