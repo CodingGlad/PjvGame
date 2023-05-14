@@ -7,20 +7,14 @@ import org.example.entities.types.VerticalDirectionType;
 import org.example.handlers.CollisionHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
+import org.example.views.EntityView;
 
 import java.awt.*;
 
 import static org.example.utils.GameConstants.*;
 
 public class Player extends Entity{
-
-    private static final int DEFAULT_SOLID_X = 8;
-    private static final int DEFAULT_SOLID_Y = 25;
-    private static final int DEFAULT_SOLID_WIDTH = 12;
-    private static final int DEFAULT_SOLID_HEIGHT = 4;
-
-    private KeyHandler keyHandler;
-
+    private final KeyHandler keyHandler;
     private final int screenX;
     private final int screenY;
     private int numberOfKeys;
@@ -35,7 +29,6 @@ public class Player extends Entity{
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
     }
 
-    //TODO refactor
     public void update(CollisionHandler collisionHandler) {
         if (keyHandler.isUpPressed()) {
             setVerticalDirection(VerticalDirectionType.UP);

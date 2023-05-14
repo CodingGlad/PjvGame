@@ -3,7 +3,6 @@ package org.example.handlers;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Player;
-import org.example.utils.WorldCoordinates;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,15 +30,17 @@ public class GameHandler extends JPanel implements Runnable {
     private final Player player;
     private final CollisionHandler collisionHandler;
     private final UserInterfaceHandler userInterfaceHandler;
+    private final EnemiesHandler enemiesHandler;
 
     public GameHandler() {
         gameState = new GameStateHandler();
         keyHandler = new KeyHandler(gameState);
         objectHandler = new GameObjectHandler();
         tileHandler = new TileHandler();
-        player = new Player(keyHandler);
         collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
         userInterfaceHandler = new UserInterfaceHandler();
+        player = new Player(keyHandler);
+        enemiesHandler = new EnemiesHandler();
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -97,7 +98,10 @@ public class GameHandler extends JPanel implements Runnable {
 
     private void update() {
         switch (gameState.getStateType()) {
-            case RUNNING -> player.update(collisionHandler);
+            case RUNNING -> {
+                player.update(collisionHandler);
+                enemiesHandler.update();
+            }
             case SAVING -> saveGame();
             case LOADING -> loadGame();
         }
@@ -111,12 +115,13 @@ public class GameHandler extends JPanel implements Runnable {
         if (!gameState.getStateType().equals(MAIN_MENU)) {
             tileHandler.drawTiles(g2, player);
             objectHandler.drawObjects(g2, player);
+            enemiesHandler.drawEnemies(g2, player);
             player.drawPlayer(g2);
         }
 
         userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
                 gameState.getMenuCursorState(), gameState.getPauseCursorState(),
-                player.getNumberOfKeys());
+                player);
 
         g2.dispose();
     }
