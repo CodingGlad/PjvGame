@@ -1,31 +1,20 @@
 package org.example.handlers;
 
 import org.example.entities.Player;
-import org.example.handlers.types.GameStateType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileWriter;
+import java.io.IOException;
 
-import static org.example.handlers.types.GameStateType.MAIN_MENU;
+import static org.example.handlers.types.GameStateType.*;
+import static org.example.utils.GameConstants.SCREEN_HEIGHT;
+import static org.example.utils.GameConstants.SCREEN_WIDTH;
+
 public class GameHandler extends JPanel implements Runnable {
 
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
-
-    public static final int ORIGINAL_TILE_SIZE = 16;
-    public static final int SCALE_FACTOR = 2;
-    public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE_FACTOR;
-
-    public static final int MAX_SCREEN_COLS = 16;
-    public static final int MAX_SCREEN_ROWS = 12;
-    public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COLS;
-    public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROWS;
-
-    //TODO config file
-    public static final int MAX_WORLD_COL = 50;
-    public static final int MAX_WORLD_ROW = 50;
-    public static final int WORLD_WIDTH = TILE_SIZE * MAX_WORLD_COL;
-    public static final int WORLD_HEIGHT = TILE_SIZE * MAX_WORLD_ROW;
 
     private Thread gameThread;
     private final GameStateHandler gameState;
@@ -38,10 +27,10 @@ public class GameHandler extends JPanel implements Runnable {
 
     public GameHandler() {
         gameState = new GameStateHandler();
-        keyHandler = new KeyHandler(gameState); //TODO keyHandler switches the state to "saving" or something and save happens?
+        keyHandler = new KeyHandler(gameState);
         objectHandler = new GameObjectHandler();
         tileHandler = new TileHandler();
-        player = new Player(keyHandler); //TODO is keyhandler useful here?
+        player = new Player(keyHandler);
         collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
         userInterfaceHandler = new UserInterfaceHandler();
 
@@ -100,8 +89,10 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     private void update() {
-        if (gameState.getStateType().equals(GameStateType.RUNNING)) {
+        if (gameState.getStateType().equals(RUNNING)) {
             player.update(collisionHandler);
+        } else if (gameState.getStateType().equals(SAVING)) {
+            saveGame();
         }
     }
 
@@ -110,16 +101,32 @@ public class GameHandler extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
 
-        userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
-                gameState.getMenuCursorState(), gameState.getPauseCursorState(),
-                player.getNumberOfKeys());
-
         if (!gameState.getStateType().equals(MAIN_MENU)) {
             tileHandler.drawTiles(g2, player);
             objectHandler.drawObjects(g2, player);
             player.drawPlayer(g2);
         }
 
+        userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
+                gameState.getMenuCursorState(), gameState.getPauseCursorState(),
+                player.getNumberOfKeys());
+
         g2.dispose();
     }
+
+
+    private void saveGame() {
+        try {
+            FileWriter fw = new FileWriter("save.txt");
+
+            fw.write(String.valueOf(player.getNumberOfKeys()));
+
+            fw.close();
+
+            gameState.setRunning();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

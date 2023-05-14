@@ -29,6 +29,14 @@ public class GameStateHandler {
         }
     }
 
+    public void setPause() {
+        stateType = GameStateType.PAUSE;
+    }
+
+    public void setRunning() {
+        stateType = GameStateType.RUNNING;
+    }
+
     public MenuSelectionType getMenuCursorState() {
         return menuCursorState;
     }
@@ -59,23 +67,9 @@ public class GameStateHandler {
         if (Objects.nonNull(pauseCursorState)) {
             switch (pauseCursorState) {
                 case RESUME -> switchPause();
-                case SAVE -> saveGameState();
+                case SAVE -> stateType = GameStateType.SAVING;
                 case QUIT -> System.exit(0);
             }
-        }
-    }
-
-    public void saveGameState() {
-        try {
-            FileWriter fw = new FileWriter("save.txt");
-
-            fw.write("5");
-
-            fw.close();
-
-            switchPause();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 }
