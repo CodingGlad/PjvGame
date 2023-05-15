@@ -90,4 +90,7 @@ public class Player extends Entity{
         --numberOfKeys;
     }
 
+    public boolean deathUpdate() {
+        return incrementDeathCounter();
+    }
 }

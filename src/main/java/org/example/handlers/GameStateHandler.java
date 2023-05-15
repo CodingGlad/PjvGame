@@ -53,6 +53,22 @@ public class GameStateHandler {
         this.opponent = opponent;
     }
 
+    public void setDying() {
+        stateType = GameStateType.DYING;
+    }
+
+    public void setEnd() {
+        stateType = GameStateType.END;
+    }
+
+    public void setLoading() {
+        stateType = GameStateType.LOADING;
+    }
+
+    public void setQuit() {
+        stateType = GameStateType.QUIT;
+    }
+
     public MenuSelectionType getMenuCursorState() {
         return menuCursorState;
     }

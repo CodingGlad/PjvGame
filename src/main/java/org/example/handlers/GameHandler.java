@@ -107,6 +107,8 @@ public class GameHandler extends JPanel implements Runnable {
             case SAVING -> saveGame();
             case LOADING -> loadGame();
             case FIGHTING -> fight();
+            case DYING -> die();
+            case QUIT -> System.exit(0);
         }
     }
 
@@ -186,10 +188,20 @@ public class GameHandler extends JPanel implements Runnable {
         player.fightUpdate(enemy);
         enemy.fightUpdate(player);
 
+        if (player.getHealth() <= 0) {
+            gameState.setDying();
+            player.setDyingActivity();
+        }
+
         if (enemy.getHealth() <= 0) {
             enemiesHandler.removeEnemy(enemy);
             gameState.setRunning();
         }
     }
 
+    private void die() {
+        if (player.deathUpdate()) {
+            gameState.setEnd();
+        }
+    }
 }

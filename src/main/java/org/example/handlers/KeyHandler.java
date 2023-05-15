@@ -39,6 +39,7 @@ public class KeyHandler implements KeyListener {
             case PAUSE -> pausedKeys(code);
             case RUNNING -> runningKeys(code);
             case FIGHTING -> fightingKeys(code);
+            case END -> endKeys(code);
         }
     }
 
@@ -93,6 +94,15 @@ public class KeyHandler implements KeyListener {
     private void fightingKeys(int code) {
         if (code == KeyEvent.VK_SPACE) {
             spacePressed = true;
+        }
+    }
+
+    private void endKeys(int code) {
+        if (code == KeyEvent.VK_Q) {
+            gameState.setQuit();
+        }
+        if (code == KeyEvent.VK_L) {
+            gameState.setLoading();
         }
     }
 

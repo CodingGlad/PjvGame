@@ -137,12 +137,21 @@ public abstract class Entity {
     }
 
     public void incrementCounters() {
-        if (++spriteCounter == entityType.getSpritesNumber() * 10) {
+        if (!activityType.equals(ActivityType.DYING) && ++spriteCounter == entityType.getSpritesNumber() * 10) {
             spriteCounter = 0;
             if (attackCounter < attackSpeed) {
                 ++attackCounter;
             }
         }
+    }
+
+    public boolean incrementDeathCounter() {
+        if (++spriteCounter == entityType.getSpritesNumber() * 10) {
+            spriteCounter = entityType.getSpritesNumber() * 10 - 3;
+            return true;
+        }
+
+        return false;
     }
 
     public void setIdleActivity() {
@@ -233,5 +242,9 @@ public abstract class Entity {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public void setDyingActivity() {
+        activityType = ActivityType.DYING;
     }
 }
