@@ -134,7 +134,6 @@ public class CollisionHandler {
         return playerSolidAreaWorld.intersects(enemySolidAreaWorld);
     }
 
-    //TODO mby refactor fr object methods (different service?)
     public boolean canEntityPickUpThisObject(Entity entity, GameObject object) {
         if (entity.getEntityType().equals(EntityType.HERO)) {
             if (object.getObjectType().equals(ObjectType.KEY)) {
@@ -145,7 +144,7 @@ public class CollisionHandler {
                     ((Chest) object).openChest();
                     ((Player) entity).decrementKeys();
                 }
-                return false; // TODO handle how to work with its different states and it being an object
+                return false;
             }
         }
 

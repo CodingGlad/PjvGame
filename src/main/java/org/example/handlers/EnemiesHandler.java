@@ -56,4 +56,8 @@ public class EnemiesHandler {
     public List<Enemy> getEnemies() {
         return enemies;
     }
+
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
 }

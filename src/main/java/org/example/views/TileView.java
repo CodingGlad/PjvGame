@@ -9,7 +9,6 @@ import java.util.Map;
 import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class TileView{
-    //TODO replace player coords somehow during rendering
     public void draw(Graphics2D g2, Map<Integer, Tile> tileSprites,
                      int[][] mapTileNum, Player player) {
         for (int i = 0; i < mapTileNum.length; ++i) {

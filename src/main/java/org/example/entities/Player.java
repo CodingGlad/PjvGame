@@ -56,7 +56,8 @@ public class Player extends Entity{
 
     public void fightUpdate(Enemy enemy) {
         incrementCounters();
-        if (attack()) {
+        if (keyHandler.isSpacePressed() && attack()) {
+            keyHandler.setSpacePressedToFalse();
             enemy.takeDamage(15);
         }
     }

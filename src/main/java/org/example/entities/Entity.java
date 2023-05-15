@@ -95,8 +95,6 @@ public abstract class Entity {
         return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
     }
 
-    //TODO mby change speed of sprites of different activites
-    //TODO probably just add another value to activity or entity enum
     private int getImageIndex() {
         return spriteCounter / 10;
     }
@@ -218,7 +216,6 @@ public abstract class Entity {
 
     public boolean attack() {
         if (attackCounter == attackSpeed) {
-            System.out.println("SKAP KUNDO");
             attackCounter = 0;
             return true;
         }
@@ -227,6 +224,10 @@ public abstract class Entity {
     }
 
     public void takeDamage(int damage) {
-        health -= damage;
+        if (health - damage >= 0) {
+            health -= damage;
+        } else {
+            health = 0;
+        }
     }
 }

@@ -106,12 +106,7 @@ public class GameHandler extends JPanel implements Runnable {
             }
             case SAVING -> saveGame();
             case LOADING -> loadGame();
-            case FIGHTING -> {
-                Enemy enemy = gameState.getOpponent();
-
-                player.fightUpdate(enemy);
-                enemy.fightUpdate(player);
-            }
+            case FIGHTING -> fight();
         }
     }
 
@@ -159,7 +154,7 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
-    public void loadGame() {
+    private void loadGame() {
         try {
             Reader reader = Files.newBufferedReader(Paths.get("save.json"));
 
@@ -179,6 +174,18 @@ public class GameHandler extends JPanel implements Runnable {
             gameState.setRunning();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private void fight() {
+        Enemy enemy = gameState.getOpponent();
+
+        player.fightUpdate(enemy);
+        enemy.fightUpdate(player);
+
+        if (enemy.getHealth() <= 0) {
+            enemiesHandler.removeEnemy(enemy);
+            gameState.setRunning();
         }
     }
 

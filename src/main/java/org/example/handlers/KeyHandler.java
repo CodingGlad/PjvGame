@@ -133,4 +133,12 @@ public class KeyHandler implements KeyListener {
     public boolean isRightPressed() {
         return rightPressed;
     }
+
+    public boolean isSpacePressed() {
+        return spacePressed;
+    }
+
+    public void setSpacePressedToFalse() {
+        spacePressed = false;
+    }
 }
