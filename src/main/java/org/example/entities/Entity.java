@@ -263,6 +263,7 @@ public abstract class Entity {
         json.put("entitytype", entityType.toString());
         json.put("health", health);
         json.put("horizontal", horizontalDirection.toString());
+        json.put("activity", activityType.toString());
 
         return json;
     }

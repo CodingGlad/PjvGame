@@ -133,22 +133,18 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     //player with inventory, objects, enemies
+    //TODO saving of null inventory
+    //TODO saving of game objects
+    //TODO loding of all this shit
 
     private void saveGame() {
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get("save.json"));
 
-            JsonObject playerJson = new JsonObject();
-
-            playerJson.put("worldx", player.getWorldX());
-            playerJson.put("worldy", player.getWorldY());
-            playerJson.put("keys", player.getNumberOfKeys());
-            playerJson.put("health", player.getHealth());
-            playerJson.put("horizontal", player.getHorizontalDirection().toString());
-
             JsonObject save = new JsonObject();
 
-            save.put("player", playerJson);
+            save.put("player", player.serializePlayer());
+            save.put("enemies", enemiesHandler.serializeEnemies().toArray());
 
             Jsoner.serialize(save, writer);
 

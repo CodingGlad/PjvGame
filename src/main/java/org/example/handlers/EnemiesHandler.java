@@ -1,10 +1,13 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.Enemy;
+import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.entities.types.EntityType;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -57,7 +60,7 @@ public class EnemiesHandler {
         return enemies;
     }
 
-    public void removeEnemy(Enemy enemy) {
-        enemies.remove(enemy);
+    public List<JsonObject> serializeEnemies() {
+        return enemies.stream().map(Entity::serializeEntity).toList();
     }
 }
