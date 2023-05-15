@@ -5,6 +5,7 @@ import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 import org.example.handlers.CollisionHandler;
+import org.example.handlers.InventoryHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
@@ -18,10 +19,13 @@ public class Player extends Entity{
     private final int screenY;
     private int numberOfKeys;
 
+    private final InventoryHandler inventory;
+
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
         super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
         this.keyHandler = keyHandler;
+        this.inventory = new InventoryHandler();
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
