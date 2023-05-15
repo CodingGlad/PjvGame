@@ -51,7 +51,7 @@ public abstract class Entity {
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
         this.attackCounter = 0;
-        this.health = 100;
+        this.health = this.entityType.getDefaultHealth();
         this.collisionsOn = false;
         this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
         this.visibleArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_VISIBLE_HEIGHT);

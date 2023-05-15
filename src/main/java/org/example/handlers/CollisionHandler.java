@@ -159,6 +159,7 @@ public class CollisionHandler {
             case WEAPON -> {
                 if (isEquipButtonPressed) {
                     entity.equipWeapon((Weapon) object);
+                    return true;
                 }
             }
 //              case HEART ->; TODO
