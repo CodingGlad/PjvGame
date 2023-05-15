@@ -4,6 +4,7 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Enemy;
 import org.example.entities.Player;
+import org.example.entities.types.HorizontalDirectionType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -142,6 +143,7 @@ public class GameHandler extends JPanel implements Runnable {
             playerJson.put("worldy", player.getWorldY());
             playerJson.put("keys", player.getNumberOfKeys());
             playerJson.put("health", player.getHealth());
+            playerJson.put("horizontal", player.getHorizontalDirection().toString());
 
             JsonObject save = new JsonObject();
 
@@ -169,12 +171,14 @@ public class GameHandler extends JPanel implements Runnable {
             BigDecimal y = (BigDecimal) playerInfo.get("worldy");
             BigDecimal keys = (BigDecimal) playerInfo.get("keys");
             BigDecimal health = (BigDecimal) playerInfo.get("health");
+            String horizontal = (String) playerInfo.get("horizontal");
 
             reader.close();
 
             player.loadCoordinations(x.intValue(), y.intValue());
             player.setNumberOfKeys(keys.intValue());
             player.setHealth(health.intValue());
+            player.setHorizontalDirection(HorizontalDirectionType.valueOf(horizontal));
 
             gameState.setRunning();
         } catch (Exception e) {
