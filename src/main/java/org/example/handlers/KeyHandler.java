@@ -93,7 +93,6 @@ public class KeyHandler implements KeyListener {
     private void fightingKeys(int code) {
         if (code == KeyEvent.VK_SPACE) {
             spacePressed = true;
-            System.out.println("SKAP TY KOKOT");
         }
     }
 

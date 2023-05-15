@@ -139,6 +139,7 @@ public class GameHandler extends JPanel implements Runnable {
             playerJson.put("worldx", player.getWorldX());
             playerJson.put("worldy", player.getWorldY());
             playerJson.put("keys", player.getNumberOfKeys());
+            playerJson.put("health", player.getHealth());
 
             JsonObject save = new JsonObject();
 
@@ -165,11 +166,13 @@ public class GameHandler extends JPanel implements Runnable {
             BigDecimal x = (BigDecimal) playerInfo.get("worldx");
             BigDecimal y = (BigDecimal) playerInfo.get("worldy");
             BigDecimal keys = (BigDecimal) playerInfo.get("keys");
+            BigDecimal health = (BigDecimal) playerInfo.get("health");
 
             reader.close();
 
             player.loadCoordinations(x.intValue(), y.intValue());
             player.setNumberOfKeys(keys.intValue());
+            player.setHealth(health.intValue());
 
             gameState.setRunning();
         } catch (Exception e) {

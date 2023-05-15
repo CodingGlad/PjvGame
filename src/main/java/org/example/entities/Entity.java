@@ -230,4 +230,8 @@ public abstract class Entity {
             health = 0;
         }
     }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

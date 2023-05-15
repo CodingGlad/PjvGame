@@ -89,4 +89,5 @@ public class Player extends Entity{
     public void decrementKeys() {
         --numberOfKeys;
     }
+
 }
