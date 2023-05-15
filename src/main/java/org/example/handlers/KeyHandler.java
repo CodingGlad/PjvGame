@@ -161,4 +161,8 @@ public class KeyHandler implements KeyListener {
     public void setSpacePressedToFalse() {
         spacePressed = false;
     }
+
+    public void setEquipButtonToFalse() {
+        equipButtonPressed = false;
+    }
 }

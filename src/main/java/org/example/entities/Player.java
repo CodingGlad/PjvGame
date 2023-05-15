@@ -40,6 +40,7 @@ public class Player extends Entity {
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
         collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed());
+        keyHandler.setEquipButtonToFalse();
         collisionHandler.checkEnemies(this);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
@@ -69,7 +70,7 @@ public class Player extends Entity {
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
-            enemy.takeDamage(getAttackDamage());
+            enemy.takeDamage(getPlayerAttackDamage());
         }
     }
 
@@ -105,15 +106,35 @@ public class Player extends Entity {
         return incrementDeathCounter();
     }
 
-    public void equipArmor(Armor armor) {
-        inventory.equipArmor(armor);
+    public Armor equipArmor(Armor armor) {
+        if (Objects.nonNull(inventory.getArmorEquipped())) {
+            Armor oldArmor = inventory.getArmorEquipped();
+            oldArmor.setWorldCoordinates(armor.getWorldCoordinates());
+            inventory.equipArmor(armor);
+
+            return oldArmor;
+        } else {
+            inventory.equipArmor(armor);
+
+            return null;
+        }
     }
 
-    public void equipWeapon(Weapon weapon) {
-        inventory.equipWeapon(weapon);
+    public Weapon equipWeapon(Weapon weapon) {
+        if (Objects.nonNull(inventory.getWeaponEquipped())) {
+            Weapon oldWeapon = inventory.getWeaponEquipped();
+            oldWeapon.setWorldCoordinates(oldWeapon.getWorldCoordinates());
+            inventory.equipWeapon(weapon);
+
+            return oldWeapon;
+        } else {
+            inventory.equipWeapon(weapon);
+
+            return null;
+        }
     }
 
-    public int getAttackDamage() {
+    public int getPlayerAttackDamage() {
         if (Objects.nonNull(inventory.getWeaponEquipped())) {
             return inventory.getWeaponEquipped().getWeaponType().getDamage() + super.getAttackDamage();
         } else {

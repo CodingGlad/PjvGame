@@ -120,8 +120,8 @@ public class GameHandler extends JPanel implements Runnable {
 
         if (!gameState.getStateType().equals(MAIN_MENU)) {
             tileHandler.drawTiles(g2, player);
-            objectHandler.drawObjects(g2, player);
             enemiesHandler.drawEnemies(g2, player);
+            objectHandler.drawObjects(g2, player);
             player.drawPlayer(g2);
         }
 

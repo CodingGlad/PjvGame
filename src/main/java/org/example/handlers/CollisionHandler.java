@@ -13,8 +13,10 @@ import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ObjectType;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import static org.example.entities.types.HorizontalDirectionType.*;
 import static org.example.entities.types.VerticalDirectionType.*;
@@ -24,6 +26,7 @@ public class CollisionHandler {
     private final TileHandler tileHandler;
     private final GameStateHandler gameState;
     private List<GameObject> objects;
+    private List<GameObject> objectsToAppend;
     private List<Enemy> enemies;
 
     public CollisionHandler(TileHandler tileHandler, GameStateHandler gameState, List<GameObject> objects, List<Enemy> enemies) {
@@ -31,6 +34,7 @@ public class CollisionHandler {
         this.objects = objects;
         this.enemies = enemies;
         this.gameState = gameState;
+        this.objectsToAppend = new ArrayList<>();
     }
 
     public void checkCollisions(Entity entity) {
@@ -115,9 +119,11 @@ public class CollisionHandler {
                 }
 
                 objectsIter.remove();
-                return;
             }
         }
+
+        objects.addAll(objectsToAppend);
+        objectsToAppend = new ArrayList<>();
     }
 
     public boolean handleIntersection(Rectangle entitySolidAreaWorld, Player entity, Rectangle itemSolidAreaWorld,
@@ -152,19 +158,24 @@ public class CollisionHandler {
             }
             case ARMOR -> {
                 if (isEquipButtonPressed) {
-                    entity.equipArmor((Armor) object);
+                    Armor droppedArmor = entity.equipArmor((Armor) object);
+                    if (Objects.nonNull(droppedArmor)) {
+                        objectsToAppend.add(droppedArmor);
+                    }
                     return true;
                 }
             }
             case WEAPON -> {
                 if (isEquipButtonPressed) {
-                    entity.equipWeapon((Weapon) object);
+                    Weapon droppedWeapon = entity.equipWeapon((Weapon) object);
+                    if (Objects.nonNull(droppedWeapon)) {
+                        objectsToAppend.add(droppedWeapon);
+                    }
                     return true;
                 }
             }
 //              case HEART ->; TODO
         }
-
         return false;
     }
 
