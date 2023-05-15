@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
@@ -40,10 +41,10 @@ public abstract class Entity {
     private int health;
     private final EntityView view;
 
-    protected Entity(WorldCoordinates worldCoordinates, int speed, int attackSpeed, EntityType entityType) {
+    protected Entity(WorldCoordinates worldCoordinates, EntityType entityType) {
         this.worldCoordinates = worldCoordinates;
-        this.speed = speed;
-        this.attackSpeed = attackSpeed;
+        this.speed = entityType.getDefaultSpeed();
+        this.attackSpeed = entityType.getDefaulAttackSpeed();
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
         this.sprites = new HashMap<>();
@@ -51,7 +52,7 @@ public abstract class Entity {
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
         this.attackCounter = 0;
-        this.health = this.entityType.getDefaultHealth();
+        this.health = entityType.getDefaultHealth();
         this.collisionsOn = false;
         this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
         this.visibleArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_VISIBLE_HEIGHT);
@@ -252,5 +253,17 @@ public abstract class Entity {
 
     public int getAttackDamage() {
         return attackDamage;
+    }
+
+    public JsonObject serializeEntity() {
+        JsonObject json = new JsonObject();
+
+        json.put("worldx", getWorldX());
+        json.put("worldy", getWorldY());
+        json.put("entitytype", entityType.toString());
+        json.put("health", health);
+        json.put("horizontal", horizontalDirection.toString());
+
+        return json;
     }
 }

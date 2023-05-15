@@ -132,6 +132,7 @@ public class GameHandler extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    //player with inventory, objects, enemies
 
     private void saveGame() {
         try {

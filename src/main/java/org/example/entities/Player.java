@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
@@ -26,7 +27,7 @@ public class Player extends Entity {
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
+        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), EntityType.HERO);
         this.keyHandler = keyHandler;
         this.inventory = new InventoryHandler();
 
@@ -155,5 +156,13 @@ public class Player extends Entity {
 
     public InventoryHandler getInventory() {
         return inventory;
+    }
+
+    public JsonObject serializePlayer() {
+        JsonObject json = serializeEntity();
+
+        json.put("inventory", inventory.serializeInventory());
+
+        return json;
     }
 }
