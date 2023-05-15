@@ -22,7 +22,6 @@ public class Player extends Entity {
     private final int screenX;
     private final int screenY;
     private int numberOfKeys;
-
     private final InventoryHandler inventory;
 
     //TODO cost default values change
@@ -131,5 +130,9 @@ public class Player extends Entity {
         } else {
             super.takeDamage(damage);
         }
+    }
+
+    public InventoryHandler getInventory() {
+        return inventory;
     }
 }

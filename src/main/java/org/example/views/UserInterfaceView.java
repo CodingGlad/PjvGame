@@ -39,6 +39,12 @@ public class UserInterfaceView{
         g2.drawString("x " + player.getNumberOfKeys(), 50, 40);
         g2.drawImage(heartImage, 460, 15, TILE_SIZE, TILE_SIZE, null);
         g2.drawString(String.valueOf(player.getHealth()), 420, 40);
+        if (Objects.nonNull(player.getInventory().getWeaponEquipped())) {
+            g2.drawImage(player.getInventory().getWeaponEquipped().getStaticImage(), 430, 52, TILE_SIZE, TILE_SIZE, null);
+        }
+        if (Objects.nonNull(player.getInventory().getArmorEquipped())) {
+            g2.drawImage(player.getInventory().getArmorEquipped().getStaticImage(), 460, 45, TILE_SIZE, TILE_SIZE, null);
+        }
     }
 
     public void drawMenu(Graphics2D g2, MenuSelectionType menuCursor) {
