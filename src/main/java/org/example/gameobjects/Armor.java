@@ -31,4 +31,7 @@ public class Armor extends GameObject {
         }
     }
 
+    public ArmorType getArmorType() {
+        return armorType;
+    }
 }

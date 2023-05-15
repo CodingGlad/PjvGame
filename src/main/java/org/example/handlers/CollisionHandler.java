@@ -5,8 +5,10 @@ import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
+import org.example.gameobjects.Armor;
 import org.example.gameobjects.Chest;
 import org.example.gameobjects.GameObject;
+import org.example.gameobjects.Weapon;
 import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ObjectType;
 
@@ -89,7 +91,7 @@ public class CollisionHandler {
         }
     }
 
-    public void checkObject(Entity entity) {
+    public void checkObject(Player entity, boolean isEquipButtonPressed) {
         Iterator<GameObject> objectsIter = objects.iterator();
 
         while (objectsIter.hasNext()) {
@@ -107,9 +109,9 @@ public class CollisionHandler {
 
             shiftSolidArea(entitySolidAreaWorld, entity, 1);
 
-            if (handleIntersection(entitySolidAreaWorld, entity, itemSolidAreaWorld, item)) {
+            if (handleIntersection(entitySolidAreaWorld, entity, itemSolidAreaWorld, item, isEquipButtonPressed)) {
                 if (entity.getEntityType().equals(EntityType.HERO) && item.getObjectType().equals(ObjectType.KEY)) {
-                    ((Player)entity).incrementKeys();
+                    (entity).incrementKeys();
                 }
 
                 objectsIter.remove();
@@ -118,13 +120,14 @@ public class CollisionHandler {
         }
     }
 
-    public boolean handleIntersection(Rectangle entitySolidAreaWorld, Entity entity, Rectangle itemSolidAreaWorld, GameObject item) {
+    public boolean handleIntersection(Rectangle entitySolidAreaWorld, Player entity, Rectangle itemSolidAreaWorld,
+                                      GameObject item, boolean isEquipButtonPressed) {
         if (entitySolidAreaWorld.intersects(itemSolidAreaWorld)) {
             if (item.hasCollisions()) {
                 entity.setCollisionsOn(true);
             }
 
-            return canEntityPickUpThisObject(entity, item);
+            return canEntityPickUpThisObject(entity, item, isEquipButtonPressed);
         }
 
         return false;
@@ -134,18 +137,31 @@ public class CollisionHandler {
         return playerSolidAreaWorld.intersects(enemySolidAreaWorld);
     }
 
-    public boolean canEntityPickUpThisObject(Entity entity, GameObject object) {
-        if (entity.getEntityType().equals(EntityType.HERO)) {
-            if (object.getObjectType().equals(ObjectType.KEY)) {
+    public boolean canEntityPickUpThisObject(Player entity, GameObject object, boolean isEquipButtonPressed) {
+        switch (object.getObjectType()) {
+            case KEY -> {
                 return true;
-            } else if (object.getObjectType().equals(ObjectType.CHEST)) {
+            }
+            case CHEST -> {
                 if (((Chest) object).getStateType().equals(ChestStateType.CLOSED) &&
-                        ((Player) entity).getNumberOfKeys() > 0) {
+                        entity.getNumberOfKeys() > 0) {
                     ((Chest) object).openChest();
-                    ((Player) entity).decrementKeys();
+                    entity.decrementKeys();
                 }
                 return false;
             }
+            case ARMOR -> {
+                if (isEquipButtonPressed) {
+                    entity.equipArmor((Armor) object);
+                    return true;
+                }
+            }
+            case WEAPON -> {
+                if (isEquipButtonPressed) {
+                    entity.equipWeapon((Weapon) object);
+                }
+            }
+//              case HEART ->; TODO
         }
 
         return false;

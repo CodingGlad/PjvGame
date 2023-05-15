@@ -1,12 +1,8 @@
 package org.example.handlers;
 
 import org.example.entities.Player;
-import org.example.gameobjects.Chest;
-import org.example.gameobjects.GameObject;
-import org.example.gameobjects.Key;
-import org.example.gameobjects.types.ChestType;
-import org.example.gameobjects.types.KeyType;
-import org.example.gameobjects.types.ObjectType;
+import org.example.gameobjects.*;
+import org.example.gameobjects.types.*;
 import org.example.utils.WorldCoordinates;
 import org.example.views.GameObjectView;
 
@@ -29,6 +25,9 @@ public class GameObjectHandler {
         displayedObjects.add(new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
         displayedObjects.add(new Chest(ObjectType.CHEST, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
         displayedObjects.add(new Chest(ObjectType.CHEST, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
+        displayedObjects.add(new Armor(ObjectType.ARMOR, ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
+        displayedObjects.add(new Armor(ObjectType.ARMOR, ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
+        displayedObjects.add(new Weapon(ObjectType.WEAPON, WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
     }
 
     public List<GameObject> getDisplayedObjects() {

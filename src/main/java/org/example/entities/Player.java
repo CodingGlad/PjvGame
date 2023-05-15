@@ -4,16 +4,20 @@ import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
+import org.example.gameobjects.Armor;
+import org.example.gameobjects.Weapon;
+import org.example.gameobjects.types.ArmorType;
 import org.example.handlers.CollisionHandler;
 import org.example.handlers.InventoryHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static org.example.utils.GameConstants.*;
 
-public class Player extends Entity{
+public class Player extends Entity {
     private final KeyHandler keyHandler;
     private final int screenX;
     private final int screenY;
@@ -32,6 +36,21 @@ public class Player extends Entity{
     }
 
     public void update(CollisionHandler collisionHandler) {
+        updateMovement();
+
+        setCollisionsOn(false);
+        collisionHandler.checkCollisions(this);
+        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed());
+        collisionHandler.checkEnemies(this);
+
+        if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
+            move();
+        }
+
+        incrementCounters();
+    }
+
+    private void updateMovement() {
         if (keyHandler.isUpPressed()) {
             setVerticalDirection(VerticalDirectionType.UP);
         } else if (keyHandler.isDownPressed()) {
@@ -45,24 +64,13 @@ public class Player extends Entity{
         } else {
             setIdleActivity();
         }
-
-        setCollisionsOn(false);
-        collisionHandler.checkCollisions(this);
-        collisionHandler.checkObject(this);
-        collisionHandler.checkEnemies(this);
-
-        if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
-            move();
-        }
-
-        incrementCounters();
     }
 
     public void fightUpdate(Enemy enemy) {
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
-            enemy.takeDamage(20);
+            enemy.takeDamage(getAttackDamage());
         }
     }
 
@@ -96,5 +104,32 @@ public class Player extends Entity{
 
     public boolean deathUpdate() {
         return incrementDeathCounter();
+    }
+
+    public void equipArmor(Armor armor) {
+        inventory.equipArmor(armor);
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        inventory.equipWeapon(weapon);
+    }
+
+    public int getAttackDamage() {
+        if (Objects.nonNull(inventory.getWeaponEquipped())) {
+            return inventory.getWeaponEquipped().getWeaponType().getDamage() + super.getAttackDamage();
+        } else {
+            return super.getAttackDamage();
+        }
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        if (Objects.nonNull(inventory.getArmorEquipped())) {
+            super.takeDamage(
+                    Math.round(damage * inventory.getArmorEquipped().getArmorType().getDamageReduction())
+            );
+        } else {
+            super.takeDamage(damage);
+        }
     }
 }

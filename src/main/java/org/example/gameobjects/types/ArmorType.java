@@ -1,7 +1,8 @@
 package org.example.gameobjects.types;
 
 public enum ArmorType {
-    STEEL(0.85f);
+    STEEL(0.65f),
+    COPPER(0.8f);
 
     private final float damageReduction;
 

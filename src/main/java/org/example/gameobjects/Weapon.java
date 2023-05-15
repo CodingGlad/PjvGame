@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Weapon extends GameObject {
     private WeaponType weaponType;
 
-    public Weapon(ObjectType objectType, WorldCoordinates worldCoordinates, WeaponType weaponType) {
+    public Weapon(ObjectType objectType, WeaponType weaponType, WorldCoordinates worldCoordinates) {
         super(objectType, worldCoordinates);
         if (objectType.equals(ObjectType.WEAPON)) {
             this.weaponType = weaponType;
@@ -24,9 +24,13 @@ public class Weapon extends GameObject {
     private void setWeaponImage() {
         try {
             setStaticImage(ImageIO.read(Objects.requireNonNull(
-                    getClass().getResourceAsStream("/sprites/objects/weapon/" + weaponType.toString().toLowerCase() + ".png"))));
+                    getClass().getResourceAsStream("/sprites/objects/weapon/" + weaponType.getName() + ".png"))));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public WeaponType getWeaponType() {
+        return weaponType;
     }
 }

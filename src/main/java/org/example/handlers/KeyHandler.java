@@ -18,6 +18,7 @@ public class KeyHandler implements KeyListener {
     private boolean leftPressed;
     private boolean rightPressed;
     private boolean spacePressed;
+    private boolean equipButtonPressed;
 
     private GameStateHandler gameState;
 
@@ -89,6 +90,9 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_P) {
             gameState.switchPause();
         }
+        if (code == KeyEvent.VK_E) {
+            equipButtonPressed = true;
+        }
     }
 
     private void fightingKeys(int code) {
@@ -125,6 +129,9 @@ public class KeyHandler implements KeyListener {
         if (code == KeyEvent.VK_SPACE) {
             spacePressed = false;
         }
+        if (code == KeyEvent.VK_E) {
+            equipButtonPressed = false;
+        }
     }
 
     public boolean isUpPressed() {
@@ -145,6 +152,10 @@ public class KeyHandler implements KeyListener {
 
     public boolean isSpacePressed() {
         return spacePressed;
+    }
+
+    public boolean isEquipButtonPressed() {
+        return equipButtonPressed;
     }
 
     public void setSpacePressedToFalse() {

@@ -33,6 +33,7 @@ public abstract class Entity {
     private int spriteCounter;
     private int attackSpeed;
     private int attackCounter;
+    private int attackDamage;
     protected Rectangle solidArea;
     protected Rectangle visibleArea;
     private boolean collisionsOn;
@@ -55,6 +56,7 @@ public abstract class Entity {
         this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
         this.visibleArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_VISIBLE_HEIGHT);
         this.view = new EntityView();
+        this.attackDamage = this.entityType.getDefaultDamage();
         getAllImages();
     }
 
@@ -246,5 +248,9 @@ public abstract class Entity {
 
     public void setDyingActivity() {
         activityType = ActivityType.DYING;
+    }
+
+    public int getAttackDamage() {
+        return attackDamage;
     }
 }
