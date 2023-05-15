@@ -55,4 +55,12 @@ public abstract class GameObject {
     public BufferedImage getStaticImage() {
         return staticImage;
     }
+
+    public void setWorldCoordinates(WorldCoordinates worldCoordinates) {
+        this.worldCoordinates = worldCoordinates;
+    }
+
+    public WorldCoordinates getWorldCoordinates() {
+        return worldCoordinates;
+    }
 }

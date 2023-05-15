@@ -24,7 +24,7 @@ public class Enemy extends Entity {
     public void fightUpdate(Player player) {
         incrementCounters();
         if (attack()) {
-            player.takeDamage(1);
+            player.takeDamage(getAttackDamage());
         }
     }
 

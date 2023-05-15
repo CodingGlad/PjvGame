@@ -4,30 +4,53 @@ import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
+import org.example.gameobjects.Armor;
+import org.example.gameobjects.Weapon;
+import org.example.gameobjects.types.ArmorType;
 import org.example.handlers.CollisionHandler;
+import org.example.handlers.InventoryHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
+import java.util.Objects;
 
 import static org.example.utils.GameConstants.*;
 
-public class Player extends Entity{
+public class Player extends Entity {
     private final KeyHandler keyHandler;
     private final int screenX;
     private final int screenY;
     private int numberOfKeys;
+    private final InventoryHandler inventory;
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
         super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
         this.keyHandler = keyHandler;
+        this.inventory = new InventoryHandler();
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
     }
 
     public void update(CollisionHandler collisionHandler) {
+        updateMovement();
+
+        setCollisionsOn(false);
+        collisionHandler.checkCollisions(this);
+        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed());
+        keyHandler.setEquipButtonToFalse();
+        collisionHandler.checkEnemies(this);
+
+        if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
+            move();
+        }
+
+        incrementCounters();
+    }
+
+    private void updateMovement() {
         if (keyHandler.isUpPressed()) {
             setVerticalDirection(VerticalDirectionType.UP);
         } else if (keyHandler.isDownPressed()) {
@@ -41,24 +64,13 @@ public class Player extends Entity{
         } else {
             setIdleActivity();
         }
-
-        setCollisionsOn(false);
-        collisionHandler.checkCollisions(this);
-        collisionHandler.checkObject(this);
-        collisionHandler.checkEnemies(this);
-
-        if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
-            move();
-        }
-
-        incrementCounters();
     }
 
     public void fightUpdate(Enemy enemy) {
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
-            enemy.takeDamage(20);
+            enemy.takeDamage(getPlayerAttackDamage());
         }
     }
 
@@ -92,5 +104,56 @@ public class Player extends Entity{
 
     public boolean deathUpdate() {
         return incrementDeathCounter();
+    }
+
+    public Armor equipArmor(Armor armor) {
+        if (Objects.nonNull(inventory.getArmorEquipped())) {
+            Armor oldArmor = inventory.getArmorEquipped();
+            oldArmor.setWorldCoordinates(armor.getWorldCoordinates());
+            inventory.equipArmor(armor);
+
+            return oldArmor;
+        } else {
+            inventory.equipArmor(armor);
+
+            return null;
+        }
+    }
+
+    public Weapon equipWeapon(Weapon weapon) {
+        if (Objects.nonNull(inventory.getWeaponEquipped())) {
+            Weapon oldWeapon = inventory.getWeaponEquipped();
+            oldWeapon.setWorldCoordinates(oldWeapon.getWorldCoordinates());
+            inventory.equipWeapon(weapon);
+
+            return oldWeapon;
+        } else {
+            inventory.equipWeapon(weapon);
+
+            return null;
+        }
+    }
+
+    public int getPlayerAttackDamage() {
+        if (Objects.nonNull(inventory.getWeaponEquipped())) {
+            return inventory.getWeaponEquipped().getWeaponType().getDamage() + super.getAttackDamage();
+        } else {
+            return super.getAttackDamage();
+        }
+    }
+
+    @Override
+    public void takeDamage(int damage) {
+        if (Objects.nonNull(inventory.getArmorEquipped())) {
+            super.takeDamage(
+                    Math.round(damage * inventory.getArmorEquipped().getArmorType().getDamageReduction())
+            );
+        } else {
+            super.takeDamage(damage);
+        }
+    }
+
+    public InventoryHandler getInventory() {
+        return inventory;
     }
 }
