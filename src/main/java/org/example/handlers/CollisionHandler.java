@@ -168,13 +168,13 @@ public class CollisionHandler {
     public void checkEnemies(Entity player) {
         for (Enemy en: enemies) {
             Rectangle enemySolidAreaWorld = new Rectangle(
-                    en.getSolidArea().x + en.getWorldX(),
-                    en.getSolidArea().y + en.getWorldY(),
+                    en.getVisibleArea().x + en.getWorldX(),
+                    en.getVisibleArea().y + en.getWorldY(),
                     en.getVisibleArea().width, en.getVisibleArea().height);
 
             Rectangle playerSolidAreaWorld = new Rectangle(
-                    player.getSolidArea().x + player.getWorldX(),
-                    player.getSolidArea().y + player.getWorldY(),
+                    player.getVisibleArea().x + player.getWorldX(),
+                    player.getVisibleArea().y + player.getWorldY(),
                     player.getVisibleArea().width, player.getVisibleArea().height);
 
             shiftSolidArea(playerSolidAreaWorld, player, 3);
