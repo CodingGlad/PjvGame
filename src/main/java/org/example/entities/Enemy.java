@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.utils.WorldCoordinates;
 
@@ -14,12 +15,16 @@ public class Enemy extends Entity {
     }
 
     public void update() {
-        incrementCounters();
+        if (!getActivityType().equals(ActivityType.DYING)) {
+            incrementCounters();
+        } else {
+            incrementDeathCounter();
+        }
     }
     public void fightUpdate(Player player) {
         incrementCounters();
         if (attack()) {
-            player.takeDamage(15);
+            player.takeDamage(1);
         }
     }
 

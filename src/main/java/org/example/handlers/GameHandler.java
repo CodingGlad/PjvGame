@@ -194,7 +194,7 @@ public class GameHandler extends JPanel implements Runnable {
         }
 
         if (enemy.getHealth() <= 0) {
-            enemiesHandler.removeEnemy(enemy);
+            enemy.setDyingActivity();
             gameState.setRunning();
         }
     }

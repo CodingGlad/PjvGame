@@ -58,7 +58,7 @@ public class Player extends Entity{
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
-            enemy.takeDamage(15);
+            enemy.takeDamage(20);
         }
     }
 

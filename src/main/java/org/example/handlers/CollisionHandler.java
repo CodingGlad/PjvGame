@@ -165,7 +165,7 @@ public class CollisionHandler {
     }
 
     public void checkEnemies(Entity player) {
-        for (Enemy en: enemies) {
+        for (Enemy en: enemies.stream().filter(en -> !en.getActivityType().equals(ActivityType.DYING)).toList()) {
             Rectangle enemySolidAreaWorld = new Rectangle(
                     en.getVisibleArea().x + en.getWorldX(),
                     en.getVisibleArea().y + en.getWorldY(),
