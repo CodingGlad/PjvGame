@@ -1,5 +1,6 @@
 package org.example.views;
 
+import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.gameobjects.Heart;
 import org.example.gameobjects.Key;
@@ -63,5 +64,21 @@ public class UserInterfaceView{
         if (Objects.nonNull(pauseCursor)) {
             g2.drawString(">", 50, pauseCursor.getY());
         }
+    }
+
+    public void drawFight(Graphics2D g2, Entity enemy, Player player) {
+        drawGame(g2, player);
+        g2.setFont(gameFont.deriveFont(18f));
+        g2.drawString(enemy.getEntityType().toString(), 400, 300);
+        g2.drawString("Health: " + enemy.getHealth(), 390, 325);
+    }
+
+    public void drawEnd(Graphics2D g2) {
+        g2.setFont(menuTitleFont);
+        g2.setColor(Color.BLACK);
+        g2.drawString("You have died!", 110, 100);
+        g2.setFont(gameFont);
+        g2.drawString("Press 'Q' to quit.", 170, 140);
+        g2.drawString("Press 'L' to load last save.", 130, 170);
     }
 }

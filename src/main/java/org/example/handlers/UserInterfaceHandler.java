@@ -1,6 +1,7 @@
 package org.example.handlers;
 
 
+import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.handlers.types.GameStateType;
 import org.example.handlers.types.MenuSelectionType;
@@ -19,11 +20,13 @@ public class UserInterfaceHandler {
 
     public void drawInterface(Graphics2D g2, GameStateType gameState,
                               MenuSelectionType menuCursor, PauseSelectionType pauseCursor,
-                              Player player) {
+                              Player player, Entity enemy) {
         switch (gameState) {
             case RUNNING -> view.drawGame(g2, player);
             case PAUSE -> view.drawPause(g2, pauseCursor);
             case MAIN_MENU -> view.drawMenu(g2, menuCursor);
+            case FIGHTING -> view.drawFight(g2, enemy, player);
+            case END -> view.drawEnd(g2);
         }
     }
 }

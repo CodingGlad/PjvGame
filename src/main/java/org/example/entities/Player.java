@@ -7,7 +7,6 @@ import org.example.entities.types.VerticalDirectionType;
 import org.example.handlers.CollisionHandler;
 import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
-import org.example.views.EntityView;
 
 import java.awt.*;
 
@@ -21,8 +20,7 @@ public class Player extends Entity{
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4,
-                EntityType.HERO, DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
+        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
         this.keyHandler = keyHandler;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
@@ -47,12 +45,21 @@ public class Player extends Entity{
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
         collisionHandler.checkObject(this);
+        collisionHandler.checkEnemies(this);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();
         }
 
-        incrementCounter();
+        incrementCounters();
+    }
+
+    public void fightUpdate(Enemy enemy) {
+        incrementCounters();
+        if (keyHandler.isSpacePressed() && attack()) {
+            keyHandler.setSpacePressedToFalse();
+            enemy.takeDamage(20);
+        }
     }
 
     public void drawPlayer(Graphics2D g2) {
@@ -81,5 +88,9 @@ public class Player extends Entity{
 
     public void decrementKeys() {
         --numberOfKeys;
+    }
+
+    public boolean deathUpdate() {
+        return incrementDeathCounter();
     }
 }

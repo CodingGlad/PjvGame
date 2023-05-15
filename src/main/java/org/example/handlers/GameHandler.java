@@ -2,7 +2,9 @@ package org.example.handlers;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
+import org.example.entities.Enemy;
 import org.example.entities.Player;
+import org.example.entities.types.HorizontalDirectionType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,10 +39,11 @@ public class GameHandler extends JPanel implements Runnable {
         keyHandler = new KeyHandler(gameState);
         objectHandler = new GameObjectHandler();
         tileHandler = new TileHandler();
-        collisionHandler = new CollisionHandler(tileHandler, objectHandler.getDisplayedObjects());
-        userInterfaceHandler = new UserInterfaceHandler();
         player = new Player(keyHandler);
         enemiesHandler = new EnemiesHandler();
+        collisionHandler = new CollisionHandler(tileHandler, gameState,
+                objectHandler.getDisplayedObjects(), enemiesHandler.getEnemies());
+        userInterfaceHandler = new UserInterfaceHandler();
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -104,6 +107,9 @@ public class GameHandler extends JPanel implements Runnable {
             }
             case SAVING -> saveGame();
             case LOADING -> loadGame();
+            case FIGHTING -> fight();
+            case DYING -> die();
+            case QUIT -> System.exit(0);
         }
     }
 
@@ -121,7 +127,7 @@ public class GameHandler extends JPanel implements Runnable {
 
         userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
                 gameState.getMenuCursorState(), gameState.getPauseCursorState(),
-                player);
+                player, gameState.getOpponent());
 
         g2.dispose();
     }
@@ -136,6 +142,8 @@ public class GameHandler extends JPanel implements Runnable {
             playerJson.put("worldx", player.getWorldX());
             playerJson.put("worldy", player.getWorldY());
             playerJson.put("keys", player.getNumberOfKeys());
+            playerJson.put("health", player.getHealth());
+            playerJson.put("horizontal", player.getHorizontalDirection().toString());
 
             JsonObject save = new JsonObject();
 
@@ -151,7 +159,7 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
-    public void loadGame() {
+    private void loadGame() {
         try {
             Reader reader = Files.newBufferedReader(Paths.get("save.json"));
 
@@ -162,11 +170,15 @@ public class GameHandler extends JPanel implements Runnable {
             BigDecimal x = (BigDecimal) playerInfo.get("worldx");
             BigDecimal y = (BigDecimal) playerInfo.get("worldy");
             BigDecimal keys = (BigDecimal) playerInfo.get("keys");
+            BigDecimal health = (BigDecimal) playerInfo.get("health");
+            String horizontal = (String) playerInfo.get("horizontal");
 
             reader.close();
 
             player.loadCoordinations(x.intValue(), y.intValue());
             player.setNumberOfKeys(keys.intValue());
+            player.setHealth(health.intValue());
+            player.setHorizontalDirection(HorizontalDirectionType.valueOf(horizontal));
 
             gameState.setRunning();
         } catch (Exception e) {
@@ -174,4 +186,26 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    private void fight() {
+        Enemy enemy = gameState.getOpponent();
+
+        player.fightUpdate(enemy);
+        enemy.fightUpdate(player);
+
+        if (player.getHealth() <= 0) {
+            gameState.setDying();
+            player.setDyingActivity();
+        }
+
+        if (enemy.getHealth() <= 0) {
+            enemy.setDyingActivity();
+            gameState.setRunning();
+        }
+    }
+
+    private void die() {
+        if (player.deathUpdate()) {
+            gameState.setEnd();
+        }
+    }
 }

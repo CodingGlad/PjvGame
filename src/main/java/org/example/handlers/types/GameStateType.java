@@ -5,5 +5,9 @@ public enum GameStateType {
     RUNNING,
     MAIN_MENU,
     SAVING,
-    LOADING
+    LOADING,
+    FIGHTING,
+    DYING,
+    END,
+    QUIT
 }

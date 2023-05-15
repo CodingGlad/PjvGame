@@ -2,7 +2,8 @@ package org.example.entities.types;
 
 public enum ActivityType {
     IDLE("idle"),
-    WALK("walk");
+    WALK("walk"),
+    DYING("dying");
 
     private final String activityString;
 

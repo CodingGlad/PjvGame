@@ -19,6 +19,7 @@ public abstract class Entity {
     protected static final int DEFAULT_SOLID_Y = 25;
     protected static final int DEFAULT_SOLID_WIDTH = 12;
     protected static final int DEFAULT_SOLID_HEIGHT = 4;
+    protected static final int DEFAULT_VISIBLE_HEIGHT = 16;
     private WorldCoordinates worldCoordinates;
     private final int speed;
     private final EntityType entityType;
@@ -30,24 +31,29 @@ public abstract class Entity {
     private HorizontalDirectionType horizontalDirection;
 
     private int spriteCounter;
+    private int attackSpeed;
+    private int attackCounter;
     protected Rectangle solidArea;
+    protected Rectangle visibleArea;
     private boolean collisionsOn;
     private int health;
     private final EntityView view;
 
-    protected Entity(WorldCoordinates worldCoordinates, int speed, EntityType entityType,
-                  int solidAreaX, int solidAreaY, int solidWidth, int solidHeight) {
+    protected Entity(WorldCoordinates worldCoordinates, int speed, int attackSpeed, EntityType entityType) {
         this.worldCoordinates = worldCoordinates;
         this.speed = speed;
+        this.attackSpeed = attackSpeed;
         this.entityType = entityType;
         this.activityType = ActivityType.IDLE;
         this.sprites = new HashMap<>();
         this.verticalDirection = VerticalDirectionType.NONE;
         this.horizontalDirection = HorizontalDirectionType.LEFT;
         this.spriteCounter = 0;
+        this.attackCounter = 0;
         this.health = 100;
         this.collisionsOn = false;
-        this.solidArea = new Rectangle(solidAreaX, solidAreaY, solidWidth, solidHeight);
+        this.solidArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_SOLID_HEIGHT);
+        this.visibleArea = new Rectangle(DEFAULT_SOLID_X, DEFAULT_SOLID_Y, DEFAULT_SOLID_WIDTH, DEFAULT_VISIBLE_HEIGHT);
         this.view = new EntityView();
         getAllImages();
     }
@@ -89,8 +95,6 @@ public abstract class Entity {
         return sprites.get(getMapKeyString(this.activityType, horizontalDirection)).get(getImageIndex());
     }
 
-    //TODO mby change speed of sprites of different activites
-    //TODO probably just add another value to activity or entity enum
     private int getImageIndex() {
         return spriteCounter / 10;
     }
@@ -132,10 +136,22 @@ public abstract class Entity {
         this.horizontalDirection = horizontalDirection;
     }
 
-    public void incrementCounter() {
-        if (++spriteCounter == entityType.getSpritesNumber() * 10) {
+    public void incrementCounters() {
+        if (!activityType.equals(ActivityType.DYING) && ++spriteCounter == entityType.getSpritesNumber() * 10) {
             spriteCounter = 0;
+            if (attackCounter < attackSpeed) {
+                ++attackCounter;
+            }
         }
+    }
+
+    public boolean incrementDeathCounter() {
+        if (++spriteCounter == entityType.getSpritesNumber() * 10) {
+            spriteCounter = entityType.getSpritesNumber() * 10 - 3;
+            return true;
+        }
+
+        return false;
     }
 
     public void setIdleActivity() {
@@ -174,6 +190,10 @@ public abstract class Entity {
         return solidArea;
     }
 
+    public Rectangle getVisibleArea() {
+        return visibleArea;
+    }
+
     public void move() {
         switch (getVerticalDirection()) {
             case UP -> setWorldY(getWorldY() - getSpeed());
@@ -201,5 +221,30 @@ public abstract class Entity {
 
     public int getHealth() {
         return health;
+    }
+
+    public boolean attack() {
+        if (attackCounter == attackSpeed) {
+            attackCounter = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void takeDamage(int damage) {
+        if (health - damage >= 0) {
+            health -= damage;
+        } else {
+            health = 0;
+        }
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setDyingActivity() {
+        activityType = ActivityType.DYING;
     }
 }
