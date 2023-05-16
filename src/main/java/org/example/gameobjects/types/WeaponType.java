@@ -1,7 +1,8 @@
 package org.example.gameobjects.types;
 
 public enum WeaponType {
-    STEEL_SWORD("steelsword", 8);
+    STEEL_SWORD("steelsword", 8),
+    GOLDEN_SWORD("goldensword", 13);
 
     private final String name;
     private final int damage;

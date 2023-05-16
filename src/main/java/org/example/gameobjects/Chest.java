@@ -59,11 +59,11 @@ public class Chest extends GameObject{
     public GameObject generateLoot() {
         Random rand = new Random();
 
-        int randomSelection = Math.abs(rand.nextInt() % 4);
+        int randomSelection = Math.abs(rand.nextInt() % 3);
 
         if (randomSelection == 0) {
             return generateWeapon(rand);
-        } else if (randomSelection == 3) {
+        } else if (randomSelection == 2) {
             return generateArmor(rand);
         } else {
             return new Heart(getWorldCoordinates());
@@ -71,7 +71,12 @@ public class Chest extends GameObject{
     }
 
     private GameObject generateWeapon(Random rand) {
-        return new Weapon(WeaponType.STEEL_SWORD, getWorldCoordinates());
+        int randomSelection = Math.abs(rand.nextInt() % 3);
+        if (randomSelection == 0) {
+            return new Weapon(WeaponType.GOLDEN_SWORD, getWorldCoordinates());
+        } else {
+            return new Weapon(WeaponType.STEEL_SWORD, getWorldCoordinates());
+        }
     }
 
     private GameObject generateArmor(Random rand) {
