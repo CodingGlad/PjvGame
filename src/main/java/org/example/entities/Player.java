@@ -31,7 +31,7 @@ public class Player extends Entity {
         super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), EntityType.HERO);
         this.keyHandler = keyHandler;
         this.inventory = new InventoryHandler();
-        this.numberOfKeys = 100;
+        this.numberOfKeys = 0;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);

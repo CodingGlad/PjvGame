@@ -1,6 +1,7 @@
 package org.example.handlers;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
+import com.github.cliftonlabs.json_simple.JsonException;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Enemy;
@@ -156,11 +157,7 @@ public class GameHandler extends JPanel implements Runnable {
         try {
             Reader reader = Files.newBufferedReader(Paths.get("save.json"));
 
-            JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
-
-            player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
-            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
-            objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
+            deserializeAll(reader);
 
             reader.close();
 
@@ -202,8 +199,34 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     private void startNewGame() {
-        enemiesHandler.setDefaultEnemies();
-        objectHandler.setDefaultObjects();
+        loadNewGame();
         gameState.setRunning();
+    }
+
+    private void loadNewGame() {
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/maps/map1/settings.json"));
+
+            deserializeAll(reader);
+
+            reader.close();
+
+            gameState.setRunning();
+
+            reader.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deserializeAll(Reader reader) {
+        try {
+            JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
+            player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
+            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
+            objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
+        } catch (JsonException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

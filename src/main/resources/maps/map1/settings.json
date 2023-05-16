@@ -1,0 +1,135 @@
+{
+  "objects": [
+    {
+      "worldx": 736,
+      "worldy": 1280,
+      "keytype": "GOLD",
+      "objecttype": "KEY"
+    },
+    {
+      "worldx": 736,
+      "worldy": 800,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 768,
+      "worldy": 800,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 800,
+      "worldy": 800,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 832,
+      "worldy": 800,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 864,
+      "worldy": 800,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 736,
+      "worldy": 224,
+      "chesttype": "BIG",
+      "objecttype": "CHEST_CLOSED"
+    },
+    {
+      "worldx": 800,
+      "worldy": 320,
+      "armortype": "STEEL",
+      "objecttype": "ARMOR"
+    },
+    {
+      "worldx": 800,
+      "worldy": 352,
+      "armortype": "COPPER",
+      "objecttype": "ARMOR"
+    },
+    {
+      "worldx": 800,
+      "worldy": 416,
+      "weapontype": "STEEL_SWORD",
+      "objecttype": "WEAPON"
+    },
+    {
+      "worldx": 800,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 832,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 864,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 896,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 928,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 960,
+      "worldy": 384,
+      "objecttype": "HEART"
+    },
+    {
+      "worldx": 896,
+      "worldy": 432,
+      "keytype": "GOLD",
+      "objecttype": "KEY"
+    },
+    {
+      "worldx": 928,
+      "worldy": 432,
+      "keytype": "GOLD",
+      "objecttype": "KEY"
+    },
+    {
+      "worldx": 960,
+      "worldy": 432,
+      "keytype": "GOLD",
+      "objecttype": "KEY"
+    }
+  ],
+  "enemies": [
+    {
+      "horizontal": "LEFT",
+      "worldx": 736,
+      "entitytype": "DEMON",
+      "activity": "IDLE",
+      "worldy": 1224,
+      "health": 45
+    }
+  ],
+  "player": {
+    "horizontal": "LEFT",
+    "worldx": 736,
+    "entitytype": "HERO",
+    "activity": "IDLE",
+    "worldy": 672,
+    "health": 100,
+    "inventory": {
+      "weapon": null,
+      "armor": null
+    },
+    "numberofkeys": 0
+  }
+}

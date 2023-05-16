@@ -19,7 +19,7 @@ import static org.example.utils.GameConstants.*;
 
 public class TileHandler {
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";
-    private static final String MAP_LAYOUT_PATH = "/maps/";
+    private static final String MAP_LAYOUT_PATH = "/maps/map1/";
 
     private Map<Integer, Tile> tileSprites;
     private int[][] mapTileNum;
@@ -50,7 +50,7 @@ public class TileHandler {
     }
 
     private void loadMap() {
-        InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map02.txt");
+        InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map01.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         for(int i = 0; i < MAX_WORLD_ROW; ++i) {
