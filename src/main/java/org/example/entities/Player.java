@@ -14,6 +14,7 @@ import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import static org.example.utils.GameConstants.*;
@@ -162,6 +163,7 @@ public class Player extends Entity {
         JsonObject json = serializeEntity();
 
         json.put("inventory", inventory.serializeInventory());
+        json.put("numberofkeys", numberOfKeys);
 
         return json;
     }
@@ -169,6 +171,7 @@ public class Player extends Entity {
     public void deserializeAndSetPlayer(JsonObject json) {
         super.deserializeAndSetEntity(json);
 
+        numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
         inventory.deserializeAndSetInventory(json);
     }
 }
