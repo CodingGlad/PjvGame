@@ -12,7 +12,6 @@ import java.util.Random;
 
 public class Chest extends GameObject{
     private ChestType chestType;
-//    private ChestStateType stateType;
 
     public Chest(ObjectType objectType, ChestType chestType, WorldCoordinates worldCoordinates) {
         super(objectType, worldCoordinates);
