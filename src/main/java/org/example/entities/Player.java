@@ -172,6 +172,6 @@ public class Player extends Entity {
         super.deserializeAndSetEntity(json);
 
         numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
-        inventory.deserializeAndSetInventory(json);
+        inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"));
     }
 }

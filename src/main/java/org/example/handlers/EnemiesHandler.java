@@ -1,13 +1,16 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.Enemy;
 import org.example.entities.Entity;
 import org.example.entities.Player;
 import org.example.entities.types.EntityType;
+import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,11 +21,10 @@ public class EnemiesHandler {
 
     public EnemiesHandler() {
         enemies = new LinkedList<>();
-        setDefaultEnemies();
     }
 
-    private void setDefaultEnemies() {
-        enemies.add(new Enemy(EntityType.DEMON));
+    public void setDefaultEnemies() {
+        enemies.add(new Enemy(EntityType.DEMON, new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 39)));
     }
 
     public void update() {
@@ -61,6 +63,14 @@ public class EnemiesHandler {
     }
 
     public Object[] serializeEnemies() {
-        return enemies.stream().map(Entity::serializeEntity).toArray();
+        return enemies.stream().map(Enemy::serializeEnemy).toArray();
+    }
+
+    public void deserializeEnemies(JsonArray jsonEnemies) {
+        jsonEnemies.forEach(en -> addDeserializedEnemy((JsonObject) en));
+    }
+
+    private void addDeserializedEnemy(JsonObject json) {
+        enemies.add(Enemy.deserializeAndSetEnemy( json));
     }
 }

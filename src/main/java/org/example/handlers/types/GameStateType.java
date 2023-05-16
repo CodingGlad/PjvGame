@@ -9,5 +9,6 @@ public enum GameStateType {
     FIGHTING,
     DYING,
     END,
-    QUIT
+    QUIT,
+    STARTING
 }

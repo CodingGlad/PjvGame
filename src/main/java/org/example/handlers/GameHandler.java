@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Enemy;
@@ -110,6 +111,7 @@ public class GameHandler extends JPanel implements Runnable {
             case FIGHTING -> fight();
             case DYING -> die();
             case QUIT -> System.exit(0);
+            case STARTING -> startNewGame();
         }
     }
 
@@ -162,20 +164,10 @@ public class GameHandler extends JPanel implements Runnable {
 
             JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
 
-            JsonObject playerInfo = (JsonObject) parser.get("player");
-
-            BigDecimal x = (BigDecimal) playerInfo.get("worldx");
-            BigDecimal y = (BigDecimal) playerInfo.get("worldy");
-            BigDecimal keys = (BigDecimal) playerInfo.get("keys");
-            BigDecimal health = (BigDecimal) playerInfo.get("health");
-            String horizontal = (String) playerInfo.get("horizontal");
+            player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
+            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
 
             reader.close();
-
-            player.loadCoordinations(x.intValue(), y.intValue());
-            player.setNumberOfKeys(keys.intValue());
-            player.setHealth(health.intValue());
-            player.setHorizontalDirection(HorizontalDirectionType.valueOf(horizontal));
 
             gameState.setRunning();
         } catch (Exception e) {
@@ -204,5 +196,10 @@ public class GameHandler extends JPanel implements Runnable {
         if (player.deathUpdate()) {
             gameState.setEnd();
         }
+    }
+
+    private void startNewGame() {
+        enemiesHandler.setDefaultEnemies();
+        gameState.setRunning();
     }
 }

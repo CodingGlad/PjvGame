@@ -256,7 +256,7 @@ public abstract class Entity {
         return attackDamage;
     }
 
-    public JsonObject serializeEntity() {
+    protected JsonObject serializeEntity() {
         JsonObject json = new JsonObject();
 
         json.put("worldx", getWorldX());
@@ -269,7 +269,7 @@ public abstract class Entity {
         return json;
     }
 
-    public void deserializeAndSetEntity(JsonObject json) {
+    protected void deserializeAndSetEntity(JsonObject json) {
         worldCoordinates = new WorldCoordinates(
                 ((BigDecimal) json.get("worldx")).intValue(),
                 ((BigDecimal) json.get("worldy")).intValue());
