@@ -8,6 +8,7 @@ import org.example.utils.WorldCoordinates;
 import org.example.views.GameObjectView;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +44,7 @@ public class GameObjectHandler {
     }
 
     public Object[] serializeObjects() {
-        return displayedObjects.stream().map(obj -> useObjectsSerializer(obj)).toArray();
+        return displayedObjects.stream().map(this::useObjectsSerializer).toArray();
     }
 
     public JsonObject useObjectsSerializer(GameObject obj) {

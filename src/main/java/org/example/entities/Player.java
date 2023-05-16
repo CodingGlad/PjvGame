@@ -165,4 +165,10 @@ public class Player extends Entity {
 
         return json;
     }
+
+    public void deserializeAndSetPlayer(JsonObject json) {
+        super.deserializeAndSetEntity(json);
+
+        inventory.deserializeAndSetInventory(json);
+    }
 }

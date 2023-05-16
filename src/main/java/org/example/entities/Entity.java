@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 
@@ -266,5 +267,14 @@ public abstract class Entity {
         json.put("activity", activityType.toString());
 
         return json;
+    }
+
+    public void deserializeAndSetEntity(JsonObject json) {
+        worldCoordinates = new WorldCoordinates(
+                ((BigDecimal) json.get("worldx")).intValue(),
+                ((BigDecimal) json.get("worldy")).intValue());
+        health = ((BigDecimal) json.get("health")).intValue();
+        horizontalDirection = HorizontalDirectionType.valueOf((String) json.get("horizontal"));
+        activityType = ActivityType.valueOf((String) json.get("activity"));
     }
 }
