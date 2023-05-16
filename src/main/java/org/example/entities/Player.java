@@ -70,12 +70,16 @@ public class Player extends Entity {
         }
     }
 
-    public void fightUpdate(Enemy enemy) {
+    public boolean fightUpdate(Enemy enemy) {
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
             enemy.takeDamage(getPlayerAttackDamage());
+
+            return true;
         }
+
+        return false;
     }
 
     public void drawPlayer(Graphics2D g2) {

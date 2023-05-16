@@ -34,6 +34,7 @@ public class GameHandler extends JPanel implements Runnable {
     private final CollisionHandler collisionHandler;
     private final UserInterfaceHandler userInterfaceHandler;
     private final EnemiesHandler enemiesHandler;
+    private final ParticleHandler particleHandler;
 
     public GameHandler() {
         gameState = new GameStateHandler();
@@ -45,6 +46,7 @@ public class GameHandler extends JPanel implements Runnable {
         collisionHandler = new CollisionHandler(tileHandler, gameState,
                 objectHandler.getDisplayedObjects(), enemiesHandler.getEnemies());
         userInterfaceHandler = new UserInterfaceHandler();
+        particleHandler = new ParticleHandler();
 
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         this.setBackground(Color.black);
@@ -175,7 +177,10 @@ public class GameHandler extends JPanel implements Runnable {
     private void fight() {
         Enemy enemy = gameState.getOpponent();
 
-        player.fightUpdate(enemy);
+        if (player.fightUpdate(enemy)) {
+
+        }
+
         enemy.fightUpdate(player);
 
         if (player.getHealth() <= 0) {
