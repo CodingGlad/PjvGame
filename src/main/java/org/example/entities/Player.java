@@ -31,6 +31,7 @@ public class Player extends Entity {
         super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), EntityType.HERO);
         this.keyHandler = keyHandler;
         this.inventory = new InventoryHandler();
+        this.numberOfKeys = 100;
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
@@ -41,8 +42,9 @@ public class Player extends Entity {
 
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
-        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed());
+        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed(), keyHandler.isUseButtonPressed());
         keyHandler.setEquipButtonToFalse();
+        keyHandler.setUseButtonToFalse();
         collisionHandler.checkEnemies(this);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
@@ -90,10 +92,6 @@ public class Player extends Entity {
 
     public int getNumberOfKeys() {
         return numberOfKeys;
-    }
-
-    public void setNumberOfKeys(int numberOfKeys) {
-        this.numberOfKeys = numberOfKeys;
     }
 
     public void incrementKeys() {
@@ -173,5 +171,9 @@ public class Player extends Entity {
 
         numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
         inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"));
+    }
+
+    public void restorePlayersHealth(int health) {
+        super.restoreHealth(health);
     }
 }

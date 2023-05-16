@@ -7,6 +7,7 @@ import org.example.utils.WorldCoordinates;
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Random;
 
 public class Heart extends GameObject {
     public Heart(WorldCoordinates worldCoordinates) {
@@ -25,6 +26,12 @@ public class Heart extends GameObject {
 
     public JsonObject serializeHeart() {
         return super.serializeGameObject();
+    }
+
+    public int restoreHealth() {
+        Random rand = new Random();
+
+        return Math.abs(rand.nextInt() % 30) + 10;
     }
 
     public static Heart deserializeAndCreateHeart(JsonObject json) {

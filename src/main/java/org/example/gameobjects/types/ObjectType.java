@@ -2,7 +2,8 @@ package org.example.gameobjects.types;
 
 public enum ObjectType {
     KEY("key", false, true),
-    CHEST("chest", true, false),
+    CHEST_OPENED("opened", false, false),
+    CHEST_CLOSED("closed", true, false),
     HEART("heart", false, true),
     WEAPON("weapon", false, true),
     ARMOR("armor", false, true);
