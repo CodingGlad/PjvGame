@@ -29,11 +29,12 @@ public class GameObjectHandler {
 
     public void setDefaultObjects() {
         displayedObjects.add(new Key(KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ChestType.BIG, ChestStateType.CLOSED, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ChestType.BIG, ChestStateType.CLOSED, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
         displayedObjects.add(new Armor(ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
         displayedObjects.add(new Armor(ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
-        displayedObjects.add(new Weapon(WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Weapon(WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 13 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
     }
 
     public List<GameObject> getDisplayedObjects() {
@@ -58,7 +59,7 @@ public class GameObjectHandler {
             case ARMOR -> {
                 return ((Armor) obj).serializeArmor();
             }
-            case CHEST -> {
+            case CHEST_OPENED, CHEST_CLOSED -> {
                 return ((Chest) obj).serializeChest();
             }
             case HEART -> {
@@ -80,7 +81,7 @@ public class GameObjectHandler {
         switch (ObjectType.valueOf((String) json.get("objecttype"))) {
             case WEAPON -> displayedObjects.add(Weapon.deserializeAndCreateWeapon(json));
             case HEART -> displayedObjects.add(Heart.deserializeAndCreateHeart(json));
-            case CHEST -> displayedObjects.add(Chest.deserializeAndCreateChest(json));
+            case CHEST_CLOSED, CHEST_OPENED -> displayedObjects.add(Chest.deserializeAndCreateChest(json));
             case ARMOR -> displayedObjects.add(Armor.deserializeAndCreateArmor(json));
             case KEY -> displayedObjects.add(Key.deserializeAndCreateKey(json));
         }

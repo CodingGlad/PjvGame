@@ -41,8 +41,9 @@ public class Player extends Entity {
 
         setCollisionsOn(false);
         collisionHandler.checkCollisions(this);
-        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed());
+        collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed(), keyHandler.isUseButtonPressed());
         keyHandler.setEquipButtonToFalse();
+        keyHandler.setUseButtonToFalse();
         collisionHandler.checkEnemies(this);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {

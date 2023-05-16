@@ -13,13 +13,16 @@ import java.util.Objects;
 
 public class Chest extends GameObject{
     private ChestType chestType;
-    private ChestStateType stateType;
+//    private ChestStateType stateType;
 
-    public Chest(ChestType chestType, ChestStateType chestState, WorldCoordinates worldCoordinates) {
-        super(ObjectType.CHEST, worldCoordinates);
-        this.chestType = chestType;
-        this.stateType = chestState;
-        upsertChestClosedImage();
+    public Chest(ObjectType objectType, ChestType chestType, WorldCoordinates worldCoordinates) {
+        super(objectType, worldCoordinates);
+        if (objectType.equals(ObjectType.CHEST_OPENED) || objectType.equals(ObjectType.CHEST_CLOSED)) {
+            this.chestType = chestType;
+            upsertChestClosedImage();
+        } else {
+            throw new IllegalStateException("Attempt to crate object " + objectType.getName() + " as an instance of a chest.");
+        }
     }
 
     private void upsertChestClosedImage() {
@@ -32,19 +35,16 @@ public class Chest extends GameObject{
     }
 
     private String getSpriteName() {
-        return chestType.getName() + "-" + stateType.getState();
+        return chestType.getName() + "-" + getObjectType().getName();
     }
 
     public ChestType getChestType() {
         return chestType;
     }
 
-    public ChestStateType getStateType() {
-        return stateType;
-    }
-
+    @Deprecated
     public void openChest() {
-        stateType = ChestStateType.OPENED;
+//        stateType = ChestStateType.OPENED;
 
         upsertChestClosedImage();
     }
@@ -53,15 +53,14 @@ public class Chest extends GameObject{
         JsonObject json = super.serializeGameObject();
 
         json.put("chesttype", chestType.toString());
-        json.put("state", stateType.toString());
 
         return json;
     }
 
     public static Chest deserializeAndCreateChest(JsonObject json) {
         return new Chest(
+                ObjectType.valueOf((String) json.get("objecttype")),
                 ChestType.valueOf((String) json.get("chesttype")),
-                ChestStateType.valueOf((String) json.get("state")),
                 new WorldCoordinates(json));
     }
 }
