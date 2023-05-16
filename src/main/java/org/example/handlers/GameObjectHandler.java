@@ -30,6 +30,10 @@ public class GameObjectHandler {
     public void setDefaultObjects() {
         displayedObjects.add(new Key(KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
         displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(24 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(25 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(26 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(27 * TILE_SIZE, 25 * TILE_SIZE)));
         displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
         displayedObjects.add(new Armor(ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
         displayedObjects.add(new Armor(ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));

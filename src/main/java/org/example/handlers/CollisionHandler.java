@@ -157,7 +157,7 @@ public class CollisionHandler {
                             ((Chest) object).getChestType(),
                             object.getWorldCoordinates()));
 
-                    objectsToAppend.add(new Heart(object.getWorldCoordinates()));
+                    objectsToAppend.add(((Chest) object).generateLoot());
 
                     entity.decrementKeys();
                     return true;

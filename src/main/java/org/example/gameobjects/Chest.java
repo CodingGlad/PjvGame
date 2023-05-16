@@ -1,15 +1,14 @@
 package org.example.gameobjects;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
-import org.example.gameobjects.types.ChestStateType;
-import org.example.gameobjects.types.ChestType;
-import org.example.gameobjects.types.ObjectType;
+import org.example.gameobjects.types.*;
 import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Random;
 
 public class Chest extends GameObject{
     private ChestType chestType;
@@ -42,13 +41,6 @@ public class Chest extends GameObject{
         return chestType;
     }
 
-    @Deprecated
-    public void openChest() {
-//        stateType = ChestStateType.OPENED;
-
-        upsertChestClosedImage();
-    }
-
     public JsonObject serializeChest() {
         JsonObject json = super.serializeGameObject();
 
@@ -62,5 +54,32 @@ public class Chest extends GameObject{
                 ObjectType.valueOf((String) json.get("objecttype")),
                 ChestType.valueOf((String) json.get("chesttype")),
                 new WorldCoordinates(json));
+    }
+
+    public GameObject generateLoot() {
+        Random rand = new Random();
+
+        int randomSelection = Math.abs(rand.nextInt() % 4);
+
+        if (randomSelection == 0) {
+            return generateWeapon(rand);
+        } else if (randomSelection == 3) {
+            return generateArmor(rand);
+        } else {
+            return new Heart(getWorldCoordinates());
+        }
+    }
+
+    private GameObject generateWeapon(Random rand) {
+        return new Weapon(WeaponType.STEEL_SWORD, getWorldCoordinates());
+    }
+
+    private GameObject generateArmor(Random rand) {
+        int randomSelection = Math.abs(rand.nextInt() % 4);
+        if (randomSelection == 0) {
+            return new Armor(ArmorType.STEEL, getWorldCoordinates());
+        } else {
+            return new Armor(ArmorType.COPPER, getWorldCoordinates());
+        }
     }
 }
