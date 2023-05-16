@@ -1,6 +1,7 @@
 package org.example.gameobjects;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
+import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
@@ -37,5 +38,11 @@ public class Weapon extends GameObject {
         json.put("weapontype", weaponType.toString());
 
         return json;
+    }
+
+    public static Weapon deserializeAndCreateWeapon(JsonObject json) {
+        return new Weapon(WeaponType.valueOf((String) json.get("weapontype")),
+                new WorldCoordinates(json)
+        );
     }
 }

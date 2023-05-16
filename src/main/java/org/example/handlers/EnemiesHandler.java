@@ -71,6 +71,6 @@ public class EnemiesHandler {
     }
 
     private void addDeserializedEnemy(JsonObject json) {
-        enemies.add(Enemy.deserializeAndSetEnemy( json));
+        enemies.add(Enemy.deserializeAndSetEnemy(json));
     }
 }

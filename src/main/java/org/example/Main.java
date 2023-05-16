@@ -7,7 +7,6 @@ public class Main {
         GameHandler game = new GameHandler();
 
         game.setupWindow();
-        game.setupGame();
         game.startGameThread();
     }
 }

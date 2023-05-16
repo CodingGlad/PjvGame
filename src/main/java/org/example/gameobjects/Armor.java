@@ -7,6 +7,7 @@ import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Armor extends GameObject {
@@ -37,5 +38,11 @@ public class Armor extends GameObject {
         json.put("armortype", armorType.toString());
 
         return json;
+    }
+
+    public static Armor deserializeAndCreateArmor(JsonObject json) {
+        return new Armor(ArmorType.valueOf((String) json.get("armortype")),
+                new WorldCoordinates(json)
+        );
     }
 }

@@ -66,10 +66,6 @@ public class GameHandler extends JPanel implements Runnable {
         window.setVisible(true);
     }
 
-    public void setupGame() {
-        objectHandler.setDefaultObjects();
-    }
-
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -166,6 +162,7 @@ public class GameHandler extends JPanel implements Runnable {
 
             player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
             enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
+            objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
 
             reader.close();
 
@@ -200,6 +197,7 @@ public class GameHandler extends JPanel implements Runnable {
 
     private void startNewGame() {
         enemiesHandler.setDefaultEnemies();
+        objectHandler.setDefaultObjects();
         gameState.setRunning();
     }
 }

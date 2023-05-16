@@ -8,16 +8,17 @@ import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Chest extends GameObject{
     private ChestType chestType;
     private ChestStateType stateType;
 
-    public Chest(ChestType chestType, WorldCoordinates worldCoordinates) {
+    public Chest(ChestType chestType, ChestStateType chestState, WorldCoordinates worldCoordinates) {
         super(ObjectType.CHEST, worldCoordinates);
         this.chestType = chestType;
-        this.stateType = ChestStateType.CLOSED;
+        this.stateType = chestState;
         upsertChestClosedImage();
     }
 
@@ -55,5 +56,12 @@ public class Chest extends GameObject{
         json.put("state", stateType.toString());
 
         return json;
+    }
+
+    public static Chest deserializeAndCreateChest(JsonObject json) {
+        return new Chest(
+                ChestType.valueOf((String) json.get("chesttype")),
+                ChestStateType.valueOf((String) json.get("state")),
+                new WorldCoordinates(json));
     }
 }

@@ -3,6 +3,7 @@ package org.example.gameobjects;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
+import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
@@ -33,5 +34,11 @@ public class Key extends GameObject {
         json.put("keytype", keyType.toString());
 
         return json;
+    }
+
+    public static Key deserializeAndCreateKey(JsonObject json) {
+        return new Key(KeyType.valueOf((String) json.get("keytype")),
+                new WorldCoordinates(json)
+        );
     }
 }

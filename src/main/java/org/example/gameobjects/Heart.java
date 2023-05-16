@@ -26,4 +26,8 @@ public class Heart extends GameObject {
     public JsonObject serializeHeart() {
         return super.serializeGameObject();
     }
+
+    public static Heart deserializeAndCreateHeart(JsonObject json) {
+        return new Heart(new WorldCoordinates(json));
+    }
 }
