@@ -127,7 +127,7 @@ public class Player extends Entity {
     public Weapon equipWeapon(Weapon weapon) {
         if (Objects.nonNull(inventory.getWeaponEquipped())) {
             Weapon oldWeapon = inventory.getWeaponEquipped();
-            oldWeapon.setWorldCoordinates(oldWeapon.getWorldCoordinates());
+            oldWeapon.setWorldCoordinates(weapon.getWorldCoordinates());
             inventory.equipWeapon(weapon);
 
             return oldWeapon;

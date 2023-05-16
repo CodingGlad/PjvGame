@@ -2,19 +2,15 @@ package org.example.handlers;
 
 import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
-import org.example.entities.Enemy;
 import org.example.entities.Player;
 import org.example.gameobjects.*;
 import org.example.gameobjects.types.*;
-import org.example.handlers.types.GameStateType;
 import org.example.utils.WorldCoordinates;
 import org.example.views.GameObjectView;
 
 import java.awt.*;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 import static org.example.utils.GameConstants.TILE_SIZE;
 

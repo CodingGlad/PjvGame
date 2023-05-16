@@ -1,46 +1,47 @@
 package org.example.handlers;
 
-import org.example.entities.types.ActivityType;
-import org.example.entities.types.HorizontalDirectionType;
-import org.example.gameobjects.types.ParticleType;
+import org.example.entities.Player;
+import org.example.particles.Hit;
+import org.example.particles.Particle;
+import org.example.utils.WorldCoordinates;
 import org.example.views.ParticleView;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class ParticleHandler {
-    private final Map<ParticleType, List<BufferedImage>> particleSprites;
+    private List<Particle> displayedParticles;
     private final ParticleView view;
 
     public ParticleHandler() {
-        particleSprites = new HashMap<>();
-        setAllParticleSprites();
+        displayedParticles = new LinkedList<>();
         this.view = new ParticleView();
     }
 
-    private void setAllParticleSprites() {
-        for (ParticleType type: ParticleType.values()) {
-            setSpritesForParticleType(type);
+    public void addHitParticle(WorldCoordinates worldCoordinates) {
+        displayedParticles.add(new Hit(worldCoordinates));
+    }
+
+    public void drawParticle(Graphics2D g2, Player player) {
+        for (Particle particle: displayedParticles) {
+            if (particle.getSpriteNumber() != 4) {
+                view.drawParticles(g2, particle, player);
+            }
         }
     }
 
-    private void setSpritesForParticleType(ParticleType type) {
-        try {
-            List<BufferedImage> tmpSprites = new ArrayList<>();
+    public void update() {
+        List<Particle> particlesToRemove = new ArrayList<>();
 
-            for (int i = 1; i < type.getNumberOfSprites() + 1; ++i) {
-                tmpSprites.add(ImageIO.read(
-                        Objects.requireNonNull(getClass().getResourceAsStream(
-                                "/sprites/particles/" + type.toString().toLowerCase() + "/" +
-                                        type.toString().toLowerCase() + "-" + i + ".png"))
-                ));
+        for (Particle particle: displayedParticles) {
+            particle.incrementCounter();
+
+            if (particle.getSpriteNumber() == 5) {
+                particlesToRemove.add(particle);
             }
-
-            particleSprites.put(type, tmpSprites);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
+        displayedParticles.removeAll(particlesToRemove);
     }
 }

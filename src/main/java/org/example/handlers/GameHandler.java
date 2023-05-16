@@ -5,14 +5,12 @@ import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Enemy;
 import org.example.entities.Player;
-import org.example.entities.types.HorizontalDirectionType;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -103,6 +101,7 @@ public class GameHandler extends JPanel implements Runnable {
             case RUNNING -> {
                 player.update(collisionHandler);
                 enemiesHandler.update();
+                particleHandler.update();
             }
             case SAVING -> saveGame();
             case LOADING -> loadGame();
@@ -123,6 +122,7 @@ public class GameHandler extends JPanel implements Runnable {
             enemiesHandler.drawEnemies(g2, player);
             objectHandler.drawObjects(g2, player);
             player.drawPlayer(g2);
+            particleHandler.drawParticle(g2, player);
         }
 
         userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
@@ -131,10 +131,6 @@ public class GameHandler extends JPanel implements Runnable {
 
         g2.dispose();
     }
-
-    //player with inventory, objects, enemies
-    //TODO saving of game objects
-    //TODO loding of all this shit
 
     private void saveGame() {
         try {
@@ -176,12 +172,16 @@ public class GameHandler extends JPanel implements Runnable {
 
     private void fight() {
         Enemy enemy = gameState.getOpponent();
+        particleHandler.update();
 
         if (player.fightUpdate(enemy)) {
-
+            particleHandler.addHitParticle(enemy.getWorldCoordinates());
         }
 
-        enemy.fightUpdate(player);
+        if (enemy.fightUpdate(player)) {
+            particleHandler.addHitParticle(player.getWorldCoordinates());
+        }
+
 
         if (player.getHealth() <= 0) {
             gameState.setDying();
@@ -192,6 +192,7 @@ public class GameHandler extends JPanel implements Runnable {
             enemy.setDyingActivity();
             gameState.setRunning();
         }
+
     }
 
     private void die() {
