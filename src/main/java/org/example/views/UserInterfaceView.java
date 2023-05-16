@@ -50,7 +50,7 @@ public class UserInterfaceView{
     public void drawMenu(Graphics2D g2, MenuSelectionType menuCursor) {
         g2.setFont(menuTitleFont);
         g2.setColor(Color.white);
-        g2.drawString("Main Menu fuckerrrrrr", 50, 40);
+        g2.drawString("Main Menu", 150, 75);
         g2.setFont(menuSelectionFont);
         g2.drawString("1-NEW GAME", MenuSelectionType.NEW_GAME.getX(), MenuSelectionType.NEW_GAME.getY());
         g2.drawString("2-LOAD GAME", MenuSelectionType.LOAD_GAME.getX(), MenuSelectionType.LOAD_GAME.getY());
