@@ -1,5 +1,7 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
+import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
@@ -11,14 +13,10 @@ import java.util.Objects;
 public class Weapon extends GameObject {
     private WeaponType weaponType;
 
-    public Weapon(ObjectType objectType, WeaponType weaponType, WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.WEAPON)) {
-            this.weaponType = weaponType;
-            setWeaponImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a weapon.");
-        }
+    public Weapon(WeaponType weaponType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.WEAPON, worldCoordinates);
+        this.weaponType = weaponType;
+        setWeaponImage();
     }
 
     private void setWeaponImage() {
@@ -32,5 +30,19 @@ public class Weapon extends GameObject {
 
     public WeaponType getWeaponType() {
         return weaponType;
+    }
+
+    public JsonObject serializeWeapon() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("weapontype", weaponType.toString());
+
+        return json;
+    }
+
+    public static Weapon deserializeAndCreateWeapon(JsonObject json) {
+        return new Weapon(WeaponType.valueOf((String) json.get("weapontype")),
+                new WorldCoordinates(json)
+        );
     }
 }

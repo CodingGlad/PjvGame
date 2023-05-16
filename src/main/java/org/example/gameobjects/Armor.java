@@ -1,25 +1,22 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Armor extends GameObject {
     private ArmorType armorType;
 
-    public Armor(ObjectType objectType, ArmorType armorType,
-                 WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.ARMOR)) {
-            this.armorType = armorType;
-            setArmorImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a armor.");
-        }
+    public Armor(ArmorType armorType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.ARMOR, worldCoordinates);
+        this.armorType = armorType;
+        setArmorImage();
     }
 
     private void setArmorImage() {
@@ -33,5 +30,19 @@ public class Armor extends GameObject {
 
     public ArmorType getArmorType() {
         return armorType;
+    }
+
+    public JsonObject serializeArmor() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("armortype", armorType.toString());
+
+        return json;
+    }
+
+    public static Armor deserializeAndCreateArmor(JsonObject json) {
+        return new Armor(ArmorType.valueOf((String) json.get("armortype")),
+                new WorldCoordinates(json)
+        );
     }
 }

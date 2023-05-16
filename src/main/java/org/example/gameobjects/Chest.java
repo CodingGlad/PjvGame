@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ChestType;
 import org.example.gameobjects.types.ObjectType;
@@ -7,22 +8,18 @@ import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Chest extends GameObject{
     private ChestType chestType;
     private ChestStateType stateType;
 
-    public Chest(ObjectType objectType, ChestType chestType,
-                 WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.CHEST)) {
-            this.chestType = chestType;
-            this.stateType = ChestStateType.CLOSED;
-            upsertChestClosedImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a chest.");
-        }
+    public Chest(ChestType chestType, ChestStateType chestState, WorldCoordinates worldCoordinates) {
+        super(ObjectType.CHEST, worldCoordinates);
+        this.chestType = chestType;
+        this.stateType = chestState;
+        upsertChestClosedImage();
     }
 
     private void upsertChestClosedImage() {
@@ -50,5 +47,21 @@ public class Chest extends GameObject{
         stateType = ChestStateType.OPENED;
 
         upsertChestClosedImage();
+    }
+
+    public JsonObject serializeChest() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("chesttype", chestType.toString());
+        json.put("state", stateType.toString());
+
+        return json;
+    }
+
+    public static Chest deserializeAndCreateChest(JsonObject json) {
+        return new Chest(
+                ChestType.valueOf((String) json.get("chesttype")),
+                ChestStateType.valueOf((String) json.get("state")),
+                new WorldCoordinates(json));
     }
 }

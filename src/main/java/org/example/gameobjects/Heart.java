@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
 
@@ -8,8 +9,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Heart extends GameObject {
-    public Heart(ObjectType objectType, WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
+    public Heart(WorldCoordinates worldCoordinates) {
+        super(ObjectType.HEART, worldCoordinates);
         setHeartImage();
     }
 
@@ -20,5 +21,13 @@ public class Heart extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public JsonObject serializeHeart() {
+        return super.serializeGameObject();
+    }
+
+    public static Heart deserializeAndCreateHeart(JsonObject json) {
+        return new Heart(new WorldCoordinates(json));
     }
 }

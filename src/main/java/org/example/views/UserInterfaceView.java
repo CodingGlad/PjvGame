@@ -28,8 +28,8 @@ public class UserInterfaceView{
         this.gameFont = new Font("Arial", Font.BOLD, 20);
         this.menuTitleFont = new Font("Arial", Font.BOLD, 40);
         this.menuSelectionFont = new Font("Arial", Font.BOLD, 30);
-        this.keyImage = (new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(0, 0))).getStaticImage();
-        this.heartImage = (new Heart(ObjectType.HEART, new WorldCoordinates(0, 0))).getStaticImage();
+        this.keyImage = (new Key(KeyType.GOLD, new WorldCoordinates(0, 0))).getStaticImage();
+        this.heartImage = (new Heart(new WorldCoordinates(0, 0))).getStaticImage();
     }
 
     public void drawGame(Graphics2D g2, Player player) {

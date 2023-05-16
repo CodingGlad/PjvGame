@@ -1,5 +1,9 @@
 package org.example.utils;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
+
+import java.math.BigDecimal;
+
 public class WorldCoordinates {
     private int worldX;
     private int worldY;
@@ -7,6 +11,11 @@ public class WorldCoordinates {
     public WorldCoordinates(int worldX, int worldY) {
         this.worldX = worldX;
         this.worldY = worldY;
+    }
+
+    public WorldCoordinates(JsonObject json) {
+        this.worldX = ((BigDecimal) json.get("worldx")).intValue();
+        this.worldY = ((BigDecimal) json.get("worldy")).intValue();
     }
 
     public int getWorldX() {

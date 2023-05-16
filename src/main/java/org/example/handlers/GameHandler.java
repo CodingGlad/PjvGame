@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonArray;
 import com.github.cliftonlabs.json_simple.JsonObject;
 import com.github.cliftonlabs.json_simple.Jsoner;
 import org.example.entities.Enemy;
@@ -65,10 +66,6 @@ public class GameHandler extends JPanel implements Runnable {
         window.setVisible(true);
     }
 
-    public void setupGame() {
-        objectHandler.setDefaultObjects();
-    }
-
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -110,6 +107,7 @@ public class GameHandler extends JPanel implements Runnable {
             case FIGHTING -> fight();
             case DYING -> die();
             case QUIT -> System.exit(0);
+            case STARTING -> startNewGame();
         }
     }
 
@@ -132,22 +130,19 @@ public class GameHandler extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    //player with inventory, objects, enemies
+    //TODO saving of game objects
+    //TODO loding of all this shit
 
     private void saveGame() {
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get("save.json"));
 
-            JsonObject playerJson = new JsonObject();
-
-            playerJson.put("worldx", player.getWorldX());
-            playerJson.put("worldy", player.getWorldY());
-            playerJson.put("keys", player.getNumberOfKeys());
-            playerJson.put("health", player.getHealth());
-            playerJson.put("horizontal", player.getHorizontalDirection().toString());
-
             JsonObject save = new JsonObject();
 
-            save.put("player", playerJson);
+            save.put("player", player.serializePlayer());
+            save.put("enemies", enemiesHandler.serializeEnemies());
+            save.put("objects", objectHandler.serializeObjects());
 
             Jsoner.serialize(save, writer);
 
@@ -165,20 +160,11 @@ public class GameHandler extends JPanel implements Runnable {
 
             JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
 
-            JsonObject playerInfo = (JsonObject) parser.get("player");
-
-            BigDecimal x = (BigDecimal) playerInfo.get("worldx");
-            BigDecimal y = (BigDecimal) playerInfo.get("worldy");
-            BigDecimal keys = (BigDecimal) playerInfo.get("keys");
-            BigDecimal health = (BigDecimal) playerInfo.get("health");
-            String horizontal = (String) playerInfo.get("horizontal");
+            player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
+            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
+            objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
 
             reader.close();
-
-            player.loadCoordinations(x.intValue(), y.intValue());
-            player.setNumberOfKeys(keys.intValue());
-            player.setHealth(health.intValue());
-            player.setHorizontalDirection(HorizontalDirectionType.valueOf(horizontal));
 
             gameState.setRunning();
         } catch (Exception e) {
@@ -207,5 +193,11 @@ public class GameHandler extends JPanel implements Runnable {
         if (player.deathUpdate()) {
             gameState.setEnd();
         }
+    }
+
+    private void startNewGame() {
+        enemiesHandler.setDefaultEnemies();
+        objectHandler.setDefaultObjects();
+        gameState.setRunning();
     }
 }

@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.utils.WorldCoordinates;
@@ -9,9 +10,8 @@ import java.awt.*;
 import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class Enemy extends Entity {
-    //TODO handle coords
-    public Enemy(EntityType entityType) {
-        super(new WorldCoordinates(TILE_SIZE * 24, TILE_SIZE * 22), 4, 2, entityType);
+    public Enemy(EntityType entityType, WorldCoordinates worldCoordinates) {
+        super(worldCoordinates, entityType);
     }
 
     public void update() {
@@ -32,4 +32,14 @@ public class Enemy extends Entity {
         super.drawEntity(g2, coordX, coordY);
     }
 
+    public JsonObject serializeEnemy() {
+        return super.serializeEntity();
+    }
+
+    public static Enemy deserializeAndSetEnemy(JsonObject json) {
+        Enemy jsonEnemy = new Enemy(EntityType.valueOf((String) json.get("entitytype")), new WorldCoordinates(1, 1));
+        jsonEnemy.deserializeAndSetEntity(json);
+
+        return jsonEnemy;
+    }
 }

@@ -1,5 +1,6 @@
 package org.example.entities;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.entities.types.HorizontalDirectionType;
@@ -13,6 +14,7 @@ import org.example.handlers.KeyHandler;
 import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import static org.example.utils.GameConstants.*;
@@ -26,7 +28,7 @@ public class Player extends Entity {
 
     //TODO cost default values change
     public Player(KeyHandler keyHandler) {
-        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), 4, 2, EntityType.HERO);
+        super(new WorldCoordinates(TILE_SIZE * 23, TILE_SIZE * 21), EntityType.HERO);
         this.keyHandler = keyHandler;
         this.inventory = new InventoryHandler();
 
@@ -155,5 +157,21 @@ public class Player extends Entity {
 
     public InventoryHandler getInventory() {
         return inventory;
+    }
+
+    public JsonObject serializePlayer() {
+        JsonObject json = serializeEntity();
+
+        json.put("inventory", inventory.serializeInventory());
+        json.put("numberofkeys", numberOfKeys);
+
+        return json;
+    }
+
+    public void deserializeAndSetPlayer(JsonObject json) {
+        super.deserializeAndSetEntity(json);
+
+        numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
+        inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"));
     }
 }

@@ -1,7 +1,9 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
+import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
 
 import javax.imageio.ImageIO;
@@ -11,14 +13,10 @@ import java.util.Objects;
 public class Key extends GameObject {
     private final KeyType keyType;
 
-    public Key(ObjectType objectType, KeyType keyType, WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.KEY)) {
-            this.keyType = keyType;
-            setKeyImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a key.");
-        }
+    public Key(KeyType keyType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.KEY, worldCoordinates);
+        this.keyType = keyType;
+        setKeyImage();
     }
 
     private void setKeyImage() {
@@ -28,5 +26,19 @@ public class Key extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public JsonObject serializeKey() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("keytype", keyType.toString());
+
+        return json;
+    }
+
+    public static Key deserializeAndCreateKey(JsonObject json) {
+        return new Key(KeyType.valueOf((String) json.get("keytype")),
+                new WorldCoordinates(json)
+        );
     }
 }
