@@ -21,11 +21,14 @@ public class Enemy extends Entity {
             incrementDeathCounter();
         }
     }
-    public void fightUpdate(Player player) {
+    public boolean fightUpdate(Player player) {
         incrementCounters();
         if (attack()) {
             player.takeDamage(getAttackDamage());
+            return true;
         }
+
+        return false;
     }
 
     public void draw(Graphics2D g2, int coordX, int coordY) {

@@ -1,7 +1,6 @@
 package org.example.gameobjects;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
-import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;

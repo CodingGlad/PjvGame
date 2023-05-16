@@ -281,4 +281,8 @@ public abstract class Entity {
     protected void restoreHealth(int health) {
         this.health += health;
     }
+
+    public WorldCoordinates getWorldCoordinates() {
+        return worldCoordinates;
+    }
 }

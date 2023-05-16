@@ -70,12 +70,16 @@ public class Player extends Entity {
         }
     }
 
-    public void fightUpdate(Enemy enemy) {
+    public boolean fightUpdate(Enemy enemy) {
         incrementCounters();
         if (keyHandler.isSpacePressed() && attack()) {
             keyHandler.setSpacePressedToFalse();
             enemy.takeDamage(getPlayerAttackDamage());
+
+            return true;
         }
+
+        return false;
     }
 
     public void drawPlayer(Graphics2D g2) {
@@ -123,7 +127,7 @@ public class Player extends Entity {
     public Weapon equipWeapon(Weapon weapon) {
         if (Objects.nonNull(inventory.getWeaponEquipped())) {
             Weapon oldWeapon = inventory.getWeaponEquipped();
-            oldWeapon.setWorldCoordinates(oldWeapon.getWorldCoordinates());
+            oldWeapon.setWorldCoordinates(weapon.getWorldCoordinates());
             inventory.equipWeapon(weapon);
 
             return oldWeapon;

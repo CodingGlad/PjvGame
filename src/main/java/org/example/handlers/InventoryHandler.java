@@ -2,14 +2,11 @@ package org.example.handlers;
 
 import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.Armor;
-import org.example.gameobjects.GameObject;
 import org.example.gameobjects.Weapon;
 import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class InventoryHandler {
