@@ -35,6 +35,11 @@ public class GameObjectHandler {
         displayedObjects.add(new Armor(ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
         displayedObjects.add(new Weapon(WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 13 * TILE_SIZE)));
         displayedObjects.add(new Heart(new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(26 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(27 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(28 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(29 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Heart(new WorldCoordinates(30 * TILE_SIZE, 12 * TILE_SIZE)));
     }
 
     public List<GameObject> getDisplayedObjects() {

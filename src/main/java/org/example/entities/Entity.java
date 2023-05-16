@@ -277,4 +277,8 @@ public abstract class Entity {
         horizontalDirection = HorizontalDirectionType.valueOf((String) json.get("horizontal"));
         activityType = ActivityType.valueOf((String) json.get("activity"));
     }
+
+    protected void restoreHealth(int health) {
+        this.health += health;
+    }
 }

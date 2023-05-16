@@ -175,4 +175,8 @@ public class Player extends Entity {
         numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
         inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"));
     }
+
+    public void restorePlayersHealth(int health) {
+        super.restoreHealth(health);
+    }
 }

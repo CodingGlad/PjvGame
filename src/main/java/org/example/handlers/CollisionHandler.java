@@ -184,7 +184,11 @@ public class CollisionHandler {
                     return true;
                 }
             }
-//              case HEART ->; TODO
+
+            case HEART -> {
+                entity.restorePlayersHealth(((Heart) object).restoreHealth());
+                return true;
+            }
         }
         return false;
     }
