@@ -24,12 +24,12 @@ public class GameObjectHandler {
     }
 
     public void setDefaultObjects() {
-        displayedObjects.add(new Key(ObjectType.KEY, KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
-        displayedObjects.add(new Armor(ObjectType.ARMOR, ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
-        displayedObjects.add(new Armor(ObjectType.ARMOR, ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
-        displayedObjects.add(new Weapon(ObjectType.WEAPON, WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
+        displayedObjects.add(new Key(KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
+        displayedObjects.add(new Chest(ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
+        displayedObjects.add(new Armor(ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
+        displayedObjects.add(new Armor(ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
+        displayedObjects.add(new Weapon(WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
     }
 
     public List<GameObject> getDisplayedObjects() {

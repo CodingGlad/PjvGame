@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class Heart extends GameObject {
-    public Heart(ObjectType objectType, WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
+    public Heart(WorldCoordinates worldCoordinates) {
+        super(ObjectType.HEART, worldCoordinates);
         setHeartImage();
     }
 

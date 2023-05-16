@@ -14,16 +14,11 @@ public class Chest extends GameObject{
     private ChestType chestType;
     private ChestStateType stateType;
 
-    public Chest(ObjectType objectType, ChestType chestType,
-                 WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.CHEST)) {
-            this.chestType = chestType;
-            this.stateType = ChestStateType.CLOSED;
-            upsertChestClosedImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a chest.");
-        }
+    public Chest(ChestType chestType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.CHEST, worldCoordinates);
+        this.chestType = chestType;
+        this.stateType = ChestStateType.CLOSED;
+        upsertChestClosedImage();
     }
 
     private void upsertChestClosedImage() {

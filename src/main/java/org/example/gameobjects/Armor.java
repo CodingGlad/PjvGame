@@ -12,15 +12,10 @@ import java.util.Objects;
 public class Armor extends GameObject {
     private ArmorType armorType;
 
-    public Armor(ObjectType objectType, ArmorType armorType,
-                 WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.ARMOR)) {
-            this.armorType = armorType;
-            setArmorImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a armor.");
-        }
+    public Armor(ArmorType armorType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.ARMOR, worldCoordinates);
+        this.armorType = armorType;
+        setArmorImage();
     }
 
     private void setArmorImage() {

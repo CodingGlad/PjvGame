@@ -12,14 +12,10 @@ import java.util.Objects;
 public class Key extends GameObject {
     private final KeyType keyType;
 
-    public Key(ObjectType objectType, KeyType keyType, WorldCoordinates worldCoordinates) {
-        super(objectType, worldCoordinates);
-        if (objectType.equals(ObjectType.KEY)) {
-            this.keyType = keyType;
-            setKeyImage();
-        } else {
-            throw new IllegalStateException("Attempted creating object " + objectType.getName() + " as an instance of a key.");
-        }
+    public Key(KeyType keyType, WorldCoordinates worldCoordinates) {
+        super(ObjectType.KEY, worldCoordinates);
+        this.keyType = keyType;
+        setKeyImage();
     }
 
     private void setKeyImage() {
