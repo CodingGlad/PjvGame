@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
 
@@ -62,5 +63,15 @@ public abstract class GameObject {
 
     public WorldCoordinates getWorldCoordinates() {
         return worldCoordinates;
+    }
+
+    protected JsonObject serializeGameObject() {
+        JsonObject json = new JsonObject();
+
+        json.put("objecttype", objectType.toString());
+        json.put("worldx", getWorldX());
+        json.put("worldy", getWorldY());
+
+        return json;
     }
 }

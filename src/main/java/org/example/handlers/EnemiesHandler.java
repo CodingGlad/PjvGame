@@ -60,7 +60,7 @@ public class EnemiesHandler {
         return enemies;
     }
 
-    public List<JsonObject> serializeEnemies() {
-        return enemies.stream().map(Entity::serializeEntity).toList();
+    public Object[] serializeEnemies() {
+        return enemies.stream().map(Entity::serializeEntity).toArray();
     }
 }

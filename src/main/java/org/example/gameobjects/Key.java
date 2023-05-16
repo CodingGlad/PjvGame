@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.KeyType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
@@ -28,5 +29,13 @@ public class Key extends GameObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public JsonObject serializeKey() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("keytype", keyType.toString());
+
+        return json;
     }
 }

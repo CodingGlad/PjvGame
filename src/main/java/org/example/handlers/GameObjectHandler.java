@@ -1,5 +1,6 @@
 package org.example.handlers;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.entities.Player;
 import org.example.gameobjects.*;
 import org.example.gameobjects.types.*;
@@ -9,6 +10,7 @@ import org.example.views.GameObjectView;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.example.utils.GameConstants.TILE_SIZE;
 
@@ -38,5 +40,31 @@ public class GameObjectHandler {
         for (GameObject object: displayedObjects) {
             view.draw(g2, player, object);
         }
+    }
+
+    public Object[] serializeObjects() {
+        return displayedObjects.stream().map(obj -> useObjectsSerializer(obj)).toArray();
+    }
+
+    public JsonObject useObjectsSerializer(GameObject obj) {
+        switch (obj.getObjectType()) {
+            case KEY -> {
+                return ((Key) obj).serializeKey();
+            }
+            case ARMOR -> {
+                return ((Armor) obj).serializeArmor();
+            }
+            case CHEST -> {
+                return ((Chest) obj).serializeChest();
+            }
+            case HEART -> {
+                return ((Heart) obj).serializeHeart();
+            }
+            case WEAPON -> {
+                return ((Weapon) obj).serializeWeapon();
+            }
+        }
+
+        return null;
     }
 }

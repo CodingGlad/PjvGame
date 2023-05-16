@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ChestType;
 import org.example.gameobjects.types.ObjectType;
@@ -50,5 +51,14 @@ public class Chest extends GameObject{
         stateType = ChestStateType.OPENED;
 
         upsertChestClosedImage();
+    }
+
+    public JsonObject serializeChest() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("chesttype", chestType.toString());
+        json.put("state", stateType.toString());
+
+        return json;
     }
 }

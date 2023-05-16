@@ -133,7 +133,6 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     //player with inventory, objects, enemies
-    //TODO saving of null inventory
     //TODO saving of game objects
     //TODO loding of all this shit
 
@@ -144,7 +143,8 @@ public class GameHandler extends JPanel implements Runnable {
             JsonObject save = new JsonObject();
 
             save.put("player", player.serializePlayer());
-            save.put("enemies", enemiesHandler.serializeEnemies().toArray());
+            save.put("enemies", enemiesHandler.serializeEnemies());
+            save.put("objects", objectHandler.serializeObjects());
 
             Jsoner.serialize(save, writer);
 

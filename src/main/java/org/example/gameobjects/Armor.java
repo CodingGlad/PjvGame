@@ -1,5 +1,6 @@
 package org.example.gameobjects;
 
+import com.github.cliftonlabs.json_simple.JsonObject;
 import org.example.gameobjects.types.ArmorType;
 import org.example.gameobjects.types.ObjectType;
 import org.example.utils.WorldCoordinates;
@@ -33,5 +34,13 @@ public class Armor extends GameObject {
 
     public ArmorType getArmorType() {
         return armorType;
+    }
+
+    public JsonObject serializeArmor() {
+        JsonObject json = super.serializeGameObject();
+
+        json.put("armortype", armorType.toString());
+
+        return json;
     }
 }

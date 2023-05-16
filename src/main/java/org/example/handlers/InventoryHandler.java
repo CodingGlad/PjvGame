@@ -7,6 +7,7 @@ import org.example.gameobjects.Weapon;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class InventoryHandler {
     private Weapon weaponEquipped;
@@ -31,8 +32,17 @@ public class InventoryHandler {
     public JsonObject serializeInventory() {
         JsonObject json = new JsonObject();
 
-        json.put("armor", armorEquipped.getArmorType().toString());
-        json.put("weapon", weaponEquipped.getWeaponType().toString());
+        if (Objects.nonNull(armorEquipped)) {
+            json.put("armor", armorEquipped.getArmorType().toString());
+        } else {
+            json.put("armor", null);
+        }
+
+        if (Objects.nonNull(weaponEquipped)) {
+            json.put("weapon", weaponEquipped.getWeaponType().toString());
+        } else {
+            json.put("weapon", null);
+        }
 
         return json;
     }
