@@ -12,13 +12,29 @@ import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The UserInterfaceHandler class is responsible for managing the user interface elements and drawing them on the screen.
+ */
 public class UserInterfaceHandler {
     private final UserInterfaceView view;
 
+    /**
+     * Constructs a UserInterfaceHandler object and initializes the associated UserInterfaceView.
+     */
     public UserInterfaceHandler() {
         this.view = new UserInterfaceView();
     }
 
+    /**
+     * Draws the appropriate user interface elements based on the current game state.
+     *
+     * @param g2           The Graphics2D object used for drawing.
+     * @param gameState    The current game state.
+     * @param menuCursor   The menu selection cursor type.
+     * @param pauseCursor  The pause selection cursor type.
+     * @param player       The player entity.
+     * @param enemy        The enemy entity (used in the FIGHTING game state).
+     */
     public void drawInterface(Graphics2D g2, GameStateType gameState,
                               MenuSelectionType menuCursor, PauseSelectionType pauseCursor,
                               Player player, Entity enemy) {
@@ -31,3 +47,4 @@ public class UserInterfaceHandler {
         }
     }
 }
+

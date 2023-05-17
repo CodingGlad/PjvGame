@@ -21,6 +21,9 @@ import static org.example.handlers.types.GameStateType.*;
 import static org.example.utils.GameConstants.SCREEN_HEIGHT;
 import static org.example.utils.GameConstants.SCREEN_WIDTH;
 
+/**
+ * Main class that handles the whole game.
+ */
 public class GameHandler extends JPanel implements Runnable {
 
     private static final long NANOS_IN_SECONDS = 1000000000L;
@@ -38,6 +41,9 @@ public class GameHandler extends JPanel implements Runnable {
     private final EnemiesHandler enemiesHandler;
     private final ParticleHandler particleHandler;
 
+    /**
+     * Default constructor that creates all mandatory handlers to control the game.
+     */
     public GameHandler() {
         gameState = new GameStateHandler();
         keyHandler = new KeyHandler(gameState);
@@ -57,6 +63,9 @@ public class GameHandler extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
+    /**
+     * Sets up the game window.
+     */
     public void setupWindow() {
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -70,17 +79,20 @@ public class GameHandler extends JPanel implements Runnable {
         window.setVisible(true);
     }
 
+    /**
+     * Starts the game thread.
+     */
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
     }
 
     /**
-     * Code from RyiShow, zdroj
+     * The game loop that handles game updates and rendering.
      */
     @Override
     public void run() {
-        double drawInterval = (double)NANOS_IN_SECONDS/FPS;
+        double drawInterval = (double)NANOS_IN_SECONDS / FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -100,6 +112,9 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Updates the game state based on the current state.
+     */
     private void update() {
         switch (gameState.getStateType()) {
             case RUNNING -> {
@@ -116,10 +131,15 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Paints the game components on the screen.
+     *
+     * @param g The Graphics object used for rendering.
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
+        Graphics2D g2 = (Graphics2D) g;
 
         if (!gameState.getStateType().equals(MAIN_MENU)) {
             tileHandler.drawTiles(g2, player);
@@ -136,6 +156,9 @@ public class GameHandler extends JPanel implements Runnable {
         g2.dispose();
     }
 
+    /**
+     * Saves the current game state to a file.
+     */
     private void saveGame() {
         LOGGER.log(Level.INFO, "Saving game...");
         try {
@@ -159,6 +182,9 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Loads the saved game from a file.
+     */
     private void loadGame() {
         LOGGER.log(Level.INFO, "Loading saved game.");
         try {
@@ -178,6 +204,9 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Performs the fight logic between the player and the enemy.
+     */
     private void fight() {
         Enemy enemy = gameState.getOpponent();
         particleHandler.update();
@@ -190,7 +219,6 @@ public class GameHandler extends JPanel implements Runnable {
             particleHandler.addHitParticle(player.getWorldCoordinates());
         }
 
-
         if (player.getHealth() <= 0) {
             gameState.setDying();
             player.setDyingActivity();
@@ -200,9 +228,11 @@ public class GameHandler extends JPanel implements Runnable {
             enemy.setDyingActivity();
             gameState.setRunning();
         }
-
     }
 
+    /**
+     * Handles the player's death logic.
+     */
     private void die() {
         if (player.deathUpdate()) {
             LOGGER.log(Level.INFO, "GAME OVER.");
@@ -210,12 +240,18 @@ public class GameHandler extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Starts a new game.
+     */
     private void startNewGame() {
         LOGGER.log(Level.INFO, "Starting new game.");
         loadNewGame();
         gameState.setRunning();
     }
 
+    /**
+     * Loads a new game.
+     */
     private void loadNewGame() {
         try {
             LOGGER.log(Level.INFO, "Loading new game...");
@@ -229,14 +265,17 @@ public class GameHandler extends JPanel implements Runnable {
 
             reader.close();
         } catch (Exception e) {
-
-            LOGGER.log(Level.SEVERE, "Map or it's settings wasn't found in game files.");
+            LOGGER.log(Level.SEVERE, "Map or its settings weren't found in the game files.");
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Deserializes the entire game data from a JSON object.
+     *
+     * @param reader The reader containing the JSON object.
+     */
     public void deserializeAll(Reader reader) {
-
         LOGGER.log(Level.INFO, "Deserializing game file...");
         try {
             JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
@@ -248,4 +287,5 @@ public class GameHandler extends JPanel implements Runnable {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -6,7 +6,6 @@ import org.example.entities.Player;
 import org.example.entities.types.ActivityType;
 import org.example.entities.types.EntityType;
 import org.example.gameobjects.*;
-import org.example.gameobjects.types.ChestStateType;
 import org.example.gameobjects.types.ObjectType;
 
 import java.awt.*;
@@ -18,6 +17,9 @@ import java.util.Objects;
 import static org.example.entities.types.HorizontalDirectionType.*;
 import static org.example.entities.types.VerticalDirectionType.*;
 
+/**
+ * The CollisionHandler class handles collisions between entities and objects in the game.
+ */
 public class CollisionHandler {
 
     private final TileHandler tileHandler;
@@ -26,6 +28,14 @@ public class CollisionHandler {
     private List<GameObject> objectsToAppend;
     private List<Enemy> enemies;
 
+    /**
+     * Constructs a CollisionHandler object with the specified dependencies.
+     *
+     * @param tileHandler The TileHandler used to handle tile-related operations.
+     * @param gameState   The GameStateHandler used to manage the game state.
+     * @param objects     The list of GameObjects in the game.
+     * @param enemies     The list of Enemies in the game.
+     */
     public CollisionHandler(TileHandler tileHandler, GameStateHandler gameState, List<GameObject> objects, List<Enemy> enemies) {
         this.tileHandler = tileHandler;
         this.objects = objects;
@@ -34,6 +44,11 @@ public class CollisionHandler {
         this.objectsToAppend = new ArrayList<>();
     }
 
+    /**
+     * Checks collisions for the given entity.
+     *
+     * @param entity The entity for which to check collisions.
+     */
     public void checkCollisions(Entity entity) {
         if (entity.getActivityType().equals(ActivityType.WALK)) {
             if (entity.getVerticalDirection().equals(NONE)) {
@@ -44,6 +59,11 @@ public class CollisionHandler {
         }
     }
 
+    /**
+     * Checks for collisions in the vertical direction for the given entity.
+     *
+     * @param entity The entity for which to check vertical collisions.
+     */
     private void checkVerticalCollisions(Entity entity) {
         int directionRow;
 
@@ -57,6 +77,11 @@ public class CollisionHandler {
                 tileHandler.getRowOrColumnOfCoordinate(entity.getSolidRightWorldX()), entity);
     }
 
+    /**
+     * Checks for collisions in the horizontal direction for the given entity.
+     *
+     * @param entity The entity for which to check horizontal collisions.
+     */
     private void checkHorizontalCollisions(Entity entity) {
         int directionColumn;
 
@@ -70,28 +95,65 @@ public class CollisionHandler {
                 tileHandler.getRowOrColumnOfCoordinate(entity.getSolidBottomWorldY()), entity);
     }
 
+    /**
+     * Checks if tiles in the specified directions have collisions.
+     *
+     * @param tileInDirection1 The tile number in the first direction.
+     * @param tileInDirection2 The tile number in the second direction.
+     * @return True if at least one of the tiles has collisions, false otherwise.
+     */
     private boolean doTilesHaveCollisions(int tileInDirection1, int tileInDirection2) {
         return (tileHandler.doesTileHaveCollision(tileInDirection1) || tileHandler.doesTileHaveCollision(tileInDirection2));
     }
 
+    /**
+     * Checks for collisions of tiles in the vertical direction.
+     *
+     * @param verticalDirectionRow The row index of the vertical direction.
+     * @param entityLeftCol        The column index of the entity's left side.
+     * @param entityRightCol       The column index of the entity's right side.
+     * @param entity               The entity for which to check collisions.
+     */
     private void checkTilesInVerticalDirection(int verticalDirectionRow, int entityLeftCol, int entityRightCol, Entity entity) {
         int tileInDirection1 = tileHandler.getTileNumber(verticalDirectionRow, entityLeftCol);
         int tileInDirection2 = tileHandler.getTileNumber(verticalDirectionRow, entityRightCol);
         checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
     }
 
+    /**
+     * Checks for collisions of tiles in the horizontal direction.
+     *
+     * @param horizontalDirectionColumn The column index of the horizontal direction.
+     * @param entityTopRow              The row index of the entity's top side.
+     * @param entityBottomRow           The row index of the entity's bottom side.
+     * @param entity                    The entity for which to check collisions.
+     */
     private void checkTilesInHorizontalDirection(int horizontalDirectionColumn, int entityTopRow, int entityBottomRow, Entity entity) {
         int tileInDirection1 = tileHandler.getTileNumber(entityTopRow, horizontalDirectionColumn);
         int tileInDirection2 = tileHandler.getTileNumber(entityBottomRow, horizontalDirectionColumn);
         checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
     }
 
+    /**
+     * Checks collisions between tiles in a specific direction and updates the entity's collision state.
+     *
+     * @param tileInDirection1 The tile number in the first direction.
+     * @param tileInDirection2 The tile number in the second direction.
+     * @param entity           The entity for which to check collisions.
+     */
     private void checkCollisionsOfTilesInDirection(int tileInDirection1, int tileInDirection2, Entity entity) {
         if (doTilesHaveCollisions(tileInDirection1, tileInDirection2)) {
             entity.setCollisionsOn(true);
         }
     }
 
+    /**
+     * Checks collisions between the player entity and objects in the game.
+     *
+     * @param entity              The player entity.
+     * @param isEquipButtonPressed Indicates whether the equip button is pressed.
+     * @param isUseButtonPressed   Indicates whether the use button is pressed.
+     */
     public void checkObject(Player entity, boolean isEquipButtonPressed, boolean isUseButtonPressed) {
         Iterator<GameObject> objectsIter = objects.iterator();
 
@@ -124,6 +186,17 @@ public class CollisionHandler {
         objectsToAppend = new ArrayList<>();
     }
 
+    /**
+     * Checks for intersection between the solid area of an entity and an item.
+     *
+     * @param entitySolidAreaWorld  The solid area of the entity in the world.
+     * @param entity               The entity involved in the intersection.
+     * @param itemSolidAreaWorld   The solid area of the item in the world.
+     * @param item                 The item involved in the intersection.
+     * @param isEquipButtonPressed Indicates whether the equip button is pressed.
+     * @param isUseButtonPressed   Indicates whether the use button is pressed.
+     * @return True if there is an intersection and the entity can pick up the item, false otherwise.
+     */
     public boolean handleIntersection(Rectangle entitySolidAreaWorld, Player entity, Rectangle itemSolidAreaWorld,
                                       GameObject item, boolean isEquipButtonPressed, boolean isUseButtonPressed) {
         if (entitySolidAreaWorld.intersects(itemSolidAreaWorld)) {
@@ -137,10 +210,26 @@ public class CollisionHandler {
         return false;
     }
 
+    /**
+     * Checks for intersection between the solid areas of a player and an enemy.
+     *
+     * @param playerSolidAreaWorld The solid area of the player in the world.
+     * @param enemySolidAreaWorld  The solid area of the enemy in the world.
+     * @return True if the solid areas intersect, false otherwise.
+     */
     public boolean handleIntersection(Rectangle playerSolidAreaWorld, Rectangle enemySolidAreaWorld) {
         return playerSolidAreaWorld.intersects(enemySolidAreaWorld);
     }
 
+    /**
+     * Checks if the entity can pick up the given object based on its type and button presses.
+     *
+     * @param entity               The entity trying to pick up the object.
+     * @param object               The object to be picked up.
+     * @param isEquipButtonPressed Indicates whether the equip button is pressed.
+     * @param isUseButtonPressed   Indicates whether the use button is pressed.
+     * @return True if the entity can pick up the object, false otherwise.
+     */
     public boolean canEntityPickUpThisObject(Player entity, GameObject object,
                                              boolean isEquipButtonPressed, boolean isUseButtonPressed) {
         switch (object.getObjectType()) {
@@ -193,6 +282,13 @@ public class CollisionHandler {
         return false;
     }
 
+    /**
+     * Shifts the solid area of an entity based on its movement direction.
+     *
+     * @param entitySolidArea The solid area of the entity to be shifted.
+     * @param entity          The entity whose solid area is being shifted.
+     * @param scaleFactor    The scale factor determining the amount of shift.
+     */
     public void shiftSolidArea(Rectangle entitySolidArea, Entity entity, int scaleFactor) {
         switch (entity.getVerticalDirection()) {
             case UP ->  entitySolidArea.y = (entitySolidArea.y - entity.getSpeed() * scaleFactor);
@@ -206,6 +302,11 @@ public class CollisionHandler {
         }
     }
 
+    /**
+     * Checks for intersections between the player and enemies, and handles the appropriate game state changes.
+     *
+     * @param player The player entity.
+     */
     public void checkEnemies(Entity player) {
         for (Enemy en: enemies.stream().filter(en -> !en.getActivityType().equals(ActivityType.DYING)).toList()) {
             Rectangle enemySolidAreaWorld = new Rectangle(
