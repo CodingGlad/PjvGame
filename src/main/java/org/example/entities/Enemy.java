@@ -7,8 +7,6 @@ import org.example.utils.WorldCoordinates;
 
 import java.awt.*;
 
-import static org.example.utils.GameConstants.TILE_SIZE;
-
 public class Enemy extends Entity {
     public Enemy(EntityType entityType, WorldCoordinates worldCoordinates) {
         super(worldCoordinates, entityType);

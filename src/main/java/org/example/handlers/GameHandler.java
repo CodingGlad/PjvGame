@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.handlers.types.GameStateType.*;
 import static org.example.utils.GameConstants.SCREEN_HEIGHT;
@@ -23,6 +25,7 @@ public class GameHandler extends JPanel implements Runnable {
 
     private static final long NANOS_IN_SECONDS = 1000000000L;
     private static final int FPS = 60;
+    private static final Logger LOGGER = Logger.getLogger(GameHandler.class.getName());
 
     private Thread gameThread;
     private final GameStateHandler gameState;
@@ -134,6 +137,7 @@ public class GameHandler extends JPanel implements Runnable {
     }
 
     private void saveGame() {
+        LOGGER.log(Level.INFO, "Saving game...");
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get("save.json"));
 
@@ -147,22 +151,29 @@ public class GameHandler extends JPanel implements Runnable {
 
             writer.close();
 
+            LOGGER.log(Level.INFO, "Game has been saved.");
             gameState.setRunning();
         } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Game couldn't be saved.");
             throw new RuntimeException(e);
         }
     }
 
     private void loadGame() {
+        LOGGER.log(Level.INFO, "Loading saved game.");
         try {
             Reader reader = Files.newBufferedReader(Paths.get("save.json"));
 
             deserializeAll(reader);
 
+            LOGGER.log(Level.INFO, "Deserialization done.");
+
             reader.close();
 
+            LOGGER.log(Level.INFO, "Game has been loaded.");
             gameState.setRunning();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Saved game couldn't be loaded.");
             throw new RuntimeException(e);
         }
     }
@@ -194,17 +205,20 @@ public class GameHandler extends JPanel implements Runnable {
 
     private void die() {
         if (player.deathUpdate()) {
+            LOGGER.log(Level.INFO, "GAME OVER.");
             gameState.setEnd();
         }
     }
 
     private void startNewGame() {
+        LOGGER.log(Level.INFO, "Starting new game.");
         loadNewGame();
         gameState.setRunning();
     }
 
     private void loadNewGame() {
         try {
+            LOGGER.log(Level.INFO, "Loading new game...");
             Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/maps/map1/settings.json"));
 
             deserializeAll(reader);
@@ -215,17 +229,22 @@ public class GameHandler extends JPanel implements Runnable {
 
             reader.close();
         } catch (Exception e) {
+
+            LOGGER.log(Level.SEVERE, "Map or it's settings wasn't found in game files.");
             throw new RuntimeException(e);
         }
     }
 
     public void deserializeAll(Reader reader) {
+
+        LOGGER.log(Level.INFO, "Deserializing game file...");
         try {
             JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
             player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
             enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
             objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
         } catch (JsonException e) {
+            LOGGER.log(Level.SEVERE, "Game couldn't be deserialized.");
             throw new RuntimeException(e);
         }
     }

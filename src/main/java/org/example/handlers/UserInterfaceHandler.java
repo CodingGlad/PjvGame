@@ -9,9 +9,10 @@ import org.example.handlers.types.PauseSelectionType;
 import org.example.views.UserInterfaceView;
 
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class UserInterfaceHandler {
-
     private final UserInterfaceView view;
 
     public UserInterfaceHandler() {

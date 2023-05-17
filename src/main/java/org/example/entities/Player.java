@@ -7,7 +7,6 @@ import org.example.entities.types.HorizontalDirectionType;
 import org.example.entities.types.VerticalDirectionType;
 import org.example.gameobjects.Armor;
 import org.example.gameobjects.Weapon;
-import org.example.gameobjects.types.ArmorType;
 import org.example.handlers.CollisionHandler;
 import org.example.handlers.InventoryHandler;
 import org.example.handlers.KeyHandler;
@@ -35,6 +34,7 @@ public class Player extends Entity {
 
         this.screenX = (SCREEN_WIDTH / 2) - (TILE_SIZE / 2);
         this.screenY = (SCREEN_HEIGHT / 2) - (TILE_SIZE / 2);
+
     }
 
     public void update(CollisionHandler collisionHandler) {

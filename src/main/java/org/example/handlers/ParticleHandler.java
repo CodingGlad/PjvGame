@@ -9,8 +9,10 @@ import org.example.views.ParticleView;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ParticleHandler {
+    private static final Logger LOGGER = Logger.getLogger(Particle.class.getName());
     private List<Particle> displayedParticles;
     private final ParticleView view;
 

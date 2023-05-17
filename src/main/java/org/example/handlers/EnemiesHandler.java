@@ -13,10 +13,14 @@ import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.utils.GameConstants.TILE_SIZE;
 
 public class EnemiesHandler {
+
+    private static final Logger LOGGER = Logger.getLogger(EnemiesHandler.class.getName());
     private List<Enemy> enemies;
 
     public EnemiesHandler() {
@@ -63,10 +67,12 @@ public class EnemiesHandler {
     }
 
     public Object[] serializeEnemies() {
+        LOGGER.log(Level.INFO, "Serializing enemies...");
         return enemies.stream().map(Enemy::serializeEnemy).toArray();
     }
 
     public void deserializeEnemies(JsonArray jsonEnemies) {
+        LOGGER.log(Level.INFO, "Deserializing enemies...");
         jsonEnemies.forEach(en -> addDeserializedEnemy((JsonObject) en));
     }
 
