@@ -8,8 +8,11 @@ import org.example.gameobjects.types.WeaponType;
 import org.example.utils.WorldCoordinates;
 
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InventoryHandler {
+    private static final Logger LOGGER = Logger.getLogger(InventoryHandler.class.getName());
     private Weapon weaponEquipped;
     private Armor armorEquipped;
 
@@ -32,6 +35,8 @@ public class InventoryHandler {
     public JsonObject serializeInventory() {
         JsonObject json = new JsonObject();
 
+        LOGGER.log(Level.INFO, "Serializing players inventory.");
+
         if (Objects.nonNull(armorEquipped)) {
             json.put("armor", armorEquipped.getArmorType().toString());
         } else {
@@ -50,6 +55,8 @@ public class InventoryHandler {
     public void deserializeAndSetInventory(JsonObject json) {
         String armor = (String) json.get("armor");
         String weapon = (String) json.get("weapon");
+
+        LOGGER.log(Level.INFO, "Deserializing players inventory.");
 
         if (Objects.nonNull(armor)) {
             armorEquipped = new Armor(ArmorType.valueOf(armor), new WorldCoordinates(1, 1));

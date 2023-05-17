@@ -10,8 +10,11 @@ import org.example.handlers.types.PauseSelectionType;
 
 import java.io.*;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameStateHandler {
+    private static final Logger LOGGER = Logger.getLogger(GameStateHandler.class.getName());
     private GameStateType stateType;
     private Enemy opponent;
     private MenuSelectionType menuCursorState;
@@ -31,18 +34,19 @@ public class GameStateHandler {
         } else if (stateType.equals(GameStateType.RUNNING)) {
             stateType = GameStateType.PAUSE;
         }
-    }
 
-    public void setPause() {
-        stateType = GameStateType.PAUSE;
+        LOGGER.log(Level.INFO, "Switched game state to " + getStateType().toString());
     }
 
     public void setRunning() {
         stateType = GameStateType.RUNNING;
+
+        LOGGER.log(Level.INFO, "Switched game state to RUNNING.");
     }
 
     public void setFighting(Enemy opponent, Entity player) {
         stateType = GameStateType.FIGHTING;
+        LOGGER.log(Level.INFO, "Switched game state to FIGHTING.");
 
         if (player.getHorizontalDirection().equals(HorizontalDirectionType.RIGHT)) {
             opponent.setHorizontalDirection(HorizontalDirectionType.LEFT);
@@ -55,18 +59,22 @@ public class GameStateHandler {
 
     public void setDying() {
         stateType = GameStateType.DYING;
+        LOGGER.log(Level.INFO, "Switched game state to DYING.");
     }
 
     public void setEnd() {
         stateType = GameStateType.END;
+        LOGGER.log(Level.INFO, "Switched game state to END.");
     }
 
     public void setLoading() {
         stateType = GameStateType.LOADING;
+        LOGGER.log(Level.INFO, "Switched game state to LOADING.");
     }
 
     public void setQuit() {
         stateType = GameStateType.QUIT;
+        LOGGER.log(Level.INFO, "Switched game state to QUIT.");
     }
 
     public MenuSelectionType getMenuCursorState() {
@@ -87,6 +95,8 @@ public class GameStateHandler {
 
     public void selectMenuOption() {
         if (Objects.nonNull(menuCursorState)){
+            LOGGER.log(Level.INFO, "Player has selected " + menuCursorState.toString() + " from menu.");
+
             switch (menuCursorState) {
                 case NEW_GAME -> this.stateType = GameStateType.STARTING;
                 case LOAD_GAME -> this.stateType = GameStateType.LOADING;
@@ -97,6 +107,8 @@ public class GameStateHandler {
 
     public void selectPauseOption() {
         if (Objects.nonNull(pauseCursorState)) {
+
+            LOGGER.log(Level.INFO, "Player has selected " + pauseCursorState.toString() + " from menu.");
             switch (pauseCursorState) {
                 case RESUME -> switchPause();
                 case SAVE -> stateType = GameStateType.SAVING;

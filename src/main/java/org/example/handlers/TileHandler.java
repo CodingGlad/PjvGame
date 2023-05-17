@@ -14,10 +14,13 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.utils.GameConstants.*;
 
 public class TileHandler {
+    private static final Logger LOGGER = Logger.getLogger(TileHandler.class.getName());
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";
     private static final String MAP_LAYOUT_PATH = "/maps/map1/";
 
@@ -61,6 +64,7 @@ public class TileHandler {
                     mapTileNum[i][j] = Integer.parseInt(mapLine[j]);
                 }
             } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "Map couldn't be loaded: " + e.getMessage());
                 throw new RuntimeException(e);
             }
         }
@@ -70,6 +74,7 @@ public class TileHandler {
         if (mapTileNum.length > row && mapTileNum[row].length > column) {
             return mapTileNum[row][column];
         } else {
+            LOGGER.log(Level.SEVERE, "Player has exited map bounds");
             throw new IllegalStateException("Player out of map bounds.");
         }
     }

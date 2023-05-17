@@ -11,35 +11,17 @@ import org.example.views.GameObjectView;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.example.utils.GameConstants.TILE_SIZE;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GameObjectHandler {
+    private static final Logger LOGGER = Logger.getLogger(GameObjectHandler.class.getName());
     private List<GameObject> displayedObjects;
     private final GameObjectView view;
 
     public GameObjectHandler() {
         view = new GameObjectView();
         this.displayedObjects = new LinkedList<>();
-    }
-
-    public void setDefaultObjects() {
-        displayedObjects.add(new Key(KeyType.GOLD, new WorldCoordinates(23 * TILE_SIZE, 40 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(24 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(25 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(26 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(27 * TILE_SIZE, 25 * TILE_SIZE)));
-        displayedObjects.add(new Chest(ObjectType.CHEST_CLOSED, ChestType.BIG, new WorldCoordinates(23 * TILE_SIZE, 7 * TILE_SIZE)));
-        displayedObjects.add(new Armor(ArmorType.STEEL, new WorldCoordinates(25 * TILE_SIZE, 10 * TILE_SIZE)));
-        displayedObjects.add(new Armor(ArmorType.COPPER, new WorldCoordinates(25 * TILE_SIZE, 11 * TILE_SIZE)));
-        displayedObjects.add(new Weapon(WeaponType.STEEL_SWORD, new WorldCoordinates(25 * TILE_SIZE, 13 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(25 * TILE_SIZE, 12 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(26 * TILE_SIZE, 12 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(27 * TILE_SIZE, 12 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(28 * TILE_SIZE, 12 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(29 * TILE_SIZE, 12 * TILE_SIZE)));
-        displayedObjects.add(new Heart(new WorldCoordinates(30 * TILE_SIZE, 12 * TILE_SIZE)));
     }
 
     public List<GameObject> getDisplayedObjects() {
@@ -53,6 +35,7 @@ public class GameObjectHandler {
     }
 
     public Object[] serializeObjects() {
+        LOGGER.log(Level.INFO, "Serializing objects...");
         return displayedObjects.stream().map(this::useObjectsSerializer).toArray();
     }
 
@@ -79,6 +62,7 @@ public class GameObjectHandler {
     }
 
     public void deserializeObjects(JsonArray jsonObjects) {
+        LOGGER.log(Level.INFO, "Deserializing objects...");
         jsonObjects.forEach(obj -> addDeserializedObject((JsonObject) obj));
     }
 
