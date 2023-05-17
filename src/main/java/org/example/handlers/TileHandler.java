@@ -19,6 +19,9 @@ import java.util.logging.Logger;
 
 import static org.example.utils.GameConstants.*;
 
+/**
+ * The TileHandler class is responsible for managing tiles, loading maps, and handling tile-related operations.
+ */
 public class TileHandler {
     private static final Logger LOGGER = Logger.getLogger(TileHandler.class.getName());
     private static final String TILE_SPRITES_PATH = "/sprites/tiles/";
@@ -29,6 +32,9 @@ public class TileHandler {
 
     private final TileView tileView;
 
+    /**
+     * Constructs a new TileHandler object.
+     */
     public TileHandler() {
         tileSprites = new HashMap<>();
         tileView = new TileView();
@@ -38,9 +44,12 @@ public class TileHandler {
         loadMap();
     }
 
+    /**
+     * Loads the tile images from the resources.
+     */
     private void getTileImages() {
         try {
-            for (TileType tile: TileType.values()) {
+            for (TileType tile : TileType.values()) {
                 tileSprites.put(
                         tile.getIntTileValue(),
                         new Tile(ImageIO.read(Objects.requireNonNull(getClass().getResourceAsStream(
@@ -52,15 +61,18 @@ public class TileHandler {
         }
     }
 
+    /**
+     * Loads the map layout from a file.
+     */
     private void loadMap() {
         InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map01.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-        for(int i = 0; i < MAX_WORLD_ROW; ++i) {
+        for (int i = 0; i < MAX_WORLD_ROW; ++i) {
             try {
                 String[] mapLine = br.readLine().split(" ");
 
-                for(int j = 0; j < MAX_WORLD_COL; ++j) {
+                for (int j = 0; j < MAX_WORLD_COL; ++j) {
                     mapTileNum[i][j] = Integer.parseInt(mapLine[j]);
                 }
             } catch (IOException e) {
@@ -70,6 +82,14 @@ public class TileHandler {
         }
     }
 
+    /**
+     * Retrieves the tile number at the specified row and column.
+     *
+     * @param row    The row index of the tile.
+     * @param column The column index of the tile.
+     * @return The tile number.
+     * @throws IllegalStateException if the player is out of map bounds.
+     */
     public int getTileNumber(int row, int column) {
         if (mapTileNum.length > row && mapTileNum[row].length > column) {
             return mapTileNum[row][column];
@@ -79,8 +99,15 @@ public class TileHandler {
         }
     }
 
+    /**
+     * Checks if the tile with the specified tile number has a collision.
+     *
+     * @param tilenum The tile number to check.
+     * @return true if the tile has a collision, false otherwise.
+     * @throws IllegalStateException if the tile number is not found.
+     */
     public boolean doesTileHaveCollision(int tilenum) {
-        for (TileType type: TileType.values()) {
+        for (TileType type : TileType.values()) {
             if (type.getIntTileValue() == tilenum) {
                 return type.isCollision();
             }
@@ -89,10 +116,19 @@ public class TileHandler {
         throw new IllegalStateException("Tile number not found.");
     }
 
+    /**
+     * Calculates the row or column index of the given world coordinate.
+     *
+     * @param worldCoordinate The world coordinate.
+     * @return The corresponding row or column index.
+     */
     public int getRowOrColumnOfCoordinate(int worldCoordinate) {
         return worldCoordinate / TILE_SIZE;
     }
 
+    /**
+     * Draws the tiles on the screen.
+     */
     public void drawTiles(Graphics2D g2, Player player) {
         tileView.draw(g2, tileSprites, mapTileNum, player);
     }

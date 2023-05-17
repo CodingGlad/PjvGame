@@ -5,7 +5,6 @@ import org.example.entities.Player;
 import org.example.gameobjects.Heart;
 import org.example.gameobjects.Key;
 import org.example.gameobjects.types.KeyType;
-import org.example.gameobjects.types.ObjectType;
 import org.example.handlers.types.MenuSelectionType;
 import org.example.handlers.types.PauseSelectionType;
 import org.example.utils.WorldCoordinates;
