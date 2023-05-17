@@ -1,6 +1,8 @@
 package org.example.utils;
 
-//TODO handle public constants
+/**
+ * Contains constant values used in the game.
+ */
 public class GameConstants {
     public static final int ORIGINAL_TILE_SIZE = 16;
     public static final int SCALE_FACTOR = 2;
