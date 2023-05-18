@@ -89,6 +89,9 @@ public class GameHandler extends JPanel implements Runnable {
 
     /**
      * The game loop that handles game updates and rendering.
+     * <br>
+     * During the development, I have derived this game loop solution
+     * from RyiSnow and his RPG game.
      */
     @Override
     public void run() {

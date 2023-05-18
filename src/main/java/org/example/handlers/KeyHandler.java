@@ -8,9 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * From internet, bookmark
+ * Handler class that listens t users input from keyboard.
+ * <br>
+ * During the development, I have derived this game loop solution
+ * from RyiSnow and his RPG game.
  */
-
 public class KeyHandler implements KeyListener {
 
     private boolean upPressed;
