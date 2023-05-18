@@ -121,7 +121,7 @@ public class GameHandler extends JPanel implements Runnable {
     private void update() {
         switch (gameState.getStateType()) {
             case RUNNING -> {
-                player.update(collisionHandler);
+                player.update(collisionHandler, keyHandler.isLoggerOn());
                 enemiesHandler.update();
                 particleHandler.update();
             }
@@ -154,7 +154,7 @@ public class GameHandler extends JPanel implements Runnable {
 
         userInterfaceHandler.drawInterface(g2, gameState.getStateType(),
                 gameState.getMenuCursorState(), gameState.getPauseCursorState(),
-                player, gameState.getOpponent());
+                player, gameState.getOpponent(), keyHandler.isLoggerOn());
 
         g2.dispose();
     }
@@ -163,24 +163,30 @@ public class GameHandler extends JPanel implements Runnable {
      * Saves the current game state to a file.
      */
     private void saveGame() {
-        LOGGER.log(Level.INFO, "Saving game...");
+        if (keyHandler.isLoggerOn()) {
+            LOGGER.log(Level.INFO, "Saving game...");
+        }
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get("save.json"));
 
             JsonObject save = new JsonObject();
 
-            save.put("player", player.serializePlayer());
-            save.put("enemies", enemiesHandler.serializeEnemies());
-            save.put("objects", objectHandler.serializeObjects());
+            save.put("player", player.serializePlayer(keyHandler.isLoggerOn()));
+            save.put("enemies", enemiesHandler.serializeEnemies(keyHandler.isLoggerOn()));
+            save.put("objects", objectHandler.serializeObjects(keyHandler.isLoggerOn()));
 
             Jsoner.serialize(save, writer);
 
             writer.close();
 
-            LOGGER.log(Level.INFO, "Game has been saved.");
-            gameState.setRunning();
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.INFO, "Game has been saved.");
+            }
+            gameState.setRunning(keyHandler.isLoggerOn());
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "Game couldn't be saved.");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.SEVERE, "Game couldn't be saved.");
+            }
             throw new RuntimeException(e);
         }
     }
@@ -189,20 +195,28 @@ public class GameHandler extends JPanel implements Runnable {
      * Loads the saved game from a file.
      */
     private void loadGame() {
-        LOGGER.log(Level.INFO, "Loading saved game.");
+        if (keyHandler.isLoggerOn()) {
+            LOGGER.log(Level.INFO, "Loading saved game.");
+        }
         try {
             Reader reader = Files.newBufferedReader(Paths.get("save.json"));
 
             deserializeAll(reader);
 
-            LOGGER.log(Level.INFO, "Deserialization done.");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.INFO, "Deserialization done.");
+            }
 
             reader.close();
 
-            LOGGER.log(Level.INFO, "Game has been loaded.");
-            gameState.setRunning();
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.INFO, "Game has been loaded.");
+            }
+            gameState.setRunning(keyHandler.isLoggerOn());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Saved game couldn't be loaded.");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.SEVERE, "Saved game couldn't be loaded.");
+            }
             throw new RuntimeException(e);
         }
     }
@@ -223,13 +237,13 @@ public class GameHandler extends JPanel implements Runnable {
         }
 
         if (player.getHealth() <= 0) {
-            gameState.setDying();
+            gameState.setDying(keyHandler.isLoggerOn());
             player.setDyingActivity();
         }
 
         if (enemy.getHealth() <= 0) {
             enemy.setDyingActivity();
-            gameState.setRunning();
+            gameState.setRunning(keyHandler.isLoggerOn());
         }
     }
 
@@ -238,8 +252,10 @@ public class GameHandler extends JPanel implements Runnable {
      */
     private void die() {
         if (player.deathUpdate()) {
-            LOGGER.log(Level.INFO, "GAME OVER.");
-            gameState.setEnd();
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.INFO, "GAME OVER.");
+            }
+            gameState.setEnd(keyHandler.isLoggerOn());
         }
     }
 
@@ -247,28 +263,37 @@ public class GameHandler extends JPanel implements Runnable {
      * Starts a new game.
      */
     private void startNewGame() {
-        LOGGER.log(Level.INFO, "Starting new game.");
+        if (keyHandler.isLoggerOn()) {
+            LOGGER.log(Level.INFO, "Starting new game.");
+        }
+        tileHandler.loadMap(keyHandler.isLoggerOn());
         loadNewGame();
-        gameState.setRunning();
+        gameState.setRunning(keyHandler.isLoggerOn());
     }
 
     /**
      * Loads a new game.
      */
     private void loadNewGame() {
+        tileHandler.loadMap(keyHandler.isLoggerOn());
+
         try {
-            LOGGER.log(Level.INFO, "Loading new game...");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.INFO, "Loading new game...");
+            }
             Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/maps/map1/settings.json"));
 
             deserializeAll(reader);
 
             reader.close();
 
-            gameState.setRunning();
+            gameState.setRunning(keyHandler.isLoggerOn());
 
             reader.close();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Map or its settings weren't found in the game files.");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.SEVERE, "Map or its settings weren't found in the game files.");
+            }
             throw new RuntimeException(e);
         }
     }
@@ -279,14 +304,18 @@ public class GameHandler extends JPanel implements Runnable {
      * @param reader The reader containing the JSON object.
      */
     public void deserializeAll(Reader reader) {
-        LOGGER.log(Level.INFO, "Deserializing game file...");
+        if (keyHandler.isLoggerOn()) {
+            LOGGER.log(Level.INFO, "Deserializing game file...");
+        }
         try {
             JsonObject parser = (JsonObject) Jsoner.deserialize(reader);
-            player.deserializeAndSetPlayer((JsonObject) parser.get("player"));
-            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"));
-            objectHandler.deserializeObjects((JsonArray) parser.get("objects"));
+            player.deserializeAndSetPlayer((JsonObject) parser.get("player"), keyHandler.isLoggerOn());
+            enemiesHandler.deserializeEnemies((JsonArray) parser.get("enemies"), keyHandler.isLoggerOn());
+            objectHandler.deserializeObjects((JsonArray) parser.get("objects"), keyHandler.isLoggerOn());
         } catch (JsonException e) {
-            LOGGER.log(Level.SEVERE, "Game couldn't be deserialized.");
+            if (keyHandler.isLoggerOn()) {
+                LOGGER.log(Level.SEVERE, "Game couldn't be deserialized.");
+            }
             throw new RuntimeException(e);
         }
     }

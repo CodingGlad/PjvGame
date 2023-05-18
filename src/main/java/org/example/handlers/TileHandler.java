@@ -41,7 +41,6 @@ public class TileHandler {
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 
         getTileImages();
-        loadMap();
     }
 
     /**
@@ -63,8 +62,9 @@ public class TileHandler {
 
     /**
      * Loads the map layout from a file.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    private void loadMap() {
+    public void loadMap(boolean isLoggerOn) {
         InputStream is = getClass().getResourceAsStream(MAP_LAYOUT_PATH + "map01.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
@@ -76,7 +76,9 @@ public class TileHandler {
                     mapTileNum[i][j] = Integer.parseInt(mapLine[j]);
                 }
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "Map couldn't be loaded: " + e.getMessage());
+                if (isLoggerOn) {
+                    LOGGER.log(Level.SEVERE, "Map couldn't be loaded: " + e.getMessage());
+                }
                 throw new RuntimeException(e);
             }
         }
@@ -87,14 +89,17 @@ public class TileHandler {
      *
      * @param row    The row index of the tile.
      * @param column The column index of the tile.
+     * @param isLoggerOn Whether logger is turned on.
      * @return The tile number.
      * @throws IllegalStateException if the player is out of map bounds.
      */
-    public int getTileNumber(int row, int column) {
+    public int getTileNumber(int row, int column, boolean isLoggerOn) {
         if (mapTileNum.length > row && mapTileNum[row].length > column) {
             return mapTileNum[row][column];
         } else {
-            LOGGER.log(Level.SEVERE, "Player has exited map bounds");
+            if (isLoggerOn) {
+                LOGGER.log(Level.SEVERE, "Player has exited map bounds");
+            }
             throw new IllegalStateException("Player out of map bounds.");
         }
     }

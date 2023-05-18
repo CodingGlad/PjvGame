@@ -46,7 +46,7 @@ public class UserInterfaceView{
         }
     }
 
-    public void drawMenu(Graphics2D g2, MenuSelectionType menuCursor) {
+    public void drawMenu(Graphics2D g2, MenuSelectionType menuCursor, boolean isLoggerOn) {
         g2.setFont(menuTitleFont);
         g2.setColor(Color.white);
         g2.drawString("Main Menu", 150, 75);
@@ -56,6 +56,11 @@ public class UserInterfaceView{
         g2.drawString("3-QUIT", MenuSelectionType.QUIT.getX(), MenuSelectionType.QUIT.getY());
         if (Objects.nonNull(menuCursor)) {
             g2.drawString(">", 50, menuCursor.getY());
+        }
+        if (isLoggerOn) {
+            g2.setFont(gameFont);
+            g2.setColor(Color.GRAY);
+            g2.drawString("LOGGER ON", 380, 360);
         }
     }
 

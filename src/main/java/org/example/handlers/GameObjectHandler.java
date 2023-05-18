@@ -53,11 +53,13 @@ public class GameObjectHandler {
 
     /**
      * Serializes the displayed objects and returns an array of serialized objects.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @return An array of serialized objects.
      */
-    public Object[] serializeObjects() {
-        LOGGER.log(Level.INFO, "Serializing objects...");
+    public Object[] serializeObjects(boolean isLoggerOn) {
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Serializing objects...");
+        }
         return displayedObjects.stream().map(this::useObjectsSerializer).toArray();
     }
 
@@ -91,11 +93,13 @@ public class GameObjectHandler {
 
     /**
      * Deserializes the objects from the provided JSON array and adds them to the list of displayed objects.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @param jsonObjects The JSON array containing the serialized objects.
      */
-    public void deserializeObjects(JsonArray jsonObjects) {
-        LOGGER.log(Level.INFO, "Deserializing objects...");
+    public void deserializeObjects(JsonArray jsonObjects, boolean isLoggerOn) {
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Deserializing objects...");
+        }
         jsonObjects.forEach(obj -> addDeserializedObject((JsonObject) obj));
     }
 

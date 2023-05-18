@@ -95,21 +95,25 @@ public class EnemiesHandler {
 
     /**
      * Serializes the enemies into an array of objects.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @return An array of serialized enemy objects.
      */
-    public Object[] serializeEnemies() {
-        LOGGER.log(Level.INFO, "Serializing enemies...");
+    public Object[] serializeEnemies(boolean isLoggerOn) {
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Serializing enemies...");
+        }
         return enemies.stream().map(Enemy::serializeEnemy).toArray();
     }
 
     /**
      * Deserializes the enemy data from the given JSON array and adds the enemies to the list.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @param jsonEnemies The JSON array containing the serialized enemy objects.
      */
-    public void deserializeEnemies(JsonArray jsonEnemies) {
-        LOGGER.log(Level.INFO, "Deserializing enemies...");
+    public void deserializeEnemies(JsonArray jsonEnemies, boolean isLoggerOn) {
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Deserializing enemies...");
+        }
         jsonEnemies.forEach(en -> addDeserializedEnemy((JsonObject) en));
     }
 

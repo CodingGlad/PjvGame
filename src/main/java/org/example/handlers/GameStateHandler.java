@@ -43,25 +43,29 @@ public class GameStateHandler {
     /**
      * Switches the game state between PAUSE and RUNNING.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void switchPause() {
+    public void switchPause(boolean isLoggerOn) {
         if (stateType.equals(GameStateType.PAUSE)) {
             stateType = GameStateType.RUNNING;
         } else if (stateType.equals(GameStateType.RUNNING)) {
             stateType = GameStateType.PAUSE;
         }
-
-        LOGGER.log(Level.INFO, "Switched game state to " + getStateType().toString());
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to " + getStateType().toString());
+        }
     }
 
     /**
      * Sets the game state to RUNNING.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setRunning() {
+    public void setRunning(boolean isLoggerOn) {
         stateType = GameStateType.RUNNING;
-
-        LOGGER.log(Level.INFO, "Switched game state to RUNNING.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to RUNNING.");
+        }
     }
 
     /**
@@ -71,10 +75,13 @@ public class GameStateHandler {
      *
      * @param opponent The opponent to fight against.
      * @param player   The player entity.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setFighting(Enemy opponent, Entity player) {
+    public void setFighting(Enemy opponent, Entity player, boolean isLoggerOn) {
         stateType = GameStateType.FIGHTING;
-        LOGGER.log(Level.INFO, "Switched game state to FIGHTING.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to FIGHTING.");
+        }
 
         if (player.getHorizontalDirection().equals(HorizontalDirectionType.RIGHT)) {
             opponent.setHorizontalDirection(HorizontalDirectionType.LEFT);
@@ -88,37 +95,49 @@ public class GameStateHandler {
     /**
      * Sets the game state to DYING.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setDying() {
+    public void setDying(boolean isLoggerOn) {
         stateType = GameStateType.DYING;
-        LOGGER.log(Level.INFO, "Switched game state to DYING.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to DYING.");
+        }
     }
 
     /**
      * Sets the game state to END.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setEnd() {
+    public void setEnd(boolean isLoggerOn) {
         stateType = GameStateType.END;
-        LOGGER.log(Level.INFO, "Switched game state to END.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to END.");
+        }
     }
 
     /**
      * Sets the game state to LOADING.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setLoading() {
+    public void setLoading(boolean isLoggerOn) {
         stateType = GameStateType.LOADING;
-        LOGGER.log(Level.INFO, "Switched game state to LOADING.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to LOADING.");
+        }
     }
 
     /**
      * Sets the game state to QUIT.
      * Logs a message indicating the state change.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void setQuit() {
+    public void setQuit(boolean isLoggerOn) {
         stateType = GameStateType.QUIT;
-        LOGGER.log(Level.INFO, "Switched game state to QUIT.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Switched game state to QUIT.");
+        }
     }
 
     /**
@@ -161,10 +180,13 @@ public class GameStateHandler {
      * Performs the selected menu option based on the current menu cursor state.
      * Logs a message indicating the selected option.
      * Updates the game state accordingly.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void selectMenuOption() {
-        if (Objects.nonNull(menuCursorState)){
-            LOGGER.log(Level.INFO, "Player has selected " + menuCursorState.toString() + " from menu.");
+    public void selectMenuOption(boolean isLoggerOn) {
+        if (Objects.nonNull(menuCursorState)) {
+            if (isLoggerOn) {
+                LOGGER.log(Level.INFO, "Player has selected " + menuCursorState.toString() + " from menu.");
+            }
 
             switch (menuCursorState) {
                 case NEW_GAME -> this.stateType = GameStateType.STARTING;
@@ -178,13 +200,16 @@ public class GameStateHandler {
      * Performs the selected pause option based on the current pause cursor state.
      * Logs a message indicating the selected option.
      * Updates the game state accordingly.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void selectPauseOption() {
+    public void selectPauseOption(boolean isLoggerOn) {
         if (Objects.nonNull(pauseCursorState)) {
-            LOGGER.log(Level.INFO, "Player has selected " + pauseCursorState.toString() + " from menu.");
+            if (isLoggerOn) {
+                LOGGER.log(Level.INFO, "Player has selected " + pauseCursorState.toString() + " from menu.");
+            }
 
             switch (pauseCursorState) {
-                case RESUME -> switchPause();
+                case RESUME -> switchPause(isLoggerOn);
                 case SAVE -> stateType = GameStateType.SAVING;
                 case QUIT -> System.exit(0);
             }

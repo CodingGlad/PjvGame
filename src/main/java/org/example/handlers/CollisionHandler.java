@@ -48,13 +48,14 @@ public class CollisionHandler {
      * Checks collisions for the given entity.
      *
      * @param entity The entity for which to check collisions.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void checkCollisions(Entity entity) {
+    public void checkCollisions(Entity entity, boolean isLoggerOn) {
         if (entity.getActivityType().equals(ActivityType.WALK)) {
             if (entity.getVerticalDirection().equals(NONE)) {
-                checkHorizontalCollisions(entity);
+                checkHorizontalCollisions(entity, isLoggerOn);
             } else {
-                checkVerticalCollisions(entity);
+                checkVerticalCollisions(entity, isLoggerOn);
             }
         }
     }
@@ -63,8 +64,9 @@ public class CollisionHandler {
      * Checks for collisions in the vertical direction for the given entity.
      *
      * @param entity The entity for which to check vertical collisions.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    private void checkVerticalCollisions(Entity entity) {
+    private void checkVerticalCollisions(Entity entity, boolean isLoggerOn) {
         int directionRow;
 
         if (entity.getVerticalDirection().equals(UP)) {
@@ -74,15 +76,16 @@ public class CollisionHandler {
         }
 
         checkTilesInVerticalDirection(directionRow, tileHandler.getRowOrColumnOfCoordinate(entity.getSolidLeftWorldX()),
-                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidRightWorldX()), entity);
+                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidRightWorldX()), entity, isLoggerOn);
     }
 
     /**
      * Checks for collisions in the horizontal direction for the given entity.
      *
      * @param entity The entity for which to check horizontal collisions.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    private void checkHorizontalCollisions(Entity entity) {
+    private void checkHorizontalCollisions(Entity entity, boolean isLoggerOn) {
         int directionColumn;
 
         if (entity.getHorizontalDirection().equals(LEFT)) {
@@ -92,7 +95,7 @@ public class CollisionHandler {
         }
 
         checkTilesInHorizontalDirection(directionColumn, tileHandler.getRowOrColumnOfCoordinate(entity.getSolidTopWorldY()),
-                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidBottomWorldY()), entity);
+                tileHandler.getRowOrColumnOfCoordinate(entity.getSolidBottomWorldY()), entity, isLoggerOn);
     }
 
     /**
@@ -113,10 +116,12 @@ public class CollisionHandler {
      * @param entityLeftCol        The column index of the entity's left side.
      * @param entityRightCol       The column index of the entity's right side.
      * @param entity               The entity for which to check collisions.
+     * @param isLoggerOn           Whether logger is turned on.
      */
-    private void checkTilesInVerticalDirection(int verticalDirectionRow, int entityLeftCol, int entityRightCol, Entity entity) {
-        int tileInDirection1 = tileHandler.getTileNumber(verticalDirectionRow, entityLeftCol);
-        int tileInDirection2 = tileHandler.getTileNumber(verticalDirectionRow, entityRightCol);
+    private void checkTilesInVerticalDirection(int verticalDirectionRow, int entityLeftCol,
+                                               int entityRightCol, Entity entity, boolean isLoggerOn) {
+        int tileInDirection1 = tileHandler.getTileNumber(verticalDirectionRow, entityLeftCol, isLoggerOn);
+        int tileInDirection2 = tileHandler.getTileNumber(verticalDirectionRow, entityRightCol, isLoggerOn);
         checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
     }
 
@@ -127,10 +132,12 @@ public class CollisionHandler {
      * @param entityTopRow              The row index of the entity's top side.
      * @param entityBottomRow           The row index of the entity's bottom side.
      * @param entity                    The entity for which to check collisions.
+     * @param isLoggerOn                Whether logger is turned on.
      */
-    private void checkTilesInHorizontalDirection(int horizontalDirectionColumn, int entityTopRow, int entityBottomRow, Entity entity) {
-        int tileInDirection1 = tileHandler.getTileNumber(entityTopRow, horizontalDirectionColumn);
-        int tileInDirection2 = tileHandler.getTileNumber(entityBottomRow, horizontalDirectionColumn);
+    private void checkTilesInHorizontalDirection(int horizontalDirectionColumn, int entityTopRow,
+                                                 int entityBottomRow, Entity entity, boolean isLoggerOn) {
+        int tileInDirection1 = tileHandler.getTileNumber(entityTopRow, horizontalDirectionColumn, isLoggerOn);
+        int tileInDirection2 = tileHandler.getTileNumber(entityBottomRow, horizontalDirectionColumn, isLoggerOn);
         checkCollisionsOfTilesInDirection(tileInDirection1, tileInDirection2, entity);
     }
 
@@ -306,8 +313,9 @@ public class CollisionHandler {
      * Checks for intersections between the player and enemies, and handles the appropriate game state changes.
      *
      * @param player The player entity.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void checkEnemies(Entity player) {
+    public void checkEnemies(Entity player, boolean isLoggerOn) {
         for (Enemy en: enemies.stream().filter(en -> !en.getActivityType().equals(ActivityType.DYING)).toList()) {
             Rectangle enemySolidAreaWorld = new Rectangle(
                     en.getVisibleArea().x + en.getWorldX(),
@@ -322,7 +330,7 @@ public class CollisionHandler {
             shiftSolidArea(playerSolidAreaWorld, player, 3);
 
             if (handleIntersection(playerSolidAreaWorld, enemySolidAreaWorld)) {
-                gameState.setFighting(en, player);
+                gameState.setFighting(en, player, isLoggerOn);
                 player.setIdleActivity();
                 en.setIdleActivity();
                 return;
