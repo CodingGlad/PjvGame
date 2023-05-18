@@ -34,6 +34,7 @@ public class UserInterfaceHandler {
      * @param pauseCursor  The pause selection cursor type.
      * @param player       The player entity.
      * @param enemy        The enemy entity (used in the FIGHTING game state).
+     * @param isLoggerOn   Whether logger is turned on.
      */
     public void drawInterface(Graphics2D g2, GameStateType gameState,
                               MenuSelectionType menuCursor, PauseSelectionType pauseCursor,
