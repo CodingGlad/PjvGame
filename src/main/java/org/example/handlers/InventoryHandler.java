@@ -57,13 +57,15 @@ public class InventoryHandler {
 
     /**
      * Serializes the player's inventory to a JsonObject.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @return The serialized JsonObject representing the player's inventory.
      */
-    public JsonObject serializeInventory() {
+    public JsonObject serializeInventory(boolean isLoggerOn) {
         JsonObject json = new JsonObject();
 
-        LOGGER.log(Level.INFO, "Serializing player's inventory.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Serializing player's inventory.");
+        }
 
         if (Objects.nonNull(armorEquipped)) {
             json.put("armor", armorEquipped.getArmorType().toString());
@@ -82,14 +84,16 @@ public class InventoryHandler {
 
     /**
      * Deserializes the JsonObject and sets the player's inventory accordingly.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @param json The JsonObject containing the serialized player's inventory.
      */
-    public void deserializeAndSetInventory(JsonObject json) {
+    public void deserializeAndSetInventory(JsonObject json, boolean isLoggerOn) {
         String armor = (String) json.get("armor");
         String weapon = (String) json.get("weapon");
 
-        LOGGER.log(Level.INFO, "Deserializing player's inventory.");
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Deserializing player's inventory.");
+        }
 
         if (Objects.nonNull(armor)) {
             armorEquipped = new Armor(ArmorType.valueOf(armor), new WorldCoordinates(1, 1));

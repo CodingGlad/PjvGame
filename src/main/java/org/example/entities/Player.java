@@ -15,6 +15,8 @@ import org.example.utils.WorldCoordinates;
 import java.awt.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.utils.GameConstants.*;
 
@@ -22,6 +24,7 @@ import static org.example.utils.GameConstants.*;
  * Represents the player character in the game.
  */
 public class Player extends Entity {
+    private static final Logger LOGGER = Logger.getLogger(Player.class.getName());
     private final KeyHandler keyHandler;
     private final int screenX;
     private final int screenY;
@@ -48,16 +51,17 @@ public class Player extends Entity {
      * Updates the player's state and handles collisions with the provided CollisionHandler.
      *
      * @param collisionHandler The CollisionHandler used for collision detection.
+     * @param isLoggerOn Whether logger is turned on.
      */
-    public void update(CollisionHandler collisionHandler) {
+    public void update(CollisionHandler collisionHandler, boolean isLoggerOn) {
         updateMovement();
 
         setCollisionsOn(false);
-        collisionHandler.checkCollisions(this);
+        collisionHandler.checkCollisions(this, isLoggerOn);
         collisionHandler.checkObject(this, keyHandler.isEquipButtonPressed(), keyHandler.isUseButtonPressed());
         keyHandler.setEquipButtonToFalse();
         keyHandler.setUseButtonToFalse();
-        collisionHandler.checkEnemies(this);
+        collisionHandler.checkEnemies(this, isLoggerOn);
 
         if (!isCollisionsOn() && !getActivityType().equals(ActivityType.IDLE)) {
             move();
@@ -243,13 +247,17 @@ public class Player extends Entity {
 
     /**
      * Serializes the player object to a JSON object.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @return The serialized JSON object.
      */
-    public JsonObject serializePlayer() {
+    public JsonObject serializePlayer(boolean isLoggerOn) {
         JsonObject json = serializeEntity();
 
-        json.put("inventory", inventory.serializeInventory());
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Serializing plyer...");
+        }
+
+        json.put("inventory", inventory.serializeInventory(isLoggerOn));
         json.put("numberofkeys", numberOfKeys);
 
         return json;
@@ -257,14 +265,18 @@ public class Player extends Entity {
 
     /**
      * Deserializes the JSON object and sets the player's attributes accordingly.
-     *
+     * @param isLoggerOn Whether logger is turned on.
      * @param json The JSON object containing the player data.
      */
-    public void deserializeAndSetPlayer(JsonObject json) {
+    public void deserializeAndSetPlayer(JsonObject json, boolean isLoggerOn) {
         super.deserializeAndSetEntity(json);
 
+        if (isLoggerOn) {
+            LOGGER.log(Level.INFO, "Deserializing plyer...");
+        }
+
         numberOfKeys = ((BigDecimal) json.get("numberofkeys")).intValue();
-        inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"));
+        inventory.deserializeAndSetInventory((JsonObject) json.get("inventory"), isLoggerOn);
     }
 
     /**

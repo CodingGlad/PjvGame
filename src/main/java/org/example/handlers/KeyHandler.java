@@ -8,9 +8,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * From internet, bookmark
+ * Handler class that listens t users input from keyboard.
+ * <br>
+ * During the development, I have derived this game loop solution
+ * from RyiSnow and his RPG game.
  */
-
 public class KeyHandler implements KeyListener {
 
     private boolean upPressed;
@@ -20,11 +22,13 @@ public class KeyHandler implements KeyListener {
     private boolean spacePressed;
     private boolean equipButtonPressed;
     private boolean useButtonPressed;
+    private boolean isLoggerOn;
 
     private GameStateHandler gameState;
 
     public KeyHandler(GameStateHandler gameState) {
         this.gameState = gameState;
+        isLoggerOn = false;
     }
 
     @Override
@@ -56,7 +60,10 @@ public class KeyHandler implements KeyListener {
             gameState.setMenuCursorState(MenuSelectionType.QUIT);
         }
         if (code == KeyEvent.VK_SPACE) {
-            gameState.selectMenuOption();
+            gameState.selectMenuOption(isLoggerOn);
+        }
+        if (code == KeyEvent.VK_L) {
+            isLoggerOn = !isLoggerOn;
         }
     }
 
@@ -71,7 +78,7 @@ public class KeyHandler implements KeyListener {
             gameState.setPauseCursorState(PauseSelectionType.QUIT);
         }
         if (code == KeyEvent.VK_SPACE) {
-            gameState.selectPauseOption();
+            gameState.selectPauseOption(isLoggerOn);
         }
     }
 
@@ -89,7 +96,7 @@ public class KeyHandler implements KeyListener {
             rightPressed = true;
         }
         if (code == KeyEvent.VK_P) {
-            gameState.switchPause();
+            gameState.switchPause(isLoggerOn);
         }
         if (code == KeyEvent.VK_E) {
             equipButtonPressed = true;
@@ -107,10 +114,10 @@ public class KeyHandler implements KeyListener {
 
     private void endKeys(int code) {
         if (code == KeyEvent.VK_Q) {
-            gameState.setQuit();
+            gameState.setQuit(isLoggerOn);
         }
         if (code == KeyEvent.VK_L) {
-            gameState.setLoading();
+            gameState.setLoading(isLoggerOn);
         }
     }
 
@@ -179,5 +186,9 @@ public class KeyHandler implements KeyListener {
 
     public void setUseButtonToFalse() {
         useButtonPressed = false;
+    }
+
+    public boolean isLoggerOn() {
+        return isLoggerOn;
     }
 }

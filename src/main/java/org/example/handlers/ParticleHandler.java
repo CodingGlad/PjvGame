@@ -15,7 +15,6 @@ import java.util.logging.Logger;
  * The ParticleHandler class is responsible for managing and handling particles in the game.
  */
 public class ParticleHandler {
-    private static final Logger LOGGER = Logger.getLogger(Particle.class.getName());
     private List<Particle> displayedParticles;
     private final ParticleView view;
 
